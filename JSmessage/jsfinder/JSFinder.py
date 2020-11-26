@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 urllib3.disable_warnings()
 import os
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
+
 
 # Regular expression comes from https://github.com/GerbenJavado/LinkFinder
 def extract_URL(JS):
@@ -163,8 +163,7 @@ def find_subdomain(urls, mainurl):
 
 
 
-def giveresult(urls, domian,outputfilename):
-
+def giveresult(urls, domian,outputfilename,path):
     if urls == None:
         return None
     print("Find " + str(len(urls)) + " URL:")
@@ -180,8 +179,8 @@ def giveresult(urls, domian,outputfilename):
         print(subdomain)
 
     # print(current_dir)
-    output_url_filename=current_dir+"url_"+outputfilename+'.txt'
-    output_subdomain_filename=current_dir+"subdomain_"+outputfilename+'.txt'
+    output_url_filename=path+'\\save\\saveJS\\'+"url_"+outputfilename+'.txt'
+    output_subdomain_filename=path+'\\save\\saveJS\\'+"subdomain_"+outputfilename+'.txt'
     with open(output_url_filename, "a", encoding='utf-8') as fobject:
         fobject.write(content_url)
     print("\nOutput " + str(len(urls)) + " urls")

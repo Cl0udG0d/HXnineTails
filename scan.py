@@ -1,5 +1,8 @@
 from JSmessage.jsfinder import JSFinder
+import os
+import hashlib
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
 '''
 扫描控制主函数
 参数：
@@ -30,23 +33,25 @@ transferJSFinder(url,filename)函数
         output_url_filename="url_"+outputfilename
         output_subdomain_filename="subdomain"+outputfilename
 '''
-def transferJSFinder(url,filename):
+
+def transferJSFinder(url,filename,path):
     try:
         urls=JSFinder.find_by_url(url)
-        JSFinder.giveresult(urls,url,filename)
+        JSFinder.giveresult(urls,url,filename,path)
     except Exception as e:
         print("JSFinder ERROR!")
         print(e)
         pass
 
 def octopusScan(url):
+    filename=hashlib.md5(url).hexdigest()
     return
 
 '''
 单元测试代码
 '''
 def main():
-    transferJSFinder('https://www.baidu.com','ksdjalsjda')
+    transferJSFinder('https://www.baidu.com','ksdjalsjda',current_dir)
     return
 
 
