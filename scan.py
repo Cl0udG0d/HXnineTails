@@ -1,6 +1,7 @@
 from JSmessage.jsfinder import JSFinder
 import os
 import hashlib
+import CScan
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 '''
@@ -12,7 +13,6 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 扫描联动工具：
     JS方面：
         JSfinder
-        JSscan
     漏洞扫描：
         360 0Kee-Team 的 crawlergo动态爬虫 -> Xray高级版
     C段：
@@ -21,11 +21,12 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 '''
-transferJSFinder(url,filename)函数
+transferJSFinder(url,filename,path)函数
 参数：
     url 待扫描的URL
     filename 实际上为待扫描URL的MD5值，作为输出文件名的一部分
-
+    传入的path为保存文件项目的绝对路径，方便保存到指定的文件夹下
+    
 调用并魔改JSFinder代码
 输出：
     从JS中获取到的URL和subdomain
@@ -40,6 +41,14 @@ def transferJSFinder(url,filename,path):
         JSFinder.giveresult(urls,url,filename,path)
     except Exception as e:
         print("JSFinder ERROR!")
+        print(e)
+        pass
+
+def transferCScan(url,filename,path):
+    try:
+        CScan.CScanConsole(url,filename,path)
+    except Exception as e:
+        print("C段扫描出错!")
         print(e)
         pass
 
