@@ -3,6 +3,7 @@ import re
 import requests
 from fake_useragent import UserAgent
 import socket
+import config
 
 ua = UserAgent()
 portlist=['80','8080','8000','8081','8001']
@@ -42,7 +43,7 @@ C段扫描控制函数 CScanConole(host,filename,path)
     使用线程池进行多线程C段扫描 线程最大数量默认为 20
     将结果经过过滤后保存到相应的域名MD5文件中
 '''
-def CScanConsole(host,filename,path):
+def CScanConsole(host,filename):
     pattern = re.compile('^\d+\.\d+\.\d+\.\d+(:(\d+))?$')
     if not pattern.findall(host):
         ip = socket.gethostbyname(host)
@@ -60,7 +61,7 @@ def CScanConsole(host,filename,path):
     pool.close()
     pool.join()
     content="".join(list(filter(None, C_Message)))
-    Cfilename=path+'\\save\\saveCplus\\'+filename+".txt"
+    Cfilename=config.CScan_report_path+filename+".txt"
     with open(Cfilename, "a", encoding='utf-8') as fobject:
         fobject.write(content)
     print("CSan END,the path:" + Cfilename)
