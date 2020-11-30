@@ -17,13 +17,11 @@ def GetHeaders():
 '''
 def removeDuplicates(req_list):
     req_pool=set()
-    req_queue=queue.Queue()
     for url in req_list:
         req_pool.add(url['url'].strip())
     while len(req_pool)!=0:
         url=req_pool.pop()
-        req_queue.put(url)
-    return req_queue
+        config.xray_queue.put(url)
 
 '''
     使用crawlergo进行目标页面URL的爬取
@@ -38,7 +36,8 @@ def crawlergoGet(target):
     # print(result)
     req_list = result["req_list"]
     print("target {} crawlergo end~".format(target))
-    return req_list
+    removeDuplicates(req_list)
+    print("{} removeDuplicates End~")
 
 def main():
     return

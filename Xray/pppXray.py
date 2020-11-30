@@ -36,6 +36,7 @@ def pppGet(req_queue):
     while not req_queue.empty():
         try:
             target=req_queue.get()
+            print("Now Xray Scan {}".format(target))
             outputfilename = hashlib.md5(target.encode("utf-8"))
             xrayScan(target.strip(), outputfilename.hexdigest())
         except Exception as e:
@@ -43,25 +44,7 @@ def pppGet(req_queue):
             pass
     print("Xray Scan End~")
     return
-    # f = open("target.txt")
-    # lines = f.readlines()
-    # pattern = re.compile(r'^http://')
-    # for line in lines:
-    #     try:
-    #         if not pattern.match(line.strip()):
-    #             targeturl="https://"+line.strip()
-    #         else:
-    #             targeturl=line.strip()
-    #         print(targeturl.strip())
-    #         outputfilename=hashlib.md5(targeturl.encode("utf-8"))
-    #         xrayScan(targeturl.strip(), outputfilename.hexdigest())
-    #         # print(type(line))
-    #     except Exception as e:
-    #         print(e)
-    #         pass
-    # f.close()
-    # print("Xray Scan End~")
-    # return
+
 
 def main():
     print(logo())

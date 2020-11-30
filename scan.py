@@ -1,10 +1,11 @@
 from JSmessage.jsfinder import JSFinder
-import os
 import hashlib
 from CScan import CScan
 import re
 from crawlergo import crawlergoMain
 from Xray import pppXray
+from OneForAll import oneforallMain
+import config
 
 '''
 扫描控制主函数
@@ -79,16 +80,88 @@ def vulScan(target):
     pppXray.pppGet(req_queue)
     print("vulScan End~")
 
-def foxScan(url):
-    filename=hashlib.md5(url).hexdigest()
+'''
+subScan(target) 函数
+参数：
+    target 待扫描的URL
+    filename 扫描目标 target 的对应md5之后的十六进制
+作用：
+    对输入的target进行子域名的收集，并将结果存储到队列sub_queue里
+输出：
+    结果保存在队列sub_queue里面，传递给队列去重函数
+子域名收集整合模块：
+    OneForAll
+    ARL
+    Knock
+    subDomainsBrute
+    Subfinder
+    Sublist3r
+    ...(可根据自己需要自行添加
+'''
+def subScan(target,filename):
+    oneforallMain.OneForAllScan(target)
+
+
+
+    queueDeduplication(filename)
+    return
+
+'''
+queueDeduplication(filename) 队列去重函数
+参数：
+    filename 扫描目标 target 的对应md5之后的十六进制
+作用：
+    对子域名队列sub_queue里面的元素进行去重处理
+输出：
+    结果保存在target_queue队列里面，存储到saveSub文件夹下对应filenamed.txt中并且成为待扫描的目标
+'''
+def queueDeduplication(filename):
+    Sub_report_path=config.Sub_report_path+filename+".txt"
+    sub_set=set()
+    while not config.sub_queue.empty():
+        target=config.sub_queue.get()
+        sub_set.add(target)
+    with open(Sub_report_path, 'a') as f:  # 'a'表示append,即在原来文件内容后继续写数据（不清楚原有数据）
+        while len(sub_set) != 0:
+            target = sub_set.pop()
+            config.target_queue.put(target)
+            f.write("{}\n".format(target))
+    print("queueDeduplication End~")
+    return
+
+
+'''
+花溪九尾主函数
+foxScan(target) 函数
+参数：
+    target 待扫描的URL 示例：baidu.com 
+作用：
+
+                                          -> JS敏感信息提取 
+    对输入的目标进行子域名收集 -> 存储去重  -> crawlergo动态爬虫 -> Xray高级版漏洞扫描
+                                          -> C段信息收集
+    
+输出：
+    对应阶段性结果都会保存在save 文件夹下对应的目录里面
+'''
+def foxScan(target):
+    filename=hashlib.md5(target).hexdigest()
+    subScan(target,filename)
+    while not config.target_queue.empty():
+        current_target=config.target_queue.get()
+        crawlergoMain.crawlergoGet(current_target)
+    while not config.xray_queue.empty():
+        current_target=config.xray_queue.get()
+        pppXray.pppGet(current_target)
+    print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
 '''
 单元测试代码
 '''
 def main():
-    target="https://xueshu.baidu.com"
-    vulScan(target)
+    target=input('please input target:')
+    foxScan(target)
     return
 
 
