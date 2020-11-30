@@ -1,0 +1,113 @@
+a.baidu.com                   	112.34.113.160, 117.185.16.211
+ad.baidu.com                  	182.61.62.50
+adm.baidu.com                 	112.34.111.113
+01.baidu.com                  	112.34.112.147, 39.156.66.141
+antivirus.baidu.com           	103.235.46.69
+apis.baidu.com                	112.34.112.191
+artist.baidu.com              	180.76.141.217, 180.76.183.17
+auto.baidu.com                	112.34.111.125, 117.185.17.208, 183.232.232.206, 183.232.232.207, 39.156.68.124
+b.baidu.com                   	36.152.44.118, 36.152.44.119
+bank.baidu.com                	112.34.111.125, 117.185.17.208, 183.232.232.206, 183.232.232.207, 39.156.68.124
+bao.baidu.com                 	123.125.142.73, 36.110.198.89, 39.156.69.32
+bar.baidu.com                 	117.185.17.57
+brand.baidu.com               	117.185.16.100, 39.156.66.125
+brazil.baidu.com              	123.125.114.144
+ca.baidu.com                  	111.202.115.77
+cct.baidu.com                 	183.232.232.91
+cert.baidu.com                	220.181.107.211
+api.cct.baidu.com             	111.13.100.150
+civil.baidu.com               	112.34.111.125, 117.185.17.208, 183.232.232.206, 183.232.232.207, 39.156.68.124
+cm.baidu.com                  	112.34.111.26
+con.baidu.com                 	10.114.40.21
+credit.baidu.com              	111.45.3.155
+crs.baidu.com                 	39.156.66.186, 39.156.66.187
+cu.baidu.com                  	183.232.232.30
+design.baidu.com              	39.156.66.116
+device.baidu.com              	112.34.111.131
+download.antivirus.baidu.com  	103.235.47.30
+edu.baidu.com                 	183.232.231.219, 183.232.231.220
+ee.baidu.com                  	10.46.133.175
+e.baidu.com                   	111.31.3.35
+elastic.baidu.com             	111.206.37.160
+em.baidu.com                  	112.34.111.26
+enjoy.baidu.com               	117.185.16.153
+enterprise.baidu.com          	117.185.16.135, 183.232.232.80, 39.156.66.142
+ent.baidu.com                 	112.34.111.125, 117.185.17.208, 183.232.232.206, 183.232.232.207, 39.156.68.124
+er.baidu.com                  	10.58.182.14
+feeds.baidu.com               	183.232.231.107
+flight.baidu.com              	183.232.231.208
+fm.baidu.com                  	180.76.141.217, 180.76.183.17
+fz.baidu.com                  	112.34.112.147, 39.156.66.141
+game.baidu.com                	112.34.112.74, 39.156.68.147
+global.baidu.com              	103.235.46.83
+hl.baidu.com                  	106.12.34.143
+hybrid.baidu.com              	10.202.6.208
+i.baidu.com                   	112.34.112.248
+hz.baidu.com                  	106.12.156.239, 106.12.165.163, 180.76.156.35, 180.76.174.35
+i3.baidu.com                  	183.230.68.36
+idata.baidu.com               	220.181.38.200
+iis.baidu.com                 	180.149.131.33
+images.baidu.com              	182.61.62.50
+its.baidu.com                 	183.232.231.99
+ix.baidu.com                  	180.76.141.217
+jj.baidu.com                  	10.36.7.47
+jn.baidu.com                  	112.34.111.246
+jipiao.baidu.com              	183.232.231.208
+kk.baidu.com                  	182.61.200.216
+ks.baidu.com                  	111.13.108.113
+law.baidu.com                 	111.206.37.194
+lion.baidu.com                	10.242.112.16
+live.baidu.com                	112.34.111.194
+m6.baidu.com                  	183.232.231.30, 183.232.231.31
+m3.baidu.com                  	183.232.231.30, 183.232.231.31
+maps.baidu.com                	183.194.218.7, 183.194.218.70
+mck.baidu.com                 	182.61.200.216
+metis.baidu.com               	10.42.4.18
+mg.baidu.com                  	220.181.38.192
+media.baidu.com               	112.34.111.131
+mirror.baidu.com              	218.201.36.35
+mx10.baidu.com                	111.202.115.75
+mx6.baidu.com                 	202.108.22.171
+ns1.baidu.com                 	202.108.22.220
+ns5.baidu.com                 	220.181.33.63
+ocean.baidu.com               	10.26.3.48
+offline.baidu.com             	202.106.2.66
+oms.baidu.com                 	111.202.114.185, 202.106.2.23
+or.baidu.com                  	112.34.111.131
+org.baidu.com                 	10.42.4.12
+p2p.baidu.com                 	180.76.139.133, 180.76.168.131, 180.76.236.81, 180.76.245.159, 180.76.54.189
+panorama.baidu.com            	183.232.231.25
+parking.baidu.com             	183.232.232.165
+pda.baidu.com                 	112.34.112.61, 112.34.112.62
+picture.baidu.com             	183.232.232.92
+ping.baidu.com                	202.106.2.117
+pki.baidu.com                 	111.206.223.51, 112.34.113.250
+pos.baidu.com                 	112.34.111.92
+power.baidu.com               	183.232.232.37
+privacy.baidu.com             	123.125.115.231
+purple.baidu.com              	111.13.101.29
+qb.baidu.com                  	112.34.111.53, 117.185.16.136, 39.156.68.158
+red.baidu.com                 	10.26.3.240, 10.36.4.130, 10.42.4.86, 10.91.160.44
+s1.global.baidu.com           	103.235.46.83
+s.e.baidu.com                 	218.201.36.35
+sec.baidu.com                 	202.106.2.63
+service.law.baidu.com         	111.206.37.194
+shipin.baidu.com              	180.76.139.133, 180.76.168.131, 180.76.236.81, 180.76.245.159, 180.76.54.189
+sip.baidu.com                 	111.202.115.68
+site.baidu.com                	112.34.111.167
+sitemap.baidu.com             	123.125.115.62
+m.site.baidu.com              	112.34.111.192, 39.156.68.141
+sl.baidu.com                  	112.34.111.246
+smp.baidu.com                 	10.99.72.23
+space.baidu.com               	183.232.231.225
+spam.baidu.com                	172.31.63.13
+stu.baidu.com                 	183.232.232.92
+t.baidu.com                   	183.232.231.224
+t.b.baidu.com                 	10.42.4.34
+t5.baidu.com                  	112.34.111.171
+tech.baidu.com                	112.34.111.125, 117.185.17.208, 183.232.232.206, 183.232.232.207, 39.156.68.124
+tuan.baidu.com                	111.13.100.93
+m.tuan.baidu.com              	183.232.231.224
+test.tuan.baidu.com           	183.232.231.224
+tx.baidu.com                  	10.208.6.173, 10.208.6.174
+ue.baidu.com                  	180.76.179.76

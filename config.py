@@ -14,12 +14,14 @@ Root_Path = os.path.dirname(os.path.abspath(__file__))
     chrome路径信息 Chrome_Path 例如:C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe
     Xray路径信息 Xray_Path 例如:D:\\Xray\\xray.exe
     crawlergo 可执行文件的所在的位置 例如：C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\crawlergo\\crawlergo.exe
-    OneForAll 文件夹所在的位置 例如：C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\oneforall.py
+    OneForAll 文件夹所在的位置 例如：C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\
+    subDomainsBrute 文件夹所在位置 
 '''
 Chrome_Path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
 Xray_Path='D:\\Xray\\xray.exe'
 crawlergo_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\crawlergo\\crawlergo.exe'
 OneForAll_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\OneForAll-master\\'
+subDomainsBrute_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subDomainsBrute-master\\'
 
 '''
 输出报告路径：

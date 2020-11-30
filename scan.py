@@ -7,6 +7,7 @@ from Xray import pppXray
 from OneForAll import oneforallMain
 import config
 import requests
+from subDomainsBrute import subDomainsBruteMain
 
 '''
 扫描控制主函数
@@ -101,7 +102,7 @@ subScan(target) 函数
 '''
 def subScan(target,filename):
     oneforallMain.OneForAllScan(target)
-
+    subDomainsBruteMain.subDomainsBruteScan(target)
 
 
     queueDeduplication(filename)
@@ -182,8 +183,9 @@ def foxScan(target):
 单元测试代码
 '''
 def main():
-    target=input('please input target:')
-    foxScan(target)
+    # target=input('please input target:')
+    # foxScan(target)
+    subDomainsBruteMain.subDomainsBruteScan('baidu.com')
     return
 
 
