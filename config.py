@@ -1,5 +1,6 @@
 import os
 import queue
+from fake_useragent import UserAgent
 
 '''
 配置文件:
@@ -40,6 +41,18 @@ portlist=['80','8080','8000','8081','8001']
 sub_queue=queue.Queue()
 target_queue=queue.Queue()
 xray_queue=queue.Queue()
+
+
+ua = UserAgent()
+
+'''
+GetHeaders()函数
+    使用fake-useragent函数
+    返回一个随机生成的请求头，防止因为python自带的请求头而被屏蔽
+'''
+def GetHeaders():
+    headers = {'User-Agent': ua.random}
+    return headers
 
 def main():
     print(Root_Path)

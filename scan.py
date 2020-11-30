@@ -6,6 +6,7 @@ from crawlergo import crawlergoMain
 from Xray import pppXray
 from OneForAll import oneforallMain
 import config
+import requests
 
 '''
 扫描控制主函数
@@ -107,6 +108,26 @@ def subScan(target,filename):
     return
 
 '''
+urlCheck(url) 函数
+参数：
+    url 需要检测存活性的URL
+作用：
+    url存活性检测
+输出：
+    返回是否的布尔值
+'''
+def urlCheck(url):
+    try:
+        print("https://{}".format(url))
+        rep = requests.get("https://" + url, headers=config.GetHeaders(), timeout=2, verify=False)
+        if rep.status_code != 404:
+            return True
+    except Exception as e:
+        # print(e)
+        return False
+    return False
+
+'''
 queueDeduplication(filename) 队列去重函数
 参数：
     filename 扫描目标 target 的对应md5之后的十六进制
@@ -121,11 +142,12 @@ def queueDeduplication(filename):
     while not config.sub_queue.empty():
         target=config.sub_queue.get()
         sub_set.add(target)
-    with open(Sub_report_path, 'a') as f:  # 'a'表示append,即在原来文件内容后继续写数据（不清楚原有数据）
+    with open(Sub_report_path, 'a') as f:
         while len(sub_set) != 0:
             target = sub_set.pop()
-            config.target_queue.put(target)
-            f.write("{}\n".format(target))
+            if urlCheck(target):
+                config.target_queue.put(target)
+                f.write("{}\n".format(target))
     print("queueDeduplication End~")
     return
 

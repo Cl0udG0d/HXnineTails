@@ -1,21 +1,9 @@
 from multiprocessing.pool import ThreadPool
 import re
 import requests
-from fake_useragent import UserAgent
 import socket
 import config
 
-ua = UserAgent()
-portlist=['80','8080','8000','8081','8001']
-
-'''
-GetHeaders()函数
-    使用fake-useragent函数
-    返回一个随机生成的请求头，防止因为python自带的请求头而被屏蔽
-'''
-def GetHeaders():
-    headers = {'User-Agent': ua.random}
-    return headers
 
 '''
 CScan C段扫描代码
@@ -24,7 +12,7 @@ CScan C段扫描代码
 '''
 def CScan(ip):
     try:
-        rep = requests.get("http://" + ip, headers=GetHeaders(), timeout=2, verify=False)
+        rep = requests.get("http://" + ip, headers=config.GetHeaders(), timeout=2, verify=False)
         if rep.status_code != 404:
             title = re.findall(r'<title>(.*?)</title>', rep.text)
             if title:
@@ -55,7 +43,9 @@ def CScanConsole(host,filename):
     for tmpCip in range(1, 256):
         ip[-1] = str(tmpCip)
         host = ".".join(ip)
-        hostList.append(host)
+        for port in config.portlist:
+            host=host+":"+str(port)
+            hostList.append(host)
     pool = ThreadPool(pools)
     C_Message = pool.map(CScan, hostList)
     pool.close()
