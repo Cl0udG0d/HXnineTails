@@ -8,7 +8,8 @@ from OneForAll import oneforallMain
 import config
 import requests
 from subDomainsBrute import subDomainsBruteMain
-
+from Sublist3r import Sublist3rMain
+from Subfinder import subfinderMain
 '''
 扫描控制主函数
 参数：
@@ -103,8 +104,8 @@ subScan(target) 函数
 def subScan(target,filename):
     oneforallMain.OneForAllScan(target)
     subDomainsBruteMain.subDomainsBruteScan(target)
-
-
+    Sublist3rMain.Sublist3rScan(target)
+    subfinderMain.subfinderScan(target)
     queueDeduplication(filename)
     return
 
@@ -181,11 +182,12 @@ def foxScan(target):
 
 '''
 单元测试代码
+进行子域名收集和动态爬虫+xray扫描的测试
 '''
 def main():
-    # target=input('please input target:')
-    # foxScan(target)
-    subDomainsBruteMain.subDomainsBruteScan('baidu.com')
+    target='baidu.com'
+    foxScan(target)
+    # subDomainsBruteMain.subDomainsBruteScan('baidu.com')
     return
 
 
