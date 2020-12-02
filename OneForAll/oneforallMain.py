@@ -13,7 +13,7 @@ def OneForAllScan(target):
     print(scanCommand)
     os.system(scanCommand)
     print("{} OneForALL Scan end~".format(target))
-    oneforall_filename="{}\\results\\{}.csv".format(config.OneForAll_Path,target)
+    oneforall_filename="{}results\\{}.csv".format(config.OneForAll_Path,target)
     print(oneforall_filename)
     csvFile = open(oneforall_filename, "r")
     reader = csv.reader(csvFile)

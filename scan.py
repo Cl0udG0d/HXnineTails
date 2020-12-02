@@ -102,12 +102,31 @@ subScan(target) 函数
     ...(可根据自己需要自行添加
 '''
 def subScan(target,filename):
-    oneforallMain.OneForAllScan(target)
-    subDomainsBruteMain.subDomainsBruteScan(target)
-    Sublist3rMain.Sublist3rScan(target)
-    subfinderMain.subfinderScan(target)
-    queueDeduplication(filename)
-    return
+    try:
+        oneforallMain.OneForAllScan(target)
+    except Exception as e:
+        print(e)
+        pass
+    try:
+        subDomainsBruteMain.subDomainsBruteScan(target)
+    except Exception as e:
+        print(e)
+        pass
+    try:
+        Sublist3rMain.Sublist3rScan(target)
+    except Exception as e:
+        print(e)
+        pass
+    try:
+        subfinderMain.subfinderScan(target)
+    except Exception as e:
+        print(e)
+        pass
+    try:
+        queueDeduplication(filename)
+    except Exception as e:
+        print(e)
+        pass
 
 '''
 urlCheck(url) 函数
@@ -169,7 +188,8 @@ foxScan(target) 函数
     对应阶段性结果都会保存在save 文件夹下对应的目录里面
 '''
 def foxScan(target):
-    filename=hashlib.md5(target).hexdigest()
+    filename=hashlib.md5(target.encode("utf-8")).hexdigest()
+    print("Start foxScan {}\nfilename : {}\n".format(target,filename))
     subScan(target,filename)
     while not config.target_queue.empty():
         current_target=config.target_queue.get()
