@@ -19,9 +19,9 @@ Root_Path = os.path.dirname(os.path.abspath(__file__))
 '''
 Chrome_Path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
 Xray_Path='D:\\Xray\\xray.exe'
-crawlergo_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\crawlergo\\crawlergo.exe'
+crawlergo_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\crawlergo.exe'
 OneForAll_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\OneForAll-master\\'
-subDomainsBrute_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subDomainsBrute-master\\'
+subDomainsBrute_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subDomainsBrute-master\\'
 subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 
 '''

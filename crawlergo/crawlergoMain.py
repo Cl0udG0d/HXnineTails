@@ -37,7 +37,7 @@ def crawlergoGet(target):
     req_list = result["req_list"]
     print("target {} crawlergo end~".format(target))
     removeDuplicates(req_list)
-    print("{} removeDuplicates End~")
+    print("{} removeDuplicates End~".format(target))
 
 def main():
     return

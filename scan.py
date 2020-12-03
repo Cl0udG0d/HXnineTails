@@ -196,7 +196,7 @@ def foxScan(target):
         crawlergoMain.crawlergoGet(current_target)
     while not config.xray_queue.empty():
         current_target=config.xray_queue.get()
-        pppXray.pppGet(current_target)
+        pppXray.xrayScan(current_target,filename)
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
