@@ -139,7 +139,7 @@ urlCheck(url) 函数
 '''
 def urlCheck(url):
     try:
-        print("https://{}".format(url))
+        print("now url live check: https://{}".format(url))
         rep = requests.get("https://" + url, headers=config.GetHeaders(), timeout=2, verify=False)
         if rep.status_code != 404:
             return True
@@ -168,6 +168,7 @@ def queueDeduplication(filename):
             target = sub_set.pop()
             if urlCheck(target):
                 config.target_queue.put(target)
+                print("now save :{}".format(target))
                 f.write("{}\n".format(target))
     print("queueDeduplication End~")
     return

@@ -180,7 +180,7 @@ class enumratorBase(object):
 
     def get_response(self, response):
         if response is None:
-            return 0
+            return "NULL"
         return response.text if hasattr(response, "text") else response.content
 
     def check_max_subdomains(self, count):
@@ -300,7 +300,7 @@ class GoogleEnum(enumratorBaseThreaded):
         return links_list
 
     def check_response_errors(self, resp):
-        if (type(resp) is str or type(resp) is unicode) and 'Our systems have detected unusual traffic' in resp:
+        if (type(resp) is str) and 'Our systems have detected unusual traffic' in resp:
             self.print_(R + "[!] Error: Google probably now is blocking our requests" + W)
             self.print_(R + "[~] Finished now the Google Enumeration ..." + W)
             return False
