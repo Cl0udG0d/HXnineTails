@@ -137,10 +137,10 @@ urlCheck(url) 函数
 输出：
     返回是否的布尔值
 '''
-def urlCheck(url):
+def urlCheck(target):
     try:
-        print("now url live check: https://{}".format(url))
-        rep = requests.get("https://" + url, headers=config.GetHeaders(), timeout=2, verify=False)
+        print("now url live check: {}".format(target))
+        rep = requests.get(target, headers=config.GetHeaders(), timeout=2, verify=False)
         if rep.status_code != 404:
             return True
     except Exception as e:
@@ -162,11 +162,17 @@ def queueDeduplication(filename):
     sub_set=set()
     while not config.sub_queue.empty():
         target=config.sub_queue.get()
+        pattern = re.compile(r'^http')
+        # 进行URL参数补充
+        if not pattern.match(target.strip()):
+            target = "https://" + target.strip()
+        else:
+            target = target.strip()
         sub_set.add(target)
     with open(Sub_report_path, 'a') as f:
         while len(sub_set) != 0:
             target = sub_set.pop()
-            if urlCheck(target):
+            if "baiduspider" not in target and urlCheck(target):
                 config.target_queue.put(target)
                 print("now save :{}".format(target))
                 f.write("{}\n".format(target))
