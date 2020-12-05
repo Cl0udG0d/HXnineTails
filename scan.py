@@ -70,18 +70,18 @@ vulScan(target) 函数
 输出：
     输出Xray扫描报告至 save文件夹下的saveXray文件夹
 '''
-def vulScan(target):
-    pattern = re.compile(r'^http')
-    #进行URL参数补充
-    if not pattern.match(target.strip()):
-        target = "https://" + target.strip()
-    else:
-        target = target.strip()
-
-    req_list=crawlergoMain.crawlergoGet(target)
-    req_queue=crawlergoMain.removeDuplicates(req_list)
-    pppXray.pppGet(req_queue)
-    print("vulScan End~")
+# def vulScan(target):
+#     pattern = re.compile(r'^http')
+#     #进行URL参数补充
+#     if not pattern.match(target.strip()):
+#         target = "https://" + target.strip()
+#     else:
+#         target = target.strip()
+#
+#     req_list=crawlergoMain.crawlergoGet(target)
+#     req_queue=crawlergoMain.removeDuplicates(req_list)
+#     pppXray.pppGet(req_queue)
+#     print("vulScan End~")
 
 '''
 subScan(target) 函数
@@ -102,6 +102,13 @@ subScan(target) 函数
     ...(可根据自己需要自行添加
 '''
 def subScan(target,filename):
+    '''
+    调用四个子域名搜集模块，并将结果保存在 sub_queue 里面
+    使用 queueDeduplication 进行子域名 -> 网址的转换 ，同时检测存活
+    :param target:
+    :param filename:
+    :return:
+    '''
     try:
         oneforallMain.OneForAllScan(target)
     except Exception as e:
@@ -163,7 +170,7 @@ def queueDeduplication(filename):
     while not config.sub_queue.empty():
         target=config.sub_queue.get()
         pattern = re.compile(r'^http')
-        # 进行URL参数补充
+        # 进行URL参数补充 子域名 -> 网址
         if not pattern.match(target.strip()):
             target = "https://" + target.strip()
         else:
@@ -179,6 +186,29 @@ def queueDeduplication(filename):
     print("queueDeduplication End~")
     return
 
+'''
+oneFoxScan(target)函数
+    针对某一目标网址进行扫描而非对某一资产下的网址进行扫描，输入案例： www.baidu.com
+    
+'''
+def oneFoxScan(target):
+    pattern = re.compile(r'^http')
+    if not pattern.match(target.strip()):
+        target = "https://" + target.strip()
+    else:
+        target = target.strip()
+    filename = hashlib.md5(target.encode("utf-8")).hexdigest()
+    print("Start foxScan {}\nfilename : {}\n".format(target, filename))
+    req_pool = crawlergoMain.crawlergoGet(target)
+    # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
+    while len(req_pool) != 0:
+        # 将 req_pool 里的URL依次弹出并扫描
+        temp_url = req_pool.pop()
+        current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
+        # 调用 xray 进行扫描并保存
+        pppXray.xrayScan(temp_url, current_filename)
+    print("InPuT T4rGet {} Sc3n EnD#".format(target))
+    return
 
 '''
 花溪九尾主函数
@@ -198,13 +228,19 @@ def foxScan(target):
     filename=hashlib.md5(target.encode("utf-8")).hexdigest()
     print("Start foxScan {}\nfilename : {}\n".format(target,filename))
     subScan(target,filename)
+    #进行子域名搜集
+
     while not config.target_queue.empty():
         current_target=config.target_queue.get()
-        crawlergoMain.crawlergoGet(current_target)
-    while not config.xray_queue.empty():
-        current_target=config.xray_queue.get()
-        current_filename=hashlib.md5(current_target.encode("utf-8")).hexdigest()
-        pppXray.xrayScan(current_target,current_filename)
+        # 对搜集到的目标挨个进行扫描
+        req_pool=crawlergoMain.crawlergoGet(current_target)
+        #对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
+        while len(req_pool)!=0:
+            #将 req_pool 里的URL依次弹出并扫描
+            temp_url=req_pool.pop()
+            current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
+            #调用 xray 进行扫描并保存
+            pppXray.xrayScan(temp_url, current_filename)
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
