@@ -10,6 +10,8 @@ import requests
 from subDomainsBrute import subDomainsBruteMain
 from Sublist3r import Sublist3rMain
 from Subfinder import subfinderMain
+import sys
+import getopt
 '''
 扫描控制主函数
 参数：
@@ -27,11 +29,10 @@ from Subfinder import subfinderMain
 
 
 '''
-transferJSFinder(url,filename,path)函数
+transferJSFinder(url,filename)函数
 参数：
     url 待扫描的URL
     filename 实际上为待扫描URL的MD5值，作为输出文件名的一部分
-    传入的path为保存文件项目的绝对路径，方便保存到指定的文件夹下
     
 作用：
     调用并魔改JSFinder代码
@@ -41,47 +42,26 @@ transferJSFinder(url,filename,path)函数
         output_url_filename="url_"+outputfilename
         output_subdomain_filename="subdomain"+outputfilename
 '''
-def transferJSFinder(url,filename,path):
+def transferJSFinder(url,filename):
     try:
         urls=JSFinder.find_by_url(url)
-        JSFinder.giveresult(urls,url,filename,path)
+        JSFinder.giveresult(urls,url,filename)
     except Exception as e:
         print("JSFinder ERROR!")
         print(e)
         pass
 
 '''
-transferCScan(url,filename,path) 函数
+transferCScan(url,filename) 函数
 '''
-def transferCScan(url,filename,path):
+def transferCScan(url,filename):
     try:
-        CScan.CScanConsole(url, filename, path)
+        CScan.CScanConsole(url, filename)
     except Exception as e:
         print("C段扫描出错!")
         print(e)
         pass
 
-'''
-vulScan(target) 函数
-参数：
-    target 待扫描的URL 
-作用：
-    联动 crawlergo对页面爬取 + 去重 + Xray扫描
-输出：
-    输出Xray扫描报告至 save文件夹下的saveXray文件夹
-'''
-# def vulScan(target):
-#     pattern = re.compile(r'^http')
-#     #进行URL参数补充
-#     if not pattern.match(target.strip()):
-#         target = "https://" + target.strip()
-#     else:
-#         target = target.strip()
-#
-#     req_list=crawlergoMain.crawlergoGet(target)
-#     req_queue=crawlergoMain.removeDuplicates(req_list)
-#     pppXray.pppGet(req_queue)
-#     print("vulScan End~")
 
 '''
 subScan(target) 函数
@@ -189,7 +169,7 @@ def queueDeduplication(filename):
 '''
 oneFoxScan(target)函数
     针对某一目标网址进行扫描而非对某一资产下的网址进行扫描，输入案例： www.baidu.com
-    
+    扫描流程: 输入URL正确性检查+crawlergo+xray
 '''
 def oneFoxScan(target):
     pattern = re.compile(r'^http')
@@ -199,14 +179,24 @@ def oneFoxScan(target):
         target = target.strip()
     filename = hashlib.md5(target.encode("utf-8")).hexdigest()
     print("Start foxScan {}\nfilename : {}\n".format(target, filename))
-    req_pool = crawlergoMain.crawlergoGet(target)
+    try:
+        req_pool = crawlergoMain.crawlergoGet(target)
+    except Exception as e:
+        print(e)
+        print("crawlergo error!")
+        req_pool=set()
+        pass
     # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
     while len(req_pool) != 0:
         # 将 req_pool 里的URL依次弹出并扫描
-        temp_url = req_pool.pop()
-        current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
-        # 调用 xray 进行扫描并保存
-        pppXray.xrayScan(temp_url, current_filename)
+        try:
+            temp_url = req_pool.pop()
+            current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
+            # 调用 xray 进行扫描并保存
+            pppXray.xrayScan(temp_url, current_filename)
+        except Exception as e:
+            print(e)
+            pass
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
@@ -216,20 +206,17 @@ foxScan(target) 函数
 参数：
     target 待扫描的URL 示例：baidu.com 
 作用：
-
                                           -> JS敏感信息提取 
     对输入的目标进行子域名收集 -> 存储去重  -> crawlergo动态爬虫 -> Xray高级版漏洞扫描
                                           -> C段信息收集
-    
 输出：
     对应阶段性结果都会保存在save 文件夹下对应的目录里面
 '''
 def foxScan(target):
     filename=hashlib.md5(target.encode("utf-8")).hexdigest()
-    print("Start foxScan {}\nfilename : {}\n".format(target,filename))
+    print("Start attsrc foxScan {}\nfilename : {}\n".format(target,filename))
     subScan(target,filename)
     #进行子域名搜集
-
     while not config.target_queue.empty():
         current_target=config.target_queue.get()
         # 对搜集到的目标挨个进行扫描
@@ -245,15 +232,88 @@ def foxScan(target):
     return
 
 '''
-单元测试代码
-进行子域名收集和动态爬虫+xray扫描的测试
+foxScanDetail(target)
+对于输入SRC进行详细的信息搜集+扫描
+耗时很长+为防止遗漏搜集了部分重复信息（不建议使用
+作用：
+                                                            -> JS敏感信息提取 
+    对输入的目标进行子域名收集 -> 存储去重  -> crawlergo动态爬虫 -> Xray高级版漏洞扫描
+                                                            -> C段信息收集
+输出：
+    对应阶段性结果都会保存在save 文件夹下对应的目录里面
 '''
-def main():
-    target='baidu.com'
-    foxScan(target)
-    # subDomainsBruteMain.subDomainsBruteScan('baidu.com')
+def foxScanDetail(target):
+    filename=hashlib.md5(target.encode("utf-8")).hexdigest()
+    print("Start attsrc foxScan {}\nfilename : {}\n".format(target,filename))
+    subScan(target,filename)
+    #进行子域名搜集
+    while not config.target_queue.empty():
+        current_target=config.target_queue.get()
+        # 对搜集到的目标挨个进行扫描
+        req_pool=crawlergoMain.crawlergoGet(current_target)
+        #对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
+        while len(req_pool)!=0:
+            #将 req_pool 里的URL依次弹出并扫描
+            try:
+                temp_url=req_pool.pop()
+                current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
+                #调用 xray 进行扫描并保存
+                pppXray.xrayScan(temp_url, current_filename)
+                transferJSFinder(temp_url,current_filename)
+                transferCScan(temp_url,current_filename)
+            except Exception as e:
+                print(e)
+                pass
+    print("InPuT T4rGet {} Sc3n EnD#".format(target))
+    return
+
+def logo():
+    print('''
+    
+ +-+-+-+-+-+-+-+-+-+-+-+
+ |H|X|n|i|n|e|T|a|i|l|s|
+ +-+-+-+-+-+-+-+-+-+-+-+
+                        v1.0
+                        author:春告鳥
+                        blog:https://www.cnblogs.com/Cl0ud/
+    ''')
+'''
+单元测试代码
+支持三个攻击参数：
+    1,-a --attone 对单个URL，只进行crawlergo动态爬虫+xray扫描 例如 百度官网 输入 https://www.baidu.com
+    2,-s --attsrc 对SRC资产，进行信息搜集+crawlergo+xray , 例如 百度SRC  输入 baidu.com
+    3,-d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 baidu.com
+'''
+def main(argv):
+    logo()
+    try:
+        opts, args = getopt.getopt(argv, "ha:s:d:", ["attone=", "attsrc=","attdetail="])
+    except getopt.GetoptError:
+        print('scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
+              'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n')
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt == '-h':
+            print(
+                'scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
+                'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n')
+            sys.exit()
+        elif opt in ("-a", "--attone"):
+            target = arg
+            oneFoxScan(target)
+        elif opt in ("-s", "--attsrc"):
+            target = arg
+            foxScan(target)
+        elif opt in ("-d", "--attdetail"):
+            target=arg
+            foxScanDetail(target)
+        else:
+            print(
+                'scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
+                'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n')
+            sys.exit()
     return
 
 
 if __name__ == '__main__':
-    main()
+    main(sys.argv[1:])
