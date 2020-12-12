@@ -249,8 +249,8 @@ def foxScan(target):
 进行子域名收集和动态爬虫+xray扫描的测试
 '''
 def main():
-    target='baidu.com'
-    foxScan(target)
+    target='https://coj.cqut.edu.cn/'
+    oneFoxScan(target)
     # subDomainsBruteMain.subDomainsBruteScan('baidu.com')
     return
 
