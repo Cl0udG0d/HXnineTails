@@ -7,6 +7,7 @@ import requests, argparse, sys, re
 from requests.packages import urllib3
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
+import config
 urllib3.disable_warnings()
 import os
 
@@ -163,7 +164,7 @@ def find_subdomain(urls, mainurl):
 
 
 
-def giveresult(urls, domian,outputfilename,path):
+def giveresult(urls, domian,outputfilename):
     if urls == None:
         return None
     print("Find " + str(len(urls)) + " URL:")
@@ -177,10 +178,9 @@ def giveresult(urls, domian,outputfilename,path):
     for subdomain in subdomains:
         content_subdomain += subdomain + "\n"
         print(subdomain)
-
     # print(current_dir)
-    output_url_filename=path+'\\save\\saveJS\\'+"url_"+outputfilename+'.txt'
-    output_subdomain_filename=path+'\\save\\saveJS\\'+"subdomain_"+outputfilename+'.txt'
+    output_url_filename=config.Root_Path+'\\save\\saveJS\\'+"url_"+outputfilename+'.txt'
+    output_subdomain_filename=config.Root_Path+'\\save\\saveJS\\'+"subdomain_"+outputfilename+'.txt'
     with open(output_url_filename, "a", encoding='utf-8') as fobject:
         fobject.write(content_url)
     print("\nOutput " + str(len(urls)) + " urls")

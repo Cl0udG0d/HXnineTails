@@ -29,14 +29,19 @@ def removeDuplicates(req_list):
     使用crawlergo进行目标页面URL的爬取
 '''
 def crawlergoGet(target):
-    cmd = [config.crawlergo_Path, "-c", config.Chrome_Path, "--custom-headers", json.dumps(GetHeaders()), "-t", "10", "-f",
-           "smart", "-o", "json", target]
-    rsp = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    output, error = rsp.communicate()
-    #  "--[Mission Complete]--"  是任务结束的分隔字符串
-    result = simplejson.loads(output.decode().split("--[Mission Complete]--")[1])
-    # print(result)
-    req_list = result["req_list"]
+    try:
+        cmd = [config.crawlergo_Path, "-c", config.Chrome_Path, "--custom-headers", json.dumps(GetHeaders()), "-t", "10", "-f",
+               "smart", "-o", "json", target]
+        rsp = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        output, error = rsp.communicate()
+        #  "--[Mission Complete]--"  是任务结束的分隔字符串
+        result = simplejson.loads(output.decode().split("--[Mission Complete]--")[1])
+        # print(result)
+        req_list = result["req_list"]
+    except Exception as e:
+        print(e)
+        req_list=[]
+        pass
     print("target {} crawlergo end~".format(target))
     return removeDuplicates(req_list)
     # print("{} removeDuplicates End~".format(target))
