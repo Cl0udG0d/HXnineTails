@@ -277,6 +277,7 @@ def logo():
                         author:春告鳥
                         blog:https://www.cnblogs.com/Cl0ud/
     ''')
+
 '''
 单元测试代码
 支持三个攻击参数：
@@ -284,12 +285,6 @@ def logo():
     2,-s --attsrc 对SRC资产，进行信息搜集+crawlergo+xray , 例如 百度SRC  输入 baidu.com
     3,-d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 baidu.com
 '''
-<<<<<<< HEAD
-def main():
-    target='https://coj.cqut.edu.cn/'
-    oneFoxScan(target)
-    # subDomainsBruteMain.subDomainsBruteScan('baidu.com')
-=======
 def main(argv):
     logo()
     try:
@@ -318,7 +313,6 @@ def main(argv):
                 'scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
                 'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n')
             sys.exit()
->>>>>>> 5e4c9214d35e9e4601b382f19b6a297393f9095c
     return
 
 
