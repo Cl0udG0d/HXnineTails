@@ -52,7 +52,7 @@ portlist=['80','8080','8000','8081','8001']
 sub_queue=queue.Queue()
 target_queue=queue.Queue()
 xray_queue=queue.Queue()
-
+ppp_queue=queue.Queue()
 
 ua = UserAgent()
 
@@ -64,6 +64,18 @@ GetHeaders()函数
 def GetHeaders():
     headers = {'User-Agent': ua.random}
     return headers
+
+
+def logo():
+    print('''
+
+ +-+-+-+-+-+-+-+-+-+-+-+
+ |H|X|n|i|n|e|T|a|i|l|s|
+ +-+-+-+-+-+-+-+-+-+-+-+
+                        v1.0
+                        author:春告鳥
+                        blog:https://www.cnblogs.com/Cl0ud/
+    ''')
 
 def main():
     print(Root_Path)
