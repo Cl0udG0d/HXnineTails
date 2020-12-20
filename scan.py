@@ -274,7 +274,7 @@ def logo():
  |H|X|n|i|n|e|T|a|i|l|s|
  +-+-+-+-+-+-+-+-+-+-+-+
                         v1.0
-                        author:春告鳥
+                        author:春告鳥 springbird
                         blog:https://www.cnblogs.com/Cl0ud/
     ''')
 

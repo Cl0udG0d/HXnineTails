@@ -3,13 +3,12 @@ import subprocess
 import json
 import config
 from fake_useragent import UserAgent
-import queue
 ua = UserAgent()
 
 
-def GetHeaders():
-    headers = {'User-Agent': ua.random}
-    return headers
+# def GetHeaders():
+#     headers = {'User-Agent': ua.random}
+#     return headers
 
 '''
     使用集合去除重复的URL
@@ -30,7 +29,7 @@ def removeDuplicates(req_list):
 '''
 def crawlergoGet(target):
     try:
-        cmd = [config.crawlergo_Path, "-c", config.Chrome_Path, "--custom-headers", json.dumps(GetHeaders()), "-t", "10", "-f",
+        cmd = [config.crawlergo_Path, "-c", config.Chrome_Path, "--custom-headers", json.dumps(config.GetHeaders()), "-t", "10", "-f",
                "smart", "-o", "json", target]
         rsp = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = rsp.communicate()
