@@ -14,7 +14,7 @@ subDomainsBruteScan(target) 函数
 def subDomainsBruteScan(target):
     subDomainsBrute_py='{}subDomainsBrute.py'.format(config.subDomainsBrute_Path)
     saveFilePath='{}target.txt'.format(config.Root_Path)
-    scanCommand="python3 {} -t 10 --output target.txt {}".format(subDomainsBrute_py,target)
+    scanCommand="{} {} -t 10 --output target.txt {}".format(config.PYTHON,subDomainsBrute_py,target)
     os.system(scanCommand)
     f = open(saveFilePath)
     lines = f.readlines()

@@ -9,7 +9,7 @@ OneForALLScan调度主函数
 '''
 def OneForAllScan(target):
     oneforall_py="{}\\oneforall.py".format(config.OneForAll_Path)
-    scanCommand = "python3 {} --target {} run".format(oneforall_py,target)
+    scanCommand = "{} {} --target {} run".format(config.PYTHON,oneforall_py,target)
     print(scanCommand)
     os.system(scanCommand)
     print("{} OneForALL Scan end~".format(target))

@@ -122,7 +122,7 @@ queueDeduplication(filename) 队列去重函数
 作用：
     对子域名队列sub_queue里面的元素进行去重处理
 输出：
-    结果保存在target_queue队列里面，存储到saveSub文件夹下对应filenamed.txt中并且成为待扫描的目标
+    结果保存在target_queue队列里面，存储到saveSub文件夹下对应filename.txt中并且成为待扫描的目标
 '''
 def queueDeduplication(filename):
     Sub_report_path =config.Sub_report_path +filename +".txt"
@@ -134,7 +134,7 @@ def queueDeduplication(filename):
     with open(Sub_report_path, 'a') as f:
         while len(sub_set) != 0:
             target = sub_set.pop()
-            if "spider" not in target and urlCheck(target):
+            if urlCheck(target):
                 config.target_queue.put(target)
                 print("now save :{}".format(target))
                 f.write("{}\n".format(target))
@@ -148,6 +148,16 @@ def addHttpHeader(target):
     else:
         target = target.strip()
     return target
+
+'''
+checkBlackList(url)
+检测目标URL是否在黑名单列表中
+'''
+def checkBlackList(url):
+    for i in config.blacklist:
+        if i in url:
+            return False
+    return True
 
 def main():
     a=set()

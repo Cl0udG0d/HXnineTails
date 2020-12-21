@@ -48,6 +48,10 @@ Sub_report_path="{}\\save\\saveSub\\".format(Root_Path)
     sub_queue 存储子域名的队列，用于保存所有工具获取到的子域名
 '''
 portlist=['80','8080','8000','8081','8001']
+blacklist=["spider","org"]
+
+ThreadNum=5
+PYTHON="python3"
 
 sub_queue=queue.Queue()
 target_queue=queue.Queue()
@@ -77,6 +81,12 @@ def logo():
                         blog:https://www.cnblogs.com/Cl0ud/
     ''')
 
+def scanHelp():
+    print(
+        'scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
+        'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n\t-r --readppp <readfilename attack> '
+        'example: scan.py -r target.txt\n'
+    )
 def main():
     print(Root_Path)
     return

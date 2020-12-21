@@ -21,12 +21,24 @@ import base
         自写C段扫描函数
 '''
 
-import threadpool
+from concurrent.futures import ThreadPoolExecutor
 
-task_pool=threadpool.ThreadPool(8)
+def threadPoolDetailScan(temp_url,current_filename):
+    pppXray.xrayScan(temp_url, current_filename)
+    base.transferJSFinder(temp_url, current_filename)
+    base.transferCScan(temp_url, current_filename)
+    return
 
-def thpool(temp_url,current_filename):
-    requests = threadpool.makeRequests(sayhello, name_list)
+def threadPoolScan(req_pool):
+    print("req_pool num is {}".format(len(req_pool)))
+    thread=ThreadPoolExecutor(config.ThreadNum)
+    while len(req_pool) != 0:
+        # 将 req_pool 里的URL依次弹出并扫描
+        temp_url = req_pool.pop()
+        current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
+        # 调用 xray 进行扫描并保存
+        # pppXray.xrayScan(temp_url, current_filename)
+        thread.submit(pppXray.xrayScan, temp_url, current_filename)
 
 
 def pppFoxScan(filename):
@@ -44,15 +56,11 @@ def pppFoxScan(filename):
     while not config.ppp_queue.empty():
         current_target = config.ppp_queue.get()
         # 对搜集到的目标挨个进行扫描
-        req_pool = crawlergoMain.crawlergoGet(current_target)
-        req_pool.add(current_target)
-        # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-        while len(req_pool) != 0:
-            # 将 req_pool 里的URL依次弹出并扫描
-            temp_url = req_pool.pop()
-            current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
-            # 调用 xray 进行扫描并保存
-            pppXray.xrayScan(temp_url, current_filename)
+        if base.checkBlackList(current_target):
+            req_pool = crawlergoMain.crawlergoGet(current_target)
+            req_pool.add(current_target)
+            # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
+            threadPoolScan(req_pool)
     return
 
 '''
@@ -61,22 +69,14 @@ oneFoxScan(target)函数
     扫描流程: 输入URL正确性检查+crawlergo+xray
 '''
 def oneFoxScan(target):
-    target=base.addHttpHeader(target)
-    filename = hashlib.md5(target.encode("utf-8")).hexdigest()
-    print("Start foxScan {}\nfilename : {}\n".format(target, filename))
-    req_pool = crawlergoMain.crawlergoGet(target)
-    # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-    req_pool.add(target)
-    while len(req_pool) != 0:
-        # 将 req_pool 里的URL依次弹出并扫描
-        try:
-            temp_url = req_pool.pop()
-            current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
-            # 调用 xray 进行扫描并保存
-            pppXray.xrayScan(temp_url, current_filename)
-        except Exception as e:
-            print(e)
-            pass
+    if base.checkBlackList(target):
+        target=base.addHttpHeader(target)
+        filename = hashlib.md5(target.encode("utf-8")).hexdigest()
+        print("Start foxScan {}\nfilename : {}\n".format(target, filename))
+        req_pool = crawlergoMain.crawlergoGet(target)
+        # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
+        req_pool.add(target)
+        threadPoolScan(req_pool)
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
@@ -99,16 +99,12 @@ def foxScan(target):
     #进行子域名搜集
     while not config.target_queue.empty():
         current_target=config.target_queue.get()
-        # 对搜集到的目标挨个进行扫描
-        req_pool=crawlergoMain.crawlergoGet(current_target)
-        req_pool.add(current_target)
-        #对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-        while len(req_pool)!=0:
-            #将 req_pool 里的URL依次弹出并扫描
-            temp_url=req_pool.pop()
-            current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
-            #调用 xray 进行扫描并保存
-            pppXray.xrayScan(temp_url, current_filename)
+        if base.checkBlackList(current_target):
+            # 对搜集到的目标挨个进行扫描
+            req_pool=crawlergoMain.crawlergoGet(current_target)
+            req_pool.add(current_target)
+            #对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
+            threadPoolScan(req_pool)
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
@@ -124,6 +120,7 @@ foxScanDetail(target)
     对应阶段性结果都会保存在save 文件夹下对应的目录里面
 '''
 def foxScanDetail(target):
+    thread = ThreadPoolExecutor(config.ThreadNum)
     filename=hashlib.md5(target.encode("utf-8")).hexdigest()
     print("Start attsrc foxScan {}\nfilename : {}\n".format(target,filename))
     base.subScan(target,filename)
@@ -131,38 +128,23 @@ def foxScanDetail(target):
     while not config.target_queue.empty():
         current_target=config.target_queue.get()
         # 对搜集到的目标挨个进行扫描
-        req_pool=crawlergoMain.crawlergoGet(current_target)
-        req_pool.add(current_target)
-        #对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-        while len(req_pool)!=0:
-            #将 req_pool 里的URL依次弹出并扫描
-            try:
-                temp_url=req_pool.pop()
-                current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
-                #调用 xray 进行扫描并保存
-                pppXray.xrayScan(temp_url, current_filename)
-                base.transferJSFinder(temp_url,current_filename)
-                base.transferCScan(temp_url,current_filename)
-            except Exception as e:
-                print(e)
-                pass
+        if base.checkBlackList(current_target):
+            req_pool=crawlergoMain.crawlergoGet(current_target)
+            req_pool.add(current_target)
+            #对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
+            while len(req_pool)!=0:
+                #将 req_pool 里的URL依次弹出并扫描
+                try:
+                    temp_url=req_pool.pop()
+                    current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
+                    thread.submit(threadPoolDetailScan, temp_url, current_filename)
+                except Exception as e:
+                    print(e)
+                    pass
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
-<<<<<<< HEAD
-def logo():
-    print('''
-    
- +-+-+-+-+-+-+-+-+-+-+-+
- |H|X|n|i|n|e|T|a|i|l|s|
- +-+-+-+-+-+-+-+-+-+-+-+
-                        v1.0
-                        author:春告鳥 springbird
-                        blog:https://www.cnblogs.com/Cl0ud/
-    ''')
-=======
 
->>>>>>> b7f1a54c8c70bae2f98b29bda2d4bd2359989d69
 
 '''
 单元测试代码
@@ -176,14 +158,11 @@ def main(argv):
     try:
         opts, args = getopt.getopt(argv, "ha:s:d:r:", ["attone=", "attsrc=","attdetail=","readppp="])
     except getopt.GetoptError:
-        print('scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
-              'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n')
+        config.scanHelp()
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print(
-                'scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
-                'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n')
+            config.scanHelp()
             sys.exit()
         elif opt in ("-a", "--attone"):
             target = arg
@@ -198,9 +177,7 @@ def main(argv):
             filename=arg
             pppFoxScan(filename)
         else:
-            print(
-                'scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
-                'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n')
+            config.scanHelp()
             sys.exit()
     return
 

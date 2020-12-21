@@ -30,6 +30,7 @@ def removeDuplicates(req_list):
     使用crawlergo进行目标页面URL的爬取
 '''
 def crawlergoGet(target):
+    print("Now crawlergoGet : {}".format(target))
     try:
         cmd = [config.crawlergo_Path, "-c", config.Chrome_Path, "--custom-headers", json.dumps(config.GetHeaders()), "-t", "10", "-f",
                "smart", "-o", "json", target]
@@ -44,6 +45,7 @@ def crawlergoGet(target):
         req_list=[]
         pass
     print("target {} crawlergo end~".format(target))
+    print("crawlergo get url number {}".format(len(req_list)))
     return removeDuplicates(req_list)
 
 def main():
