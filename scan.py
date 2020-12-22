@@ -21,7 +21,7 @@ import base
         自写C段扫描函数
 '''
 
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor,wait, FIRST_COMPLETED, ALL_COMPLETED
 
 def threadPoolDetailScan(temp_url,current_filename):
     pppXray.xrayScan(temp_url, current_filename)
@@ -31,14 +31,24 @@ def threadPoolDetailScan(temp_url,current_filename):
 
 def threadPoolScan(req_pool):
     print("req_pool num is {}".format(len(req_pool)))
-    thread=ThreadPoolExecutor(config.ThreadNum)
+    thread=ThreadPoolExecutor(max_workers=config.ThreadNum)
+    i=0
+    all_task=[]
     while len(req_pool) != 0:
         # 将 req_pool 里的URL依次弹出并扫描
         temp_url = req_pool.pop()
         current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
         # 调用 xray 进行扫描并保存
         # pppXray.xrayScan(temp_url, current_filename)
-        thread.submit(pppXray.xrayScan, temp_url, current_filename)
+        i+=1
+        one_t=thread.submit(pppXray.xrayScan, temp_url, current_filename)
+        all_task.append(one_t)
+        if i==5 or len(req_pool)==0:
+            i=0
+            wait(all_task, return_when=ALL_COMPLETED)
+            all_task=[]
+
+
 
 
 def pppFoxScan(filename):
@@ -61,6 +71,7 @@ def pppFoxScan(filename):
             req_pool.add(current_target)
             # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
             threadPoolScan(req_pool)
+    print("pppFoxScan End~")
     return
 
 '''
@@ -131,16 +142,19 @@ def foxScanDetail(target):
         if base.checkBlackList(current_target):
             req_pool=crawlergoMain.crawlergoGet(current_target)
             req_pool.add(current_target)
-            #对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-            while len(req_pool)!=0:
-                #将 req_pool 里的URL依次弹出并扫描
-                try:
-                    temp_url=req_pool.pop()
-                    current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
-                    thread.submit(threadPoolDetailScan, temp_url, current_filename)
-                except Exception as e:
-                    print(e)
-                    pass
+            i = 0
+            all_task = []
+            while len(req_pool) != 0:
+                # 将 req_pool 里的URL依次弹出并扫描
+                temp_url = req_pool.pop()
+                current_filename = hashlib.md5(temp_url.encode("utf-8")).hexdigest()
+                i += 1
+                one_t = thread.submit(threadPoolDetailScan, temp_url, current_filename)
+                all_task.append(one_t)
+                if i == 5 or len(req_pool) == 0:
+                    i = 0
+                    wait(all_task, return_when=ALL_COMPLETED)
+                    all_task = []
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
