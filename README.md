@@ -92,15 +92,33 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 命令行使用，参数详情为：
 
 ```python
--h --help 输出帮助信息
--a --attone 对单个URL，只进行crawlergo动态爬虫+xray扫描 例如 百度官网 输入 https://www.baidu.com
--s --attsrc 对SRC资产，进行信息搜集+crawlergo+xray , 例如 百度SRC  输入 baidu.com
--d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入baidu.com
--t --thread 线程数量
--r 读取待扫描txt文件，每行一个URL 对取出的每个URL进行 -a 扫描
+-h --help 输出帮助信息 如python3 scan.py --help
+-a --attone 对单个URL，只进行crawlergo动态爬虫+xray扫描 例如 百度官网 python3 scan.py -a https://www.baidu.com
+-s --attsrc 对SRC资产，进行信息搜集+crawlergo+xray , 例如 百度SRC python3 scan.py -s baidu.com
+-d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 python3 scan.py -d baidu.com
+-t --thread 线程数量，默认线程为5 如 python3 scan.py -t 10 -a http://testphp.vulnweb.com/ 
+-r 读取待扫描txt文件，每行一个URL 对取出的每个URL进行 -a 扫描，如 python3 scan.py -t 10 -r target.txt
 ```
 
-`默认对输入的域名进行 -s 扫描`
+建议使用 `-a` 或 `-s`参数进行扫描
+
+另外有一些全局配置在`config.py`中，可以自行修改，如：
+
+```python
+portlist=['80','8080','8000','8081','8001']
+blacklist=["spider","org"]
+
+ThreadNum=5
+PYTHON="python3"
+```
+
+`portlist`是C段扫描时的默认扫描端口列表
+
+`blacklist` 中的字符串，若出现在待扫描URL中，该URL不会被扫描
+
+`ThreadNum` 默认的线程数量
+
+`PYTHON` 主机python解释器的名称，默认为`python3`
 
 
 
@@ -115,6 +133,7 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 + 写个英文readme
 + 精简和添加模块
 + Server酱提醒
++ ...
 
 
 
