@@ -21,7 +21,7 @@ import base
         自写C段扫描函数
 '''
 
-from concurrent.futures import ThreadPoolExecutor,wait, FIRST_COMPLETED, ALL_COMPLETED
+from concurrent.futures import ThreadPoolExecutor,wait, ALL_COMPLETED
 
 def threadPoolDetailScan(temp_url,current_filename):
     pppXray.xrayScan(temp_url, current_filename)

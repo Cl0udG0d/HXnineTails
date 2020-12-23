@@ -75,7 +75,7 @@ def subScan(target ,filename):
         print(e)
         pass
     try:
-        subDomainsBruteMain.subDomainsBruteScan(target)
+        subDomainsBruteMain.subDomainsBruteScan(target,filename)
     except Exception as e:
         print(e)
         pass
@@ -131,7 +131,7 @@ def queueDeduplication(filename):
         target =config.sub_queue.get()
         target=addHttpHeader(target)
         sub_set.add(target)
-    with open(Sub_report_path, 'a') as f:
+    with open(Sub_report_path, 'a+') as f:
         while len(sub_set) != 0:
             target = sub_set.pop()
             if urlCheck(target):

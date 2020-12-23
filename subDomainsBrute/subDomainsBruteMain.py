@@ -11,10 +11,10 @@ subDomainsBruteScan(target) 函数
 输出：
     无
 '''
-def subDomainsBruteScan(target):
+def subDomainsBruteScan(target,filename):
     subDomainsBrute_py='{}subDomainsBrute.py'.format(config.subDomainsBrute_Path)
-    saveFilePath='{}target.txt'.format(config.Root_Path)
-    scanCommand="{} {} -t 10 --output target.txt {}".format(config.PYTHON,subDomainsBrute_py,target)
+    saveFilePath='{}{}'.format(config.Root_Path,filename)
+    scanCommand="{} {} -t 10 --output {} {}".format(config.PYTHON,subDomainsBrute_py,filename,target)
     os.system(scanCommand)
     f = open(saveFilePath)
     lines = f.readlines()
