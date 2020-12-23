@@ -124,7 +124,21 @@ PYTHON="python3"
 
 ### 部分截图
 
+```shell
+python3 scan.py --help
+```
 
+![截图1](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/1.png)
+
+```shell
+python3 scan.py -t 3 -a http://testphp.vulnweb.com/
+```
+
+![截图2](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/2.png)
+
+查看保存的报告
+
+![截图3](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/3.png)
 
 
 
