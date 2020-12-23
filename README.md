@@ -43,7 +43,7 @@
 
 ### 安装
 
-安装`python3` 暂不支持 `python2`
+安装`python3` （暂不支持 `python2`
 
 下载本项目代码: `git clone https://github.com/Cl0udG0d/HXnineTails`
 
@@ -83,7 +83,7 @@ subDomainsBrute_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subDomainsB
 subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 ```
 
-
+在`HXnineTails`文件夹下打开命令行输入扫描参数
 
 
 
@@ -167,7 +167,7 @@ python3 scan.py -t 3 -a http://testphp.vulnweb.com/
 
 ### 打赏列表
 
-
++ `背人语` 
 
 
 
