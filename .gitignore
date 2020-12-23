@@ -8,6 +8,7 @@ __pycache__/
 *.so
 /venv
 
+debug.log
 # Distribution / packaging
 .Python
 migrations/
