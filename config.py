@@ -85,8 +85,9 @@ def scanHelp():
     print(
         'scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
         'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n\t-r --readppp <readfilename attack> '
-        'example: scan.py -r target.txt\n'
+        'example: scan.py -r target.txt\n\t-t --thread number of threads\n\t-h --help output help information\n'
     )
+
 def main():
     print(Root_Path)
     return

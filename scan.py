@@ -170,14 +170,17 @@ def foxScanDetail(target):
 def main(argv):
     config.logo()
     try:
-        opts, args = getopt.getopt(argv, "ha:s:d:r:", ["attone=", "attsrc=","attdetail=","readppp="])
+        opts, args = getopt.getopt(argv, "ha:s:d:r:t:", ["help","attone=", "attsrc=","attdetail=","readppp=","thread="])
     except getopt.GetoptError:
         config.scanHelp()
         sys.exit(2)
+    # print(opts)
     for opt, arg in opts:
-        if opt == '-h':
+        if opt in ("-h","--help"):
             config.scanHelp()
             sys.exit()
+        elif opt in ("-t","--thread"):
+            config.ThreadNum=int(arg)
         elif opt in ("-a", "--attone"):
             target = arg
             oneFoxScan(target)
