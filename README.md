@@ -31,7 +31,7 @@
 
 `项目结构：`
 
-
+![项目结构](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/Architecture.png)
 
 
 
@@ -142,3 +142,4 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 
 **如果对你有帮助的话要不请作者喝杯奶茶?~~(嘿嘿)~~:+1: (打赏时请留言你的ID**
 
+![打赏码](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/Praise.png)
