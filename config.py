@@ -66,7 +66,11 @@ GetHeaders()函数
     返回一个随机生成的请求头，防止因为python自带的请求头而被屏蔽
 '''
 def GetHeaders():
-    headers = {'User-Agent': ua.random}
+    try:
+        headers = {'User-Agent': ua.random}
+    except Exception as e:
+        print(e)
+        headers={'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'}
     return headers
 
 
@@ -81,11 +85,21 @@ def logo():
                         blog:https://www.cnblogs.com/Cl0ud/
     ''')
 
+import shutil,os
+
+def delModel():
+    saveFolderList=['saveCplus','saveJS','saveSub','saveXray']
+    for tempFolder in saveFolderList:
+        shutil.rmtree("{}\\save\\{}".format(Root_Path,tempFolder))
+        os.mkdir("{}\\save\\{}".format(Root_Path,tempFolder))
+    print("clean end :)")
+    return
+
 def scanHelp():
     print(
         'scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
         'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n\t-r --readppp <readfilename attack> '
-        'example: scan.py -r target.txt\n\t-t --thread number of threads\n\t-h --help output help information\n'
+        'example: scan.py -r target.txt\n\t-t --thread number of threads\n\t-c --clean clean saveFiles\n\t-h --help output help information\n'
     )
 
 def main():

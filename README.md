@@ -98,6 +98,7 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 -d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 python3 scan.py -d baidu.com
 -t --thread 线程数量，默认线程为5 如 python3 scan.py -t 10 -a http://testphp.vulnweb.com/ 
 -r 读取待扫描txt文件，每行一个URL 对取出的每个URL进行 -a 扫描，如 python3 scan.py -t 10 -r target.txt
+-c 对保存的漏洞相关报告进行清理，即清理save文件夹下的文件
 ```
 
 建议使用 `-a` 或 `-s`参数进行扫描

@@ -170,7 +170,7 @@ def foxScanDetail(target):
 def main(argv):
     config.logo()
     try:
-        opts, args = getopt.getopt(argv, "ha:s:d:r:t:", ["help","attone=", "attsrc=","attdetail=","readppp=","thread="])
+        opts, args = getopt.getopt(argv, "ha:s:d:r:t:c", ["help","attone=", "attsrc=","attdetail=","readppp=","thread=","clean"])
     except getopt.GetoptError:
         config.scanHelp()
         sys.exit(2)
@@ -193,6 +193,9 @@ def main(argv):
         elif opt in ("-r","--readppp"):
             filename=arg
             pppFoxScan(filename)
+        elif opt in ("-c","--clean"):
+            config.delModel()
+            sys.exit()
         else:
             config.scanHelp()
             sys.exit()
