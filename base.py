@@ -7,7 +7,7 @@ from OneForAll import oneforallMain
 from CScan import CScan
 from JSmessage.jsfinder import JSFinder
 import config
-
+from ServerJiang.jiangMain import SendNotice
 '''
 transferJSFinder(url,filename)函数
 参数：
@@ -158,6 +158,27 @@ def checkBlackList(url):
         if i in url:
             return False
     return True
+
+'''
+扫描结束后发送消息
+消息结构：
+    标题
+    内容：
+        目标
+        获取漏洞总数
+'''
+def sendScanMessage(target,num=0):
+    try:
+        message='''
+            {} 扫描结束
+            漏洞数量 {}
+            请查收
+        '''.format(target,num)
+        SendNotice(message)
+    except Exception as e:
+        print(e)
+        pass
+    return
 
 def main():
     a=set()

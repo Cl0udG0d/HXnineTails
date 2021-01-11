@@ -10,6 +10,11 @@ from fake_useragent import UserAgent
 Root_Path = os.path.dirname(os.path.abspath(__file__))
 
 '''
+Server酱your_key
+'''
+SERVERKEY=''
+
+'''
 工具所在路径：
     chrome路径信息 Chrome_Path 例如:C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe
     Xray路径信息 Xray_Path 例如:D:\\Xray\\xray.exe

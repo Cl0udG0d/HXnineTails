@@ -160,6 +160,7 @@ def foxScanDetail(target):
 
 
 
+
 '''
 单元测试代码
 支持三个攻击参数：
@@ -176,22 +177,20 @@ def main(argv):
         sys.exit(2)
     # print(opts)
     for opt, arg in opts:
+        target = arg
+        filename = arg
         if opt in ("-h","--help"):
             config.scanHelp()
             sys.exit()
         elif opt in ("-t","--thread"):
             config.ThreadNum=int(arg)
-        elif opt in ("-a", "--attone"):
-            target = arg
+        if opt in ("-a", "--attone"):
             oneFoxScan(target)
         elif opt in ("-s", "--attsrc"):
-            target = arg
             foxScan(target)
         elif opt in ("-d", "--attdetail"):
-            target=arg
             foxScanDetail(target)
         elif opt in ("-r","--readppp"):
-            filename=arg
             pppFoxScan(filename)
         elif opt in ("-c","--clean"):
             config.delModel()
@@ -199,6 +198,7 @@ def main(argv):
         else:
             config.scanHelp()
             sys.exit()
+        base.sendScanMessage(arg)
     return
 
 
