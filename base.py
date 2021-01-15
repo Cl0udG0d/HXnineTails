@@ -8,6 +8,7 @@ from CScan import CScan
 from JSmessage.jsfinder import JSFinder
 import config
 from ServerJiang.jiangMain import SendNotice
+
 '''
 transferJSFinder(url,filename)函数
 参数：
@@ -85,7 +86,7 @@ def subScan(target ,filename):
         print(e)
         pass
     try:
-        subfinderMain.subfinderScan(target)
+        subfinderMain.subfinderScan(target,filename)
     except Exception as e:
         print(e)
         pass
@@ -131,6 +132,7 @@ def queueDeduplication(filename):
         target =config.sub_queue.get()
         target=addHttpHeader(target)
         sub_set.add(target)
+    length=len(sub_set)
     with open(Sub_report_path, 'a+') as f:
         while len(sub_set) != 0:
             target = sub_set.pop()
@@ -139,6 +141,7 @@ def queueDeduplication(filename):
                 print("now save :{}".format(target))
                 f.write("{}\n".format(target))
     print("queueDeduplication End~")
+    SendNotice("子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
     return
 
 def addHttpHeader(target):
@@ -159,26 +162,7 @@ def checkBlackList(url):
             return False
     return True
 
-'''
-扫描结束后发送消息
-消息结构：
-    标题
-    内容：
-        目标
-        获取漏洞总数
-'''
-def sendScanMessage(target,num=0):
-    try:
-        message='''
-            {} 扫描结束
-            漏洞数量 {}
-            请查收
-        '''.format(target,num)
-        SendNotice(message)
-    except Exception as e:
-        print(e)
-        pass
-    return
+
 
 def main():
     a=set()

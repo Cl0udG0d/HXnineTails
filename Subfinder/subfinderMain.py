@@ -4,11 +4,12 @@ import config
 '''
 subfinderScan(target)
 '''
-def subfinderScan(target):
-    scanCommand = "{}subfinder.exe -d {} -o output.txt".format(config.subfinder_Path,target)
+def subfinderScan(target,filename):
+    tempFilePath="{}\\{}".format(config.Temp_report_path,filename)
+    scanCommand = "{}subfinder.exe -d {} -o {}".format(config.subfinder_Path,target,tempFilePath)
 
     os.system(scanCommand)
-    f = open('output.txt')
+    f = open(tempFilePath)
     lines = f.readlines()
     for line in lines:
         print(line.strip())

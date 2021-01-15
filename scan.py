@@ -5,7 +5,7 @@ import config
 import sys
 import getopt
 import base
-
+from ServerJiang.jiangMain import SendNotice
 '''
 扫描控制主函数
 参数：
@@ -198,7 +198,7 @@ def main(argv):
         else:
             config.scanHelp()
             sys.exit()
-        base.sendScanMessage(arg)
+        SendNotice("{} 花溪九尾扫描完毕，保存文件名为 {} ".format(target,filename))
     return
 
 

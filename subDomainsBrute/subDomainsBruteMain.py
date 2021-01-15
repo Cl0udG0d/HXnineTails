@@ -27,7 +27,8 @@ def subDomainsBruteScan(target,filename):
     return
 
 def main():
-    subDomainsBruteScan('baidu.com')
+    filename=hash('baidu.com')
+    subDomainsBruteScan('baidu.com',filename)
     return
 
 if __name__ == '__main__':
