@@ -29,7 +29,7 @@ def threadPoolDetailScan(temp_url,current_filename):
     base.transferCScan(temp_url, current_filename)
     return
 
-def threadPoolScan(req_pool):
+def threadPoolScan(req_pool,filename):
     print("req_pool num is {}".format(len(req_pool)))
     thread=ThreadPoolExecutor(max_workers=config.ThreadNum)
     i=0
@@ -47,6 +47,7 @@ def threadPoolScan(req_pool):
             i=0
             wait(all_task, return_when=ALL_COMPLETED)
             all_task=[]
+    base.mergeReport(filename)
 
 
 
@@ -70,7 +71,7 @@ def pppFoxScan(filename):
             req_pool = crawlergoMain.crawlergoGet(current_target)
             req_pool.add(current_target)
             # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-            threadPoolScan(req_pool)
+            threadPoolScan(req_pool,filename)
     print("pppFoxScan End~")
     return
 
@@ -87,7 +88,7 @@ def oneFoxScan(target):
         req_pool = crawlergoMain.crawlergoGet(target)
         # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
         req_pool.add(target)
-        threadPoolScan(req_pool)
+        threadPoolScan(req_pool,filename)
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
@@ -115,7 +116,7 @@ def foxScan(target):
             req_pool=crawlergoMain.crawlergoGet(current_target)
             req_pool.add(current_target)
             #对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-            threadPoolScan(req_pool)
+            threadPoolScan(req_pool,filename)
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 

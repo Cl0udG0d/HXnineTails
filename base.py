@@ -31,6 +31,15 @@ def init():
     return
 
 '''
+mergeReport()函数
+    功能：合并报告
+    传入参数：目标保存文件名 filename
+'''
+def mergeReport(filename):
+    
+    return
+
+'''
 transferJSFinder(url,filename)函数
 参数：
     url 待扫描的URL

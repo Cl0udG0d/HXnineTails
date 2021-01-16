@@ -27,7 +27,7 @@ def logo():
 
 def xrayScan(targeturl,outputfilename="test"):
     try:
-        scanCommand="{} webscan --url \"{}\" --html-output {}\{}.html".format(config.Xray_Path,targeturl,config.Xray_report_path,outputfilename)
+        scanCommand="{} webscan --url \"{}\" --html-output {}\{}.html".format(config.Xray_Path,targeturl,config.Xray_temp_report_path,outputfilename)
         print(scanCommand)
         os.system(scanCommand)
     except Exception as e:
