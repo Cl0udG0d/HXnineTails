@@ -43,10 +43,13 @@ subfinder_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subfinder_2.4.5_windows
     Xray_report_path Xray扫描后的输出html报告
     CScan_report_path C段扫描后的输出txt文件
 '''
+Save_path="{}\\save".format(Root_Path)
 Xray_report_path="{}\\save\\saveXray".format(Root_Path)
+Xray_temp_report_path='{}\\save\\saveTempXray'.format(Root_Path)
 CScan_report_path="{}\\save\\saveCplus\\".format(Root_Path)
 Sub_report_path="{}\\save\\saveSub\\".format(Root_Path)
 Temp_report_path="{}\\save\\temp\\".format(Root_Path)
+JS_report_path='{}\\save\\saveJS\\'.format(Root_Path)
 
 '''
 一些全局通用配置：

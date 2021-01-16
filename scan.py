@@ -170,6 +170,7 @@ def foxScanDetail(target):
 '''
 def main(argv):
     config.logo()
+    base.init()
     try:
         opts, args = getopt.getopt(argv, "ha:s:d:r:t:c", ["help","attone=", "attsrc=","attdetail=","readppp=","thread=","clean"])
     except getopt.GetoptError:
