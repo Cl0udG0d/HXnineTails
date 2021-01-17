@@ -17,6 +17,13 @@ def test(target,filename):
     except Exception as e:
         print(e)
         pass
+
+def cleanTempXrayReport():
+
+    shutil.rmtree("{}".format(config.Xray_temp_report_path))
+    os.mkdir("{}".format(config.Xray_temp_report_path))
+    return
+
 '''
 mergeReport()函数
     功能：合并报告
@@ -33,7 +40,16 @@ def mergeReport(filename):
             temp=f.read()
             result=pattern.findall(temp)
             resultList+=result
-    print(resultList)
+
+    context=""
+    with open("{}\\modelFile.html".format(config.Root_Path),'r',encoding='utf-8') as f:
+        context+=f.read()
+    for result in resultList:
+        result="<script class=\'web-vulns\'>{}</script>".format(result)
+        context+=result
+    with open("{}\\{}.html".format(config.Xray_report_path,filename),'w',encoding='utf-8') as f:
+        f.write(context)
+    cleanTempXrayReport()
     return
 
 def main():
