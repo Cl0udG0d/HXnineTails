@@ -36,7 +36,16 @@ mergeReport()函数
     传入参数：目标保存文件名 filename
 '''
 def mergeReport(filename):
-    
+    reportList=os.listdir(config.Xray_temp_report_path)
+    resultList=[]
+    pattern = re.compile(r'<script class=\'web-vulns\'>(.*?)</script>')
+
+    for report in reportList:
+        tempReport="{}\\{}".format(config.Xray_temp_report_path,report)
+        with open(tempReport,'r') as f:
+            temp=f.read()
+            result=pattern.findall(temp)
+            print(result)
     return
 
 '''
