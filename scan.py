@@ -178,13 +178,17 @@ def main(argv):
         config.scanHelp()
         sys.exit(2)
     # print(opts)
+    #预处理分为两个部分 ，资产清理 和 资产扫描
+    # 若使用了 -d 参数 ，则对队列里的URL进行 -d扫描
+    # 若使用其他参数 -a 或者 -s ，仅仅将其添加到扫描队列中
+    # 若扫描队列不为空 ，则进行默认扫描 ，即 -a
     for opt, arg in opts:
         target = arg
         filename = arg
         if opt in ("-h","--help"):
             config.scanHelp()
             sys.exit()
-        elif opt in ("-t","--thread"):
+        if opt in ("-t","--thread"):
             config.ThreadNum=int(arg)
         if opt in ("-a", "--attone"):
             oneFoxScan(target)
