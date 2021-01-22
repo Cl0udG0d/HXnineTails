@@ -11,7 +11,7 @@ from JSmessage.jsfinder import JSFinder
 import config
 from ServerJiang.jiangMain import SendNotice
 import os
-
+import hashlib
 '''
 init() 扫描初始化函数
 功能：
@@ -45,11 +45,14 @@ def cleanTempXrayReport():
 mergeReport()函数
     功能：合并报告
     传入参数：目标保存文件名 filename
+    其中需要使用集合这种数据结构去除重复漏洞,其判断依据为：xray Request md5值
 '''
 def mergeReport(filename):
     reportList=os.listdir(config.Xray_temp_report_path)
     resultList=[]
-    pattern = re.compile(r'<script class=\'web-vulns\'>(.*?)</script>')
+    requestMd5Set=set()
+
+    pattern = re.compile(r'<script class=\'web-vulns\'>webVulns.push\((.*?)\)</script>')
 
     for report in reportList:
         tempReport="{}\\{}".format(config.Xray_temp_report_path,report)
@@ -61,12 +64,22 @@ def mergeReport(filename):
     context=""
     with open("{}\\modelFile.html".format(config.Root_Path),'r',encoding='utf-8') as f:
         context+=f.read()
-    for result in resultList:
-        result="<script class=\'web-vulns\'>{}</script>".format(result)
-        context+=result
-    with open("{}\\{}.html".format(config.Xray_report_path,filename),'w',encoding='utf-8') as f:
-        f.write(context)
-    cleanTempXrayReport()
+    try:
+        for result in resultList:
+            tempResultDict=eval(result)
+            tempDetailRequest=tempResultDict["detail"]["request"]
+            tempRequestMd5=hashlib.md5(tempDetailRequest.encode('utf-8')).hexdigest()
+            if tempRequestMd5 not in requestMd5Set:
+                requestMd5Set.add(tempRequestMd5)
+
+                result="<script class=\'web-vulns\'>webVulns.push({})</script>".format(result)
+                context+=result
+        with open("{}\\{}.html".format(config.Xray_report_path,filename),'w',encoding='utf-8') as f:
+            f.write(context)
+        cleanTempXrayReport()
+    except Exception as e:
+        print(e)
+        pass
     return
 
 '''

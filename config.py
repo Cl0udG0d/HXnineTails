@@ -62,6 +62,10 @@ blacklist=["spider","org"]
 ThreadNum=5
 PYTHON="python3"
 
+
+
+
+
 sub_queue=queue.Queue()
 target_queue=queue.Queue()
 xray_queue=queue.Queue()
