@@ -29,7 +29,7 @@
 
 :trident:目标是躺着挖洞
 
-该项目中目前集成：[crawlergo](https://github.com/0Kee-Team/crawlergo) [OneForAll](https://github.com/shmilylty/OneForAll) [subDomainsBrute](https://github.com/lijiejie/subDomainsBrute) [Subfinder](https://github.com/projectdiscovery/subfinder) [Sublist3r](https://github.com/aboul3la/Sublist3r) [Xray](https://github.com/chaitin/xray) [JSfinder](https://github.com/Threezh1/JSFinder) [pppXray](https://github.com/Cl0udG0d/pppXray)
+该项目中目前集成：[crawlergo](https://github.com/0Kee-Team/crawlergo) [OneForAll](https://github.com/shmilylty/OneForAll) [subDomainsBrute](https://github.com/lijiejie/subDomainsBrute) [Subfinder](https://github.com/projectdiscovery/subfinder) [Sublist3r](https://github.com/aboul3la/Sublist3r) [Xray](https://github.com/chaitin/xray) [JSfinder](https://github.com/Threezh1/JSFinder) [pppXray](https://github.com/Cl0udG0d/pppXray) [Server酱](http://sc.ftqq.com/3.version)
 
 下一个想要集成的项目是[ARL资产灯塔系统](https://github.com/TophantTechnology/ARL)
 
@@ -106,12 +106,16 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 另外有一些全局配置在`config.py`中，可以自行修改，如：
 
 ```python
+SERVERKEY=''
+
 portlist=['80','8080','8000','8081','8001']
 blacklist=["spider","org"]
 
 ThreadNum=5
 PYTHON="python3"
 ```
+
+`SERVERKEY`是Server酱 你注册使用的`key`值
 
 `portlist`是C段扫描时的默认扫描端口列表
 
@@ -122,6 +126,8 @@ PYTHON="python3"
 `PYTHON` 主机python解释器的名称，默认为`python3`
 
 
+
+**上面提到了一些外部程序或配置，如果在你的扫描中不需要用到的话，可以不进行安装，在程序运行过程中会自行pass掉**
 
 ### 部分截图
 
@@ -147,7 +153,7 @@ python3 scan.py -t 3 -a http://testphp.vulnweb.com/
 
 + 写个英文readme
 + 精简和添加模块
-+ Server酱提醒
++ 添加ARL模块
 + ...
 
 
@@ -155,6 +161,8 @@ python3 scan.py -t 3 -a http://testphp.vulnweb.com/
 ### 维护者
 
 [@春告鳥](https://github.com/Cl0udG0d)
+
+[@HNIJK](https://github.com/HNIJK)
 
 
 
