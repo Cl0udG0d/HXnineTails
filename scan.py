@@ -69,11 +69,12 @@ def pppFoxScan(filename):
     while not config.ppp_queue.empty():
         current_target = config.ppp_queue.get()
         # 对搜集到的目标挨个进行扫描
+        currentfilename=hashlib.md5(current_target.encode("utf-8")).hexdigest()
         if base.checkBlackList(current_target):
             req_pool = crawlergoMain.crawlergoGet(current_target)
             req_pool.add(current_target)
             # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-            threadPoolScan(req_pool, filename, filename)
+            threadPoolScan(req_pool, currentfilename, current_target)
     print("pppFoxScan End~")
     return
 

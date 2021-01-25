@@ -29,6 +29,8 @@
 
 :trident:目标是躺着挖洞
 
+项目代码在最新版社区版`xray1.7`下检测无误
+
 该项目中目前集成：[crawlergo](https://github.com/0Kee-Team/crawlergo) [OneForAll](https://github.com/shmilylty/OneForAll) [subDomainsBrute](https://github.com/lijiejie/subDomainsBrute) [Subfinder](https://github.com/projectdiscovery/subfinder) [Sublist3r](https://github.com/aboul3la/Sublist3r) [Xray](https://github.com/chaitin/xray) [JSfinder](https://github.com/Threezh1/JSFinder) [pppXray](https://github.com/Cl0udG0d/pppXray) [Server酱](http://sc.ftqq.com/3.version)
 
 下一个想要集成的项目是[ARL资产灯塔系统](https://github.com/TophantTechnology/ARL)

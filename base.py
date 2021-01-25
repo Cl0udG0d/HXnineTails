@@ -49,6 +49,10 @@ mergeReport()函数
 '''
 def mergeReport(filename):
     reportList=os.listdir(config.Xray_temp_report_path)
+    print(reportList)
+    if len(reportList)==0:
+        return
+
     resultList=[]
     requestMd5Set=set()
 
@@ -64,22 +68,19 @@ def mergeReport(filename):
     context=""
     with open("{}\\modelFile.html".format(config.Root_Path),'r',encoding='utf-8') as f:
         context+=f.read()
-    try:
-        for result in resultList:
-            tempResultDict=eval(result)
-            tempDetailRequest=tempResultDict["detail"]["request"]
-            tempRequestMd5=hashlib.md5(tempDetailRequest.encode('utf-8')).hexdigest()
-            if tempRequestMd5 not in requestMd5Set:
-                requestMd5Set.add(tempRequestMd5)
+    for result in resultList:
+        tempResultDict=eval(result)
+        tempDetailRequest=tempResultDict["detail"]["snapshot"][0][0]
+        tempRequestMd5=hashlib.md5(tempDetailRequest.encode('utf-8')).hexdigest()
+        if tempRequestMd5 not in requestMd5Set:
+            requestMd5Set.add(tempRequestMd5)
 
-                result="<script class=\'web-vulns\'>webVulns.push({})</script>".format(result)
-                context+=result
-        with open("{}\\{}.html".format(config.Xray_report_path,filename),'w',encoding='utf-8') as f:
-            f.write(context)
+            result="<script class=\'web-vulns\'>webVulns.push({})</script>".format(result)
+            context+=result
+    with open("{}\\{}.html".format(config.Xray_report_path,filename),'w',encoding='utf-8') as f:
+        f.write(context)
         cleanTempXrayReport()
-    except Exception as e:
-        print(e)
-        pass
+
     return
 
 '''
