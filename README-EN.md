@@ -192,4 +192,4 @@ View saved reports
 
 **If it helps you, how about buying the author a cup of milk tea? ~~(hehehe)~~:+1: (Please leave a message with your ID** when you reward
 
-! [Reward Code](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/Praise.png)
+![打赏码](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/Praise.png)
