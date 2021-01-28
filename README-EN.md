@@ -13,14 +13,14 @@
 
 - [Introduction](#Introduction)
 - [Install](#Install)
-- [Instructions for use](#Instructions for use)
-- [partial screenshots](# partial screenshots)
+- [Instructions](#Instructions)
+- [screenshots](#screenshots)
 - [TODO](#TODO)
-- [maintainer](#maintainer)
-- [How to contribute](#How to contribute)
-- [reward list](#reward list)
-- [License to use](# License to use)
-- [Appreciation Code](#Appreciation Code)
+- [Maintainer](#Maintainer)
+- [Contribute](#Contribute)
+- [Reward](#Reward)
+- [License](#License)
+- [Appreciation_Code](#Appreciation_Code)
 
 
 
@@ -42,7 +42,7 @@ The result of the project is the fusion of these individually powerful component
 
 ! [Project Structure](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/Architecture.png)
 
-### [中文说明](https://github.com/Cl0udG0d/HXnineTails)
+
 
 ### Installation
 
@@ -90,7 +90,7 @@ Open the command line in the `HXnineTails` folder and enter the scan parameters
 
 
 
-### Instructions for use
+### Instructions
 
 Command line use, with the following parameter details.
 
@@ -132,7 +132,7 @@ The string in `blacklist` that appears in the URL to be scanned will not be scan
 
 **Some external programs or configurations are mentioned above, if you don't need to use them in your scan, you can leave them uninstalled and they will pass by themselves during the program run**
 
-### Partial screenshots
+### screenshots
 
 ```shell
 python3 scan.py --help
@@ -164,13 +164,11 @@ View saved reports
 ### Maintainer
 
 [@春告鳥](https://github.com/Cl0udG0d)
-
 [@HNIJK](https://github.com/HNIJK)
 
 
 
-
-### How to contribute
+### Contribute
 
 :beer:You're very welcome to join us! [Raise an Issue](https://github.com/Cl0udG0d/HXnineTails/issues/new) or submit a Pull Request.
 
@@ -178,19 +176,19 @@ View saved reports
 
 
 
-### Reward List
+### Reward
 
-+ `背人语` 
++ `Backer Language` 
 
 
 
-### License to use
+### License
 
 [MIT](LICENSE) © Spring Teller
 
 
 
-### Appreciation Code
+### Appreciation_Code
 
 **If it helps you, how about buying the author a cup of milk tea? ~~(hehehe)~~:+1: (Please leave a message with your ID** when you reward
 
