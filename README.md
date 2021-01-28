@@ -41,7 +41,7 @@
 
 ![项目结构](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/Architecture.png)
 
-
+### [English readme ](https://github.com/Cl0udG0d/HXnineTails/README-EN.md)
 
 ### 安装
 
