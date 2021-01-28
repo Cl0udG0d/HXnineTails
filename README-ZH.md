@@ -43,8 +43,6 @@
 
 ![项目结构](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/Architecture.png)
 
-### [English readme ](https://github.com/Cl0udG0d/HXnineTails/README-EN.md)
-
 ### 安装
 
 安装`python3` （暂不支持 `python2`
@@ -155,7 +153,7 @@ python3 scan.py -t 3 -a http://testphp.vulnweb.com/
 
 ### TODO
 
-+ ~~写个英文readme~~（感谢老哥[wenyurush](https://github.com/wenyurush)）
++ ~~写个英文readme~~（感谢老哥 [wenyurush](https://github.com/wenyurush)）
 + 精简和添加模块
 + 添加ARL模块
 + ...

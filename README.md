@@ -41,7 +41,7 @@ The result of the project is the fusion of these individually powerful component
 
 `Project structure: `
 
-! [Project Structure](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/Architecture.png)
+![Project Structure](https://github.com/Cl0udG0d/HXnineTails/blob/main/images/Architecture.png)
 
 
 
@@ -155,7 +155,7 @@ View saved reports
 
 ### TODO
 
-+ ~~Write an English readme~~（Thanks brother[wenyurush](https://github.com/wenyurush)）
++ ~~Write an English readme~~（Thanks brother [wenyurush](https://github.com/wenyurush)）
 + Streamline and add modules
 + Add ARL module
 + ...
