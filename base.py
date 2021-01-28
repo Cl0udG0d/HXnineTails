@@ -42,6 +42,60 @@ def cleanTempXrayReport():
     return
 
 '''
+函数 checkXrayVersion()
+功能:
+    检测xray为社区版还是专业版
+    专业版返回 true
+    社区版返回 false
+'''
+def checkXrayVersion(content):
+    if "snapshot" in content:
+        return False
+    return True
+
+'''
+函数 advancedMergeReport(resultList)
+功能:
+    xray 专业版报告合并函数
+'''
+def advancedMergeReport(resultList):
+    context = ""
+    requestMd5Set = set()
+    with open("{}\\advancedModelFile.html".format(config.Root_Path), 'r', encoding='utf-8') as f:
+        context += f.read()
+    for result in resultList:
+        tempResultDict = eval(result)
+        tempDetailRequest = tempResultDict["detail"]["request"]
+        tempRequestMd5 = hashlib.md5(tempDetailRequest.encode('utf-8')).hexdigest()
+        if tempRequestMd5 not in requestMd5Set:
+            requestMd5Set.add(tempRequestMd5)
+
+            result = "<script class=\'web-vulns\'>webVulns.push({})</script>".format(result)
+            context += result
+    return context
+
+'''
+函数 communityMergeReport(resultList)
+功能:
+    xray 社区版报告合并函数
+'''
+def communityMergeReport(resultList):
+    context = ""
+    requestMd5Set=set()
+    with open("{}\\communityModelFile.html".format(config.Root_Path), 'r', encoding='utf-8') as f:
+        context += f.read()
+    for result in resultList:
+        tempResultDict = eval(result)
+        tempDetailRequest = tempResultDict["detail"]["snapshot"][0][0]
+        tempRequestMd5 = hashlib.md5(tempDetailRequest.encode('utf-8')).hexdigest()
+        if tempRequestMd5 not in requestMd5Set:
+            requestMd5Set.add(tempRequestMd5)
+
+            result = "<script class=\'web-vulns\'>webVulns.push({})</script>".format(result)
+            context += result
+    return context
+
+'''
 mergeReport()函数
     功能：合并报告
     传入参数：目标保存文件名 filename
@@ -54,7 +108,6 @@ def mergeReport(filename):
         return
 
     resultList=[]
-    requestMd5Set=set()
 
     pattern = re.compile(r'<script class=\'web-vulns\'>webVulns.push\((.*?)\)</script>')
 
@@ -64,19 +117,11 @@ def mergeReport(filename):
             temp=f.read()
             result=pattern.findall(temp)
             resultList+=result
-
-    context=""
-    with open("{}\\modelFile.html".format(config.Root_Path),'r',encoding='utf-8') as f:
-        context+=f.read()
-    for result in resultList:
-        tempResultDict=eval(result)
-        tempDetailRequest=tempResultDict["detail"]["snapshot"][0][0]
-        tempRequestMd5=hashlib.md5(tempDetailRequest.encode('utf-8')).hexdigest()
-        if tempRequestMd5 not in requestMd5Set:
-            requestMd5Set.add(tempRequestMd5)
-
-            result="<script class=\'web-vulns\'>webVulns.push({})</script>".format(result)
-            context+=result
+    tempResult=eval(resultList[0])
+    if 'snapshot' in tempResult["detail"]:
+        context = communityMergeReport(resultList)
+    else:
+        context=advancedMergeReport(resultList)
     with open("{}\\{}.html".format(config.Xray_report_path,filename),'w',encoding='utf-8') as f:
         f.write(context)
         cleanTempXrayReport()

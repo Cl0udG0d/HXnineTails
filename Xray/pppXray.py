@@ -19,7 +19,7 @@ def logo():
    \/   \/_|  \__,_|\__, |
                      __/ |
                     |___/ 
-                            v1.0
+                            v1.03
                             author:springbird
     '''
     return logo

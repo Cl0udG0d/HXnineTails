@@ -24,17 +24,17 @@ SERVERKEY=''
 '''
 Chrome_Path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
 
-# Xray_Path='D:\\Xray\\xray.exe'
-# crawlergo_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\crawlergo.exe'
-# OneForAll_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\OneForAll-master\\'
-# subDomainsBrute_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subDomainsBrute-master\\'
-# subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
+Xray_Path='D:\\Xray\\xray.exe'
+crawlergo_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\crawlergo.exe'
+OneForAll_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\OneForAll-master\\'
+subDomainsBrute_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subDomainsBrute-master\\'
+subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 
-Xray_Path='C:\\Users\\Cl0udG0d\\Desktop\\Xray\\xray.exe'
-crawlergo_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\crawlergo\\crawlergo.exe'
-OneForAll_Path='C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\'
-subDomainsBrute_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subDomainsBrute-master\\'
-subfinder_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subfinder_2.4.5_windows_amd64\\'
+# Xray_Path='C:\\Users\\Cl0udG0d\\Desktop\\Xray\\xray.exe'
+# crawlergo_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\crawlergo\\crawlergo.exe'
+# OneForAll_Path='C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\'
+# subDomainsBrute_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subDomainsBrute-master\\'
+# subfinder_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subfinder_2.4.5_windows_amd64\\'
 
 
 '''
@@ -93,7 +93,7 @@ def logo():
  +-+-+-+-+-+-+-+-+-+-+-+
  |H|X|n|i|n|e|T|a|i|l|s|
  +-+-+-+-+-+-+-+-+-+-+-+
-                        v1.01
+                        v1.03
 
     ''')
 
