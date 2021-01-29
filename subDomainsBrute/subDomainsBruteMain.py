@@ -13,22 +13,24 @@ subDomainsBruteScan(target) 函数
 '''
 def subDomainsBruteScan(target,filename):
     subDomainsBrute_py='{}subDomainsBrute.py'.format(config.subDomainsBrute_Path)
-    saveFilePath='{}{}'.format(config.Root_Path,filename)
-    scanCommand="{} {} -t 10 --output {} {}".format(config.PYTHON,subDomainsBrute_py,filename,target)
+    saveFilePath='{}{}.txt'.format(config.Temp_path,filename)
+    scanCommand="{} {} -t 10 --output {} {}".format(config.PYTHON,subDomainsBrute_py,saveFilePath,target)
+    print(scanCommand)
     os.system(scanCommand)
-    f = open(saveFilePath)
-    lines = f.readlines()
-    for line in lines:
-        temp_url=line.split()[0].rstrip('\n')
-        print(temp_url)
-        config.sub_queue.put(temp_url)
-    f.close()
+    if os.path.exists(saveFilePath):
+        f = open(saveFilePath)
+        lines = f.readlines()
+        for line in lines:
+            temp_url=line.split()[0].rstrip('\n')
+            # print(temp_url)
+            config.sub_queue.put(temp_url)
+        f.close()
     print("{} subDomainsBruteScan Scan End ~".format(target))
     return
 
 def main():
-    filename=hash('baidu.com')
-    subDomainsBruteScan('baidu.com',filename)
+    # filename=hash('baidu.com')
+    subDomainsBruteScan('wkj.work',"aa")
     return
 
 if __name__ == '__main__':

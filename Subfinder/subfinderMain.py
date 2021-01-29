@@ -5,7 +5,7 @@ import config
 subfinderScan(target)
 '''
 def subfinderScan(target,filename):
-    tempFilePath="{}\\{}".format(config.Temp_report_path,filename)
+    tempFilePath="{}\\{}".format(config.Temp_path,filename)
     scanCommand = "{}subfinder.exe -d {} -o {}".format(config.subfinder_Path,target,tempFilePath)
 
     os.system(scanCommand)

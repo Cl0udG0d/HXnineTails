@@ -25,11 +25,12 @@ def init():
             os.makedirs(config.Xray_temp_report_path)
             os.makedirs(config.CScan_report_path)
             os.makedirs(config.Sub_report_path)
-            os.makedirs(config.Temp_report_path)
+            os.makedirs(config.Temp_path)
             os.makedirs(config.JS_report_path)
     except Exception as e:
         print(e)
         exit(0)
+    print("初始化完成")
     return
 
 '''
