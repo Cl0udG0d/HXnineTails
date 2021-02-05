@@ -124,8 +124,9 @@ def foxScan(target):
             # 对搜集到的目标挨个进行扫描
             req_pool = crawlergoMain.crawlergoGet(current_target)
             req_pool.add(current_target)
+            tempFilename=hashlib.md5(current_target.encode("utf-8")).hexdigest()
             # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-            threadPoolScan(req_pool, filename, target)
+            threadPoolScan(req_pool, tempFilename, target)
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
