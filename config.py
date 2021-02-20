@@ -61,9 +61,8 @@ blacklist=["spider","org"]
 
 ThreadNum=5
 PYTHON="python3"
-
-
-
+# xray扫描插件,默认使用所有插件 plugins
+plugins=''
 
 
 sub_queue=queue.Queue()
@@ -93,7 +92,7 @@ def logo():
  +-+-+-+-+-+-+-+-+-+-+-+
  |H|X|n|i|n|e|T|a|i|l|s|
  +-+-+-+-+-+-+-+-+-+-+-+
-                        v1.03
+                        v1.04
 
     ''')
 

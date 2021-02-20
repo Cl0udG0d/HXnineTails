@@ -6,6 +6,8 @@ import sys
 import getopt
 import base
 from ServerJiang.jiangMain import SendNotice
+import click
+import os
 
 '''
 扫描控制主函数
@@ -53,6 +55,55 @@ def threadPoolScan(req_pool, filename, target):
     base.mergeReport(filename)
     SendNotice("{} 花溪九尾扫描完毕".format(target))
 
+'''
+init() 扫描初始化函数
+功能：
+    初始化保存文件目录
+    初始化扫描各参数
+    attone=, attsrc=, attdetail=, readppp=, thread=,clean ,plugins=
+
+'''
+@click.command()
+@click.option('-a', '--attone',help='对单个URL，只进行crawlergo动态爬虫+xray扫描 例如 百度官网 python3 scan.py -a https://www.baidu.com',type=str)
+@click.option('-s', '--attsrc',help='对SRC资产，进行信息搜集+crawlergo+xray , 例如 百度SRC python3 scan.py -s baidu.com',type=str)
+@click.option('-d', '--attdetail',help='对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 python3 scan.py -d baidu.com',type=str)
+@click.option('-t', '--thread',default=5,help='线程数量，默认线程为5 如 python3 scan.py -t 10 -a http://testphp.vulnweb.com/ ',type=int)
+@click.option('-r', '--readppp',help='读取待扫描txt文件，每行一个URL 对取出的每个URL进行 -a 扫描，如 python3 scan.py -t 10 -r target.txt',type=str)
+@click.option('-c', '--clean',help='对保存的漏洞相关报告进行清理，即清理save文件夹下的文件',is_flag=True)
+@click.option('-p','--plugins',help='自定义xray插件 plugins')
+def init(attone,attsrc,attdetail,thread,readppp,clean,plugins):
+    """
+    花溪九尾 懒狗必备\n
+    https://github.com/Cl0udG0d/HXnineTails
+    """
+    try:
+        if not os.path.exists(config.Save_path):
+            os.makedirs(config.Save_path)
+            os.makedirs(config.Xray_report_path)
+            os.makedirs(config.Xray_temp_report_path)
+            os.makedirs(config.CScan_report_path)
+            os.makedirs(config.Sub_report_path)
+            os.makedirs(config.Temp_path)
+            os.makedirs(config.JS_report_path)
+    except Exception as e:
+        print(e)
+        exit(0)
+    print("目录初始化完成")
+    config.ThreadNum = int(thread)
+    if plugins:
+        config.plugins = plugins
+    if clean:
+        config.delModel()
+        sys.exit()
+    if attone:
+        oneFoxScan(attone)
+    if attsrc:
+        foxScan(attsrc)
+    if attdetail:
+        foxScanDetail(attdetail)
+    if readppp:
+        pppFoxScan(readppp)
+    return
 
 def pppFoxScan(filename):
     print("Start pppFoxScan,filename is {}".format(filename))
@@ -182,40 +233,15 @@ def foxScanDetail(target):
 '''
 
 
-def main(argv):
-    config.logo()
-    base.init()
+def main():
     try:
-        opts, args = getopt.getopt(argv, "ha:s:d:r:t:c",
-                                   ["help", "attone=", "attsrc=", "attdetail=", "readppp=", "thread=", "clean"])
-    except getopt.GetoptError:
-        config.scanHelp()
-        sys.exit(2)
-    for opt, arg in opts:
-        target = arg
-        filename = arg
-        if opt in ("-h", "--help"):
-            config.scanHelp()
-            sys.exit()
-        elif opt in ("-t", "--thread"):
-            config.ThreadNum = int(arg)
-        elif opt in ("-a", "--attone"):
-            oneFoxScan(target)
-        elif opt in ("-s", "--attsrc"):
-            foxScan(target)
-        elif opt in ("-d", "--attdetail"):
-            foxScanDetail(target)
-        elif opt in ("-r", "--readppp"):
-            pppFoxScan(filename)
-        elif opt in ("-c", "--clean"):
-            config.delModel()
-            sys.exit()
-        else:
-            config.scanHelp()
-            sys.exit()
-
+        config.logo()
+        init.main(standalone_mode=False)
+    except Exception as e:
+        print(e)
+        pass
     return
 
 
 if __name__ == '__main__':
-    main(sys.argv[1:])
+    main()
