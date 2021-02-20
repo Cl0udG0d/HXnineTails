@@ -31,7 +31,7 @@
 
 :trident:目标是躺着挖洞
 
-项目代码在最新版社区版`xray1.7`下检测无误
+项目代码在最新版社区版`xray1.7`，专业版`xray1.3.3`下检测无误
 
 该项目中目前集成：[crawlergo](https://github.com/0Kee-Team/crawlergo) [OneForAll](https://github.com/shmilylty/OneForAll) [subDomainsBrute](https://github.com/lijiejie/subDomainsBrute) [Subfinder](https://github.com/projectdiscovery/subfinder) [Sublist3r](https://github.com/aboul3la/Sublist3r) [Xray](https://github.com/chaitin/xray) [JSfinder](https://github.com/Threezh1/JSFinder) [pppXray](https://github.com/Cl0udG0d/pppXray) [Server酱](http://sc.ftqq.com/3.version)
 
@@ -94,13 +94,14 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 命令行使用，参数详情为：
 
 ```python
--h --help 输出帮助信息 如python3 scan.py --help
+--help 输出帮助信息 如python3 scan.py --help
 -a --attone 对单个URL，只进行crawlergo动态爬虫+xray扫描 例如 百度官网 python3 scan.py -a https://www.baidu.com
 -s --attsrc 对SRC资产，进行信息搜集+crawlergo+xray , 例如 百度SRC python3 scan.py -s baidu.com
 -d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 python3 scan.py -d baidu.com
 -t --thread 线程数量，默认线程为5 如 python3 scan.py -t 10 -a http://testphp.vulnweb.com/ 
 -r 读取待扫描txt文件，每行一个URL 对取出的每个URL进行 -a 扫描，如 python3 scan.py -t 10 -r target.txt
 -c 对保存的漏洞相关报告进行清理，即清理save文件夹下的文件
+-p --plugins 自定义xray插件 例如 python3 scan.py -a https://www.baidu.com --plugins sqldet
 ```
 
 建议使用 `-a` 或 `-s`参数进行扫描
