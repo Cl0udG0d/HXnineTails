@@ -8,6 +8,10 @@ __pycache__/
 *.so
 /venv
 /save
+/tmp
+bad_dns_servers.txt
+errors.log
+config.yaml
 debug.log
 # Distribution / packaging
 .Python
