@@ -126,6 +126,8 @@ def pppFoxScan(filename):
             req_pool.add(current_target)
             # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
             threadPoolScan(req_pool, currentfilename, current_target)
+        else:
+            print("扫描网址在黑名单内,退出")
     print("pppFoxScan End~")
     return
 
@@ -146,6 +148,8 @@ def oneFoxScan(target):
         # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
         req_pool.add(target)
         threadPoolScan(req_pool, filename, target)
+    else:
+        print("扫描网址在黑名单内,退出")
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
@@ -178,6 +182,8 @@ def foxScan(target):
             tempFilename=hashlib.md5(current_target.encode("utf-8")).hexdigest()
             # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
             threadPoolScan(req_pool, tempFilename, target)
+        else:
+            print("扫描网址在黑名单内,退出")
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
@@ -220,6 +226,8 @@ def foxScanDetail(target):
                     i = 0
                     wait(all_task, return_when=ALL_COMPLETED)
                     all_task = []
+        else:
+            print("扫描网址在黑名单内,退出")
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
