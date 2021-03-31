@@ -32,8 +32,9 @@ def removeDuplicates(req_list):
 def crawlergoGet(target):
     print("Now crawlergoGet : {}".format(target))
     try:
-        cmd = [config.crawlergo_Path, "-c", config.Chrome_Path, "--custom-headers", json.dumps(config.GetHeaders()), "-t", "10", "-f",
+        cmd = [config.crawlergo_Path, "-c", config.Chrome_Path, "-t", "10", "-f",
                "smart", "-o", "json", target]
+        print(' '.join(cmd))
         rsp = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = rsp.communicate()
         #  "--[Mission Complete]--"  是任务结束的分隔字符串

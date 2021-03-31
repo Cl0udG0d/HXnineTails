@@ -1,5 +1,6 @@
 import os
 import queue
+import shutil
 from fake_useragent import UserAgent
 
 '''
@@ -15,6 +16,11 @@ Server酱your_key
 SERVERKEY=''
 
 '''
+ARL的api_key
+'''
+API_KEY = 'test123' # 在 ARL/docker/config-docker.yaml里修改
+
+'''
 工具所在路径：
     chrome路径信息 Chrome_Path 例如:C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe
     Xray路径信息 Xray_Path 例如:D:\\Xray\\xray.exe
@@ -22,14 +28,14 @@ SERVERKEY=''
     OneForAll 文件夹所在的位置 例如：C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\
     subDomainsBrute 文件夹所在位置 
 '''
-Chrome_Path='C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe'
+Chrome_Path='C:\\Users\HXnineTails\\chrome-win\\chrome.exe'
 
-Xray_Path='D:\\Xray\\xray.exe'
-crawlergo_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\crawlergo.exe'
-OneForAll_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\OneForAll-master\\'
-subDomainsBrute_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subDomainsBrute-master\\'
-subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
-
+Xray_Path='C:\\Users\\HXnineTails\\xray\\xray.exe'
+crawlergo_Path='C:\\Users\\HXnineTails\\crawlergo.exe'
+OneForAll_Path='C:\\Users\\Kitty\\Desktop\\HACK\\渗透测试\\信息收集\\OneForAll-master'
+subDomainsBrute_Path='C:\\Users\\HXnineTails\\subDomainsBrute-master'
+subfinder_Path='C:\\Users\\HXnineTails\\subfinder_2.4.5_windows_amd64'
+arl_url_Path='http://192.168.160.129:5004'
 # Xray_Path='C:\\Users\\Cl0udG0d\\Desktop\\Xray\\xray.exe'
 # crawlergo_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\crawlergo\\crawlergo.exe'
 # OneForAll_Path='C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\'
@@ -58,26 +64,25 @@ JS_report_path='{}\\save\\saveJS\\'.format(Root_Path)
 '''
 portlist=['80','8080','8000','8081','8001']
 blacklist=["spider","org"]
-
 ThreadNum=5
-PYTHON="python3"
+PYTHON="py -3.9"
 
+'''
+全局队列：
 
-
-
-
+'''
 sub_queue=queue.Queue()
 target_queue=queue.Queue()
 xray_queue=queue.Queue()
 ppp_queue=queue.Queue()
 
-ua = UserAgent()
 
 '''
 GetHeaders()函数
     使用fake-useragent函数
     返回一个随机生成的请求头，防止因为python自带的请求头而被屏蔽
 '''
+ua = UserAgent()
 def GetHeaders():
     try:
         headers = {'User-Agent': ua.random}
@@ -97,8 +102,9 @@ def logo():
 
     ''')
 
-import shutil,os
-
+'''
+递归删除临时保存目录下的保存信息
+'''
 def delModel():
     saveFolderList=['saveCplus','saveJS','saveSub','saveXray']
     for tempFolder in saveFolderList:
@@ -107,12 +113,17 @@ def delModel():
     print("clean end :)")
     return
 
+
+'''
+帮助信息
+'''
 def scanHelp():
     print(
         'scan.py [options]\n\t-a --attone <attack one url> example: scan.py -a https://www.baidu.com\n\t-s --attsrc <attack one src> example:'
         'scan.py -s baidu.com\n\t-d --attdetail <attack one src detail> example: scan.py -d baidu.com\n\t-r --readppp <readfilename attack> '
         'example: scan.py -r target.txt\n\t-t --thread number of threads\n\t-c --clean clean saveFiles\n\t-h --help output help information\n'
     )
+
 
 def main():
     print(Root_Path)

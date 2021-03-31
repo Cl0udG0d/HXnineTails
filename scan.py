@@ -1,30 +1,29 @@
+import sys
 import hashlib
+import getopt
+from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
+
 from crawlergo import crawlergoMain
 from Xray import pppXray
 import config
-import sys
-import getopt
 import base
 from ServerJiang.jiangMain import SendNotice
 
+
 '''
-扫描控制主函数
+漏洞扫描控制主函数
 参数：
     url
     格式如：https://www.baidu.com
 
 扫描联动工具：
-    JS方面：
+    JS发现：
         JSfinder
-    漏洞扫描：
-        360 0Kee-Team 的 crawlergo动态爬虫 -> Xray高级版
+    xray扫描：
+        crawlergo动态爬虫 -> Xray高级版
     C段：
         自写C段扫描函数
 '''
-
-from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
-
-
 def threadPoolDetailScan(temp_url, current_filename):
     pppXray.xrayScan(temp_url, current_filename)
     base.transferJSFinder(temp_url, current_filename)
@@ -84,8 +83,6 @@ oneFoxScan(target)函数
     针对某一目标网址进行扫描而非对某一资产下的网址进行扫描，输入案例： www.baidu.com
     扫描流程: 输入URL正确性检查+crawlergo+xray
 '''
-
-
 def oneFoxScan(target):
     if base.checkBlackList(target):
         target = base.addHttpHeader(target)
@@ -111,8 +108,6 @@ foxScan(target) 函数
 输出：
     对应阶段性结果都会保存在save 文件夹下对应的目录里面
 '''
-
-
 def foxScan(target):
     filename = hashlib.md5(target.encode("utf-8")).hexdigest()
     print("Start attsrc foxScan {}\nfilename : {}\n".format(target, filename))
@@ -142,8 +137,6 @@ foxScanDetail(target)
 输出：
     对应阶段性结果都会保存在save 文件夹下对应的目录里面
 '''
-
-
 def foxScanDetail(target):
     thread = ThreadPoolExecutor(config.ThreadNum)
     filename = hashlib.md5(target.encode("utf-8")).hexdigest()
@@ -180,8 +173,6 @@ def foxScanDetail(target):
     2,-s --attsrc 对SRC资产，进行信息搜集+crawlergo+xray , 例如 百度SRC  输入 baidu.com
     3,-d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 baidu.com
 '''
-
-
 def main(argv):
     config.logo()
     base.init()
@@ -210,6 +201,8 @@ def main(argv):
         elif opt in ("-c", "--clean"):
             config.delModel()
             sys.exit()
+        elif opt in ("-A", "--arl"):
+            add_to_arl()
         else:
             config.scanHelp()
             sys.exit()

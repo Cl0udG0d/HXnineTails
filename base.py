@@ -96,6 +96,7 @@ def communityMergeReport(resultList):
             context += result
     return context
 
+
 '''
 mergeReport()函数
     功能：合并报告
@@ -128,6 +129,7 @@ def mergeReport(filename):
         cleanTempXrayReport()
 
     return
+
 
 '''
 transferJSFinder(url,filename)函数
@@ -216,6 +218,7 @@ def subScan(target ,filename):
         print(e)
         pass
 
+
 '''
 urlCheck(url) 函数
 参数：
@@ -235,6 +238,7 @@ def urlCheck(target):
         # print(e)
         return False
     return False
+
 
 '''
 queueDeduplication(filename) 队列去重函数
@@ -257,13 +261,17 @@ def queueDeduplication(filename):
         while len(sub_set) != 0:
             target = sub_set.pop()
             if urlCheck(target):
-                config.target_queue.put(target)
+                config.target_queue.put(target) # 存活的url
                 print("now save :{}".format(target))
                 f.write("{}\n".format(target))
     print("queueDeduplication End~")
     SendNotice("子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
     return
 
+
+'''
+对没有添加http的url添加http
+'''
 def addHttpHeader(target):
     pattern = re.compile(r'^http')
     if not pattern.match(target.strip()):
@@ -271,6 +279,7 @@ def addHttpHeader(target):
     else:
         target = target.strip()
     return target
+
 
 '''
 checkBlackList(url)

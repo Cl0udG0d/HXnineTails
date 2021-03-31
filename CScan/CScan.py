@@ -23,7 +23,7 @@ def CScan(ip):
         pass
 
 '''
-C段扫描控制函数 CScanConole(host,filename,path)
+C段扫描控制函数 CScanConole(host,Cfilename,path)
     传入host，可以为域名或者IP,对于域名使用socket.gethostbyname进行转换
     同时传入filename为host的MD5 hash之后的结果
     传入的path为保存文件项目的绝对路径，方便保存到指定的文件夹下
@@ -31,7 +31,7 @@ C段扫描控制函数 CScanConole(host,filename,path)
     使用线程池进行多线程C段扫描 线程最大数量默认为 20
     将结果经过过滤后保存到相应的域名MD5文件中
 '''
-def CScanConsole(host,filename):
+def CScanConsole(host, Cfilename = '', path = ''):
     pattern = re.compile('^\d+\.\d+\.\d+\.\d+(:(\d+))?$')
     if not pattern.findall(host):
         ip = socket.gethostbyname(host)
@@ -51,13 +51,11 @@ def CScanConsole(host,filename):
     pool.close()
     pool.join()
     content="".join(list(filter(None, C_Message)))
-    Cfilename=config.CScan_report_path+filename+".txt"
-    with open(Cfilename, "a", encoding='utf-8') as fobject:
-        fobject.write(content)
+    print(content)
     print("CSan END,the path:" + Cfilename)
 
 def main():
-    return
+    CScanConsole('120.53.133.61:80')
 
 if __name__ == '__main__':
     main()
