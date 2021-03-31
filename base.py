@@ -197,20 +197,16 @@ def subScan(target ,filename):
     :return:
     '''
     try:
-        # oneforallMain.OneForAllScan(target)
-        pass
+        oneforallMain.OneForAllScan(target)
+    except Exception as e:
+        print(e)
+    try:
+        subDomainsBruteMain.subDomainsBruteScan(target,filename)
     except Exception as e:
         print(e)
         pass
     try:
-        #subDomainsBruteMain.subDomainsBruteScan(target,filename)
-        pass
-    except Exception as e:
-        print(e)
-        pass
-    try:
-        #Sublist3rMain.Sublist3rScan(target)
-        pass
+        Sublist3rMain.Sublist3rScan(target)
     except Exception as e:
         print(e)
         pass
