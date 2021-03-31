@@ -4,10 +4,11 @@ import config
 import json
 
 
-class Add_tasks(object):
-    def __init__(self, name, targets):
+class Scan(object):
+    def __init__(self, name, targets_list):
         self.name = name
-        self.targets = targets
+        self._list = targets_list
+        self.make_targets()
         self.headers = {
     "token": config.API_KEY,
     "Content-type": "application/json",
@@ -16,22 +17,27 @@ class Add_tasks(object):
 
 
         self.proxy = {
-            'http':'http://127.0.0.1:8080',
-            'https':'http://127.0.0.1:8080'
+            'http':'http://127.0.0.1:7001',
+            'https':'http://127.0.0.1:7001'
                      }
+
+
+    def make_targets(self):
+        self.targets = "\n".join(self._list)
+        print(self.targets)
 
     # 添加任务
     def add_task(self):
         url = config.arl_url_Path + '/api/task/'
         data = {"name": f"{self.name}", "target": f"{self.targets}", "domain_brute_type": "big", "port_scan_type": "top100",
-                "domain_brute": False, "alt_dns": False, "riskiq_search": False, "arl_search": False,
-                "port_scan": False,
-                "service_detection": False, "os_detection": False, "fofa_search": False, "ssl_cert": False,
-                "site_identify": False, "search_engines": False, "site_spider": False, "site_capture": True,
-                "file_leak": False}
+                "domain_brute": True, "alt_dns": True, "riskiq_search": True, "arl_search": True,
+                "port_scan": True,
+                "service_detection": True, "os_detection": True, "fofa_search": True, "ssl_cert": True,
+                "site_identify": True, "search_engines": True, "site_spider": True, "site_capture": True,
+                "file_leak": True}
         r = requests.post(url=url, headers=self.headers, data=json.dumps(data), proxies=self.proxy)
         result = r.json()
-        print (result)
+        print ("ARL_result : ", result)
 
-
-a = Add_tasks("baidu","baidu.com").add_task()
+if __name__ == '__main__':
+    a = Scan("baidu","baidu.com").add_task()

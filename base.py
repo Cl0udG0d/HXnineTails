@@ -1,17 +1,22 @@
 import re
 import shutil
-
 import requests
+import os
+import hashlib
+
+import config
+
 from subDomainsBrute import subDomainsBruteMain
 from Sublist3r import Sublist3rMain
 from Subfinder import subfinderMain
 from OneForAll import oneforallMain
 from CScan import CScan
 from JSmessage.jsfinder import JSFinder
-import config
 from ServerJiang.jiangMain import SendNotice
-import os
-import hashlib
+from ARL.ArlScan import Scan
+
+
+
 '''
 init() 扫描初始化函数
 功能：
@@ -177,7 +182,6 @@ subScan(target) 函数
     结果保存在队列sub_queue里面，传递给队列去重函数
 子域名收集整合模块：
     OneForAll
-    ARL
     Knock
     subDomainsBrute
     Subfinder
@@ -250,7 +254,7 @@ queueDeduplication(filename) 队列去重函数
     结果保存在target_queue队列里面，存储到saveSub文件夹下对应filename.txt中并且成为待扫描的目标
 '''
 def queueDeduplication(filename):
-    Sub_report_path =config.Sub_report_path +filename +".txt"
+    Sub_report_path =config.Sub_report_path +filename +".txt" #save_sub.txt
     sub_set =set()
     while not config.sub_queue.empty():
         target =config.sub_queue.get()
@@ -265,7 +269,7 @@ def queueDeduplication(filename):
                 print("now save :{}".format(target))
                 f.write("{}\n".format(target))
     print("queueDeduplication End~")
-    SendNotice("子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
+    SendNotice("信息收集子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
     return
 
 
@@ -291,6 +295,26 @@ def checkBlackList(url):
             return False
     return True
 
+
+'''
+ARL扫描
+'''
+def ArlScan(name = '', target = ''):
+    print("This is ArlScan ~")
+    print(target)
+    Scan(name, target).add_task()
+
+
+'''
+
+'''
+def from_queue_to_list(_queue):
+    result = []
+    while not _queue.empty():
+        _ = config.target_queue.get()
+        result.append(_.strip())
+
+    return result
 
 
 def main():

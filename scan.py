@@ -84,6 +84,7 @@ oneFoxScan(target)函数
     扫描流程: 输入URL正确性检查+crawlergo+xray
 '''
 def oneFoxScan(target):
+    base.ArlScan(target, [target])  # 启动ARL扫描,第一个target是项目名
     if base.checkBlackList(target):
         target = base.addHttpHeader(target)
         filename = hashlib.md5(target.encode("utf-8")).hexdigest()
@@ -102,9 +103,9 @@ foxScan(target) 函数
 参数：
     target 待扫描的URL 示例：baidu.com 
 作用：
-
     对输入的目标进行子域名收集 -> 存储去重  -> crawlergo动态爬虫 -> Xray高级版漏洞扫描
-
+                                 ↓
+                         ARL资产管理+漏洞扫描
 输出：
     对应阶段性结果都会保存在save 文件夹下对应的目录里面
 '''
@@ -112,16 +113,20 @@ def foxScan(target):
     filename = hashlib.md5(target.encode("utf-8")).hexdigest()
     print("Start attsrc foxScan {}\nfilename : {}\n".format(target, filename))
     base.subScan(target, filename)
-    # 进行子域名搜集
-    while not config.target_queue.empty():
-        current_target = config.target_queue.get()
-        if base.checkBlackList(current_target):
-            # 对搜集到的目标挨个进行扫描
-            req_pool = crawlergoMain.crawlergoGet(current_target)
-            req_pool.add(current_target)
-            tempFilename=hashlib.md5(current_target.encode("utf-8")).hexdigest()
-            # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-            threadPoolScan(req_pool, tempFilename, target)
+    # 将队列列表化并进行子域名搜集
+    _ = base.from_queue_to_list(config.target_queue)
+    base.ArlScan(target, _)  # 启动ARL扫描,第一个参数target表示文件名
+    for current_target in _:
+        try:
+            if base.checkBlackList(current_target):
+                # 对搜集到的目标挨个进行扫描
+                req_pool = crawlergoMain.crawlergoGet(current_target) # 返回crawlergoGet结果列表,是多个url路径
+                req_pool.add(current_target) # 添加自己本身到该列表里
+                tempFilename=hashlib.md5(current_target.encode("utf-8")).hexdigest()
+                # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
+                threadPoolScan(req_pool, tempFilename, target)
+        except:
+            pass
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
     return
 
@@ -201,8 +206,6 @@ def main(argv):
         elif opt in ("-c", "--clean"):
             config.delModel()
             sys.exit()
-        elif opt in ("-A", "--arl"):
-            add_to_arl()
         else:
             config.scanHelp()
             sys.exit()

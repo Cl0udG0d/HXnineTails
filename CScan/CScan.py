@@ -22,6 +22,7 @@ def CScan(ip):
     except Exception as e:
         pass
 
+
 '''
 C段扫描控制函数 CScanConole(host,Cfilename,path)
     传入host，可以为域名或者IP,对于域名使用socket.gethostbyname进行转换
