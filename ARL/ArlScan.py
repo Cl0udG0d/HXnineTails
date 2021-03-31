@@ -5,7 +5,7 @@ import json
 
 
 class Scan(object):
-    def __init__(self, name, targets_list):
+    def __init__(self, name = '', targets_list = ''):
         self.name = name
         self._list = targets_list
         self.make_targets()
@@ -35,9 +35,14 @@ class Scan(object):
                 "service_detection": True, "os_detection": True, "fofa_search": True, "ssl_cert": True,
                 "site_identify": True, "search_engines": True, "site_spider": True, "site_capture": True,
                 "file_leak": True}
-        r = requests.post(url=url, headers=self.headers, data=json.dumps(data), proxies=self.proxy)
-        result = r.json()
-        print ("ARL_result : ", result)
+        try:
+            r = requests.post(url=url, headers=self.headers, data=json.dumps(data), proxies=self.proxy)
+            result = r.json()
+            print ("ARL_result : ", result)
+        except:
+            if self._list[0] == '' and len(self._list) == 1:
+                print("ARL没有接受到任何参数")
+            print("ARL扫描启动失败！")
 
 if __name__ == '__main__':
     a = Scan("baidu","baidu.com").add_task()
