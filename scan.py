@@ -188,7 +188,7 @@ def main(argv):
         config.scanHelp()
         sys.exit(2)
     for opt, arg in opts:
-        target = arg
+        target = arg.strip('/') # 因为url后缀带有\会造成oneforall保存错误
         filename = arg
         if opt in ("-h", "--help"):
             config.scanHelp()

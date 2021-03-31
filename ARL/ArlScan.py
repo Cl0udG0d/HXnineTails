@@ -40,7 +40,7 @@ class Scan(object):
             result = r.json()
             print ("ARL_result : ", result)
         except:
-            if self._list[0] == '' and len(self._list) == 1:
+            if self._list == '' and len(self._list) == 1:
                 print("ARL没有接受到任何参数")
             print("ARL扫描启动失败！")
 

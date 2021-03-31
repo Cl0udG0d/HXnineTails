@@ -305,7 +305,7 @@ def ArlScan(name = '', target = ''):
 
 
 '''
-
+将队列变成列表
 '''
 def from_queue_to_list(_queue):
     result = []
@@ -315,6 +315,29 @@ def from_queue_to_list(_queue):
 
     return result
 
+
+'''
+将http去除
+oneforall的保存文件不带http。如果不进行过滤则无法打开文件
+'''
+def utl_http_delete(url):
+    if 'https://' in url:
+        url = url[8:]
+    if 'http://' in url:
+        url = url[7:]
+
+    return url
+
+'''
+终极搜索文件方法，解决扫描的时候oneforall找文件的问题
+'''
+def get_filename(abs_path, name):
+    for i in os.walk(abs_path):
+        for j in i[2]:
+            if j[0:-4] in name:
+                return j
+
+    return False
 
 def main():
     a=set()
