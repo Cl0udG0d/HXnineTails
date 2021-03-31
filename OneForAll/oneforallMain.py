@@ -29,7 +29,7 @@ def OneForAllScan(target):
     print("{} OneForALL Scan end~ ".format(target))
 
 
-    return
+    return 0
 
 def csv_read(file_data):
     reader = csv.reader(file_data)
