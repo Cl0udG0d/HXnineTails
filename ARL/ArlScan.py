@@ -36,7 +36,7 @@ class Scan(object):
                 "site_identify": True, "search_engines": True, "site_spider": True, "site_capture": True,
                 "file_leak": True}
         try:
-            r = requests.post(url=url, headers=self.headers, data=json.dumps(data), proxies=self.proxy)
+            r = requests.post(url=url, headers=self.headers, data=json.dumps(data))
             result = r.json()
             print ("ARL_result : ", result)
         except:
