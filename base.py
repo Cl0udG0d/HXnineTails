@@ -320,7 +320,7 @@ def from_queue_to_list(_queue):
 将http去除
 oneforall的保存文件不带http。如果不进行过滤则无法打开文件
 '''
-def utl_http_delete(url):
+def url_http_delete(url):
     if 'https://' in url:
         url = url[8:]
     if 'http://' in url:
