@@ -11,18 +11,20 @@ OneForALLScan调度主函数
 def OneForAllScan(target):
     results_path = f"{config.OneForAll_Path}results"
     oneforall_filename = "{}\\{}".format(results_path, base.get_filename(results_path, target))
-    print(oneforall_filename)
     '''
     如果存在csv文件，则不需要爬取了
     '''
     try:
         csvFile = open(oneforall_filename, "r")
         csv_read(csvFile)
-    except:
+        print(oneforall_filename)
+    except FileNotFoundError:
         oneforall_py = "{}\\oneforall.py".format(config.OneForAll_Path)
         scanCommand = "{} {} --target {} run".format(config.PYTHON, oneforall_py, target)
         print(scanCommand)
         os.system(scanCommand)
+        oneforall_filename = "{}\\{}".format(results_path, base.get_filename(results_path, target))
+        print(oneforall_filename)
         csvFile = open(oneforall_filename, "r")
         csv_read(csvFile)
 

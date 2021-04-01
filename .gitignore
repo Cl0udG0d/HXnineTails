@@ -8,6 +8,7 @@ __pycache__/
 *.so
 /venv
 /save
+/tmp
 debug.log
 # Distribution / packaging
 .Python
