@@ -2,6 +2,7 @@
 import requests
 import config
 import json
+import base
 
 
 class Scan(object):
@@ -17,14 +18,13 @@ class Scan(object):
 
 
         self.proxy = {
-            'http':'http://127.0.0.1:7001',
-            'https':'http://127.0.0.1:7001'
+            'http':'http://127.0.0.1:8080',
+            'https':'http://127.0.0.1:8080'
                      }
 
 
     def make_targets(self):
-        self.targets = "\n".join(self._list)
-        print(self.targets)
+        self.targets = "\n".join(list(map(base.url_http_delete, self._list)))
 
     # 添加任务
     def add_task(self):

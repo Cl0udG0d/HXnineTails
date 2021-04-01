@@ -204,7 +204,6 @@ def subScan(target ,filename):
         subDomainsBruteMain.subDomainsBruteScan(target,filename)
     except Exception as e:
         print(e)
-        pass
     try:
         Sublist3rMain.Sublist3rScan(target)
     except Exception as e:
@@ -248,7 +247,7 @@ queueDeduplication(filename) 队列去重函数
 参数：
     filename 扫描目标 target 的对应md5之后的十六进制
 作用：
-    对子域名队列sub_queue里面的元素进行去重处理
+    对子域名队列sub_queue里面的元素进行去重、验活处理
 输出：
     结果保存在target_queue队列里面，存储到saveSub文件夹下对应filename.txt中并且成为待扫描的目标
 '''
@@ -260,13 +259,22 @@ def queueDeduplication(filename):
         target=addHttpHeader(target)
         sub_set.add(target)
     length=len(sub_set)
-    with open(Sub_report_path, 'a+') as f:
-        while len(sub_set) != 0:
-            target = sub_set.pop()
-            if urlCheck(target):
-                config.target_queue.put(target) # 存活的url
-                print("now save :{}".format(target))
-                f.write("{}\n".format(target))
+    with open(Sub_report_path, 'r+') as f:
+        lines = f.readlines()
+        if len(lines) > 1:
+            for line in lines:
+                if line.strip not in ['\n\r', '\n', '']:
+                    config.target_queue.put(line.strip()) # 存活的url
+            return
+
+        else:
+            while len(sub_set) != 0:
+                target = sub_set.pop()
+                if urlCheck(target):
+                    config.target_queue.put(target) # 存活的url
+                    print("now save :{}".format(target))
+                    f.write("{}\n".format(target))
+
     print("queueDeduplication End~")
     SendNotice("信息收集子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
     return
