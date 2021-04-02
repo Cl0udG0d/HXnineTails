@@ -28,3 +28,4 @@ win32-setctime==1.0.3
 win_unicode_console==0.5
 colorama==0.4.4
 aiodns==2.0.0
+aiohttp==3.7.4
