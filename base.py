@@ -278,19 +278,20 @@ def queueDeduplication(filename):
         target =config.sub_queue.get()
         target=addHttpHeader(target)
         sub_set.add(target)
+
     length=len(sub_set)
     if os.path.exists(Sub_report_path):
-        with open(Sub_report_path, 'r+') as f:
-            lines = f.readlines()
-            if len(lines) > 1: # 文件有内容
-                for line in lines:
-                    if line.strip not in ['\n\r', '\n', '']:
-                        config.target_queue.put(line.strip()) # 存活的url
-            else: # 文件没有内容
-                with open(Sub_report_path, 'a+') as f:
-                    if len(sub_set) != 0:
-                        urlCheck_threads(list(sub_set), f)  # 启动去重多线程
-                return
+        f = open(Sub_report_path, 'r+')
+        lines = f.readlines()
+        if len(lines) > 1: # 文件有内容
+            for line in lines:
+                if line.strip not in ['\n\r', '\n', '']:
+                    config.target_queue.put(line.strip()) # 存活的url
+        else: # 文件没有内容
+            with open(Sub_report_path, 'a+') as f:
+                if len(sub_set) != 0:
+                    urlCheck_threads(list(sub_set), f)  # 启动去重多线程
+            return
 
     else:
         with open(Sub_report_path, 'a+') as f:
