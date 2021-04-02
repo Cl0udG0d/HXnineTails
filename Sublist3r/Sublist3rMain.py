@@ -12,14 +12,13 @@ Sublist3rScan(target) 函数
     无
 '''
 def Sublist3rScan(target):
-    print("{} Sublist3rScan Scan Start ~".format(target))
+
     subdomains = sublist3r.main(target, 40, savefile=None, ports=None, silent=False, verbose=False,
                                 enable_bruteforce=False, engines=None)
     print("{} Sublist3rScan Scan End ~".format(target))
     for temp_sub in subdomains:
         config.sub_queue.put(temp_sub)
     print("{} Sublist3r Save queue End ~".format(target))
-    print(f"Sublist3r 结束 ！当前的url个数为{config.sub_queue.qsize()}")
     return
 
 def main():

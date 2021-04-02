@@ -3,9 +3,6 @@ import shutil
 import requests
 import os
 import hashlib
-import asyncio
-import aiohttp
-import time
 
 import config
 
@@ -17,7 +14,6 @@ from CScan import CScan
 from JSmessage.jsfinder import JSFinder
 from ServerJiang.jiangMain import SendNotice
 from ARL.ArlScan import Scan
-
 
 
 
@@ -202,31 +198,26 @@ def subScan(target ,filename):
     '''
     try:
         oneforallMain.OneForAllScan(target)
-        pass
     except Exception as e:
-        print('OneForAllScan error :', e)
+        print(e)
     try:
         subDomainsBruteMain.subDomainsBruteScan(target,filename)
-        pass
     except Exception as e:
-        print('subDomainsBruteScan error :', e)
+        print(e)
     try:
         Sublist3rMain.Sublist3rScan(target)
-        pass
     except Exception as e:
-        print('Sublist3rScan error :', e)
+        print(e)
         pass
     try:
         subfinderMain.subfinderScan(target,filename)
-        pass
     except Exception as e:
-        print('subfinderScan error:', e)
+        print(e)
         pass
     try:
         queueDeduplication(filename)
-        pass
     except Exception as e:
-        print('queueDeduplication error:', e)
+        print(e)
         pass
 
 
@@ -239,27 +230,18 @@ urlCheck(url) 函数
 输出：
     返回是否的布尔值
 '''
-async def urlCheck(target, f):
-    print("now url live check: {}".format(target))
-    async with aiohttp.ClientSession() as session:
-        try:
-            async with session.get(target, headers=config.GetHeaders(), timeout=2, verify=False) as resp:
-                if resp.status != 404:
-                    config.target_queue.put(target)  # 存活的url
-                    print("now save :{}".format(target))
-                    f.write("{}\n".format(target))
+def urlCheck(target):
+    try:
+        print("now url live check: {}".format(target))
+        rep = requests.get(target, headers=config.GetHeaders(), timeout=2, verify=False)
+        if rep.status_code != 404:
+            return True
+    except Exception as e:
+        # print(e)
+        return False
+    return False
 
-        except Exception as e:
-            return
-    return
 
-def urlCheck_threads(__list, f):
-    loop = asyncio.get_event_loop()
-    __tasks = [
-        loop.create_task(urlCheck(url, f))
-        for url in __list
-    ]
-    loop.run_until_complete(asyncio.wait(__tasks))
 '''
 queueDeduplication(filename) 队列去重函数
 参数：
@@ -277,19 +259,21 @@ def queueDeduplication(filename):
         target=addHttpHeader(target)
         sub_set.add(target)
     length=len(sub_set)
-    if os.path.exists(Sub_report_path):
-        with open(Sub_report_path, 'r+') as f:
-            lines = f.readlines()
-            if len(lines) > 1:
-                for line in lines:
-                    if line.strip not in ['\n\r', '\n', '']:
-                        config.target_queue.put(line.strip()) # 存活的url
-                return
+    with open(Sub_report_path, 'r+') as f:
+        lines = f.readlines()
+        if len(lines) > 1:
+            for line in lines:
+                if line.strip not in ['\n\r', '\n', '']:
+                    config.target_queue.put(line.strip()) # 存活的url
+            return
 
-    else:
-        with open(Sub_report_path, 'a+') as f:
-            if len(sub_set) != 0:
-                urlCheck_threads(list(sub_set), f) # 启动去重多线程
+        else:
+            while len(sub_set) != 0:
+                target = sub_set.pop()
+                if urlCheck(target):
+                    config.target_queue.put(target) # 存活的url
+                    print("now save :{}".format(target))
+                    f.write("{}\n".format(target))
 
     print("queueDeduplication End~")
     SendNotice("信息收集子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))

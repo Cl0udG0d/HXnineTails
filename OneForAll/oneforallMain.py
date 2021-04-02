@@ -18,7 +18,6 @@ def OneForAllScan(target):
         csvFile = open(oneforall_filename, "r")
         csv_read(csvFile)
         print(oneforall_filename)
-        print("文件已存在，不进行oneforall扫描。")
     except FileNotFoundError:
         oneforall_py = "{}\\oneforall.py".format(config.OneForAll_Path)
         scanCommand = "{} {} --target {} run".format(config.PYTHON, oneforall_py, target)
@@ -30,7 +29,7 @@ def OneForAllScan(target):
         csv_read(csvFile)
 
     print("{} OneForALL Scan end~ ".format(target))
-    print(f"oneforall 结束 ！当前的url个数为{config.sub_queue.qsize()}")
+
 
     return 0
 
@@ -41,7 +40,6 @@ def csv_read(file_data):
             continue
         # print(item[4])
         config.sub_queue.put(item[4])
-
 
 
 def main():

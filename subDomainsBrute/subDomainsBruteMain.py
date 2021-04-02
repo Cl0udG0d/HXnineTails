@@ -15,7 +15,6 @@ subDomainsBruteScan(target) 函数
     无
 '''
 def subDomainsBruteScan(target,filename):
-    print("{} subDomainsBruteScan Scan Start ~".format(target))
     subDomainsBrute_py='{}subDomainsBrute.py'.format(config.subDomainsBrute_Path)
     saveFilePath='{}{}.txt'.format(config.Temp_path,base.url_http_delete(filename))
     scanCommand="{} {} -t 10 --output {} {}".format(config.PYTHON,subDomainsBrute_py,saveFilePath,base.url_http_delete(target))
@@ -30,7 +29,6 @@ def subDomainsBruteScan(target,filename):
             config.sub_queue.put(temp_url)
         f.close()
     print("{} subDomainsBruteScan Scan End ~".format(target))
-    print(f"subdomainsbrute 结束 ！当前的url个数为{config.sub_queue.qsize()}")
     return
 
 def main():
