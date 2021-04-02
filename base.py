@@ -205,23 +205,23 @@ def subScan(target ,filename):
         pass
     except Exception as e:
         print('OneForAllScan error :', e)
-    # try:
-    #     subDomainsBruteMain.subDomainsBruteScan(target,filename)
-    #     pass
-    # except Exception as e:
-    #     print('subDomainsBruteScan error :', e)
-    # try:
-    #     Sublist3rMain.Sublist3rScan(target)
-    #     pass
-    # except Exception as e:
-    #     print('Sublist3rScan error :', e)
-    #     pass
-    # try:
-    #     subfinderMain.subfinderScan(target,filename)
-    #     pass
-    # except Exception as e:
-    #     print('subfinderScan error:', e)
-    #     pass
+    try:
+        subDomainsBruteMain.subDomainsBruteScan(target,filename)
+        pass
+    except Exception as e:
+        print('subDomainsBruteScan error :', e)
+    try:
+        Sublist3rMain.Sublist3rScan(target)
+        pass
+    except Exception as e:
+        print('Sublist3rScan error :', e)
+        pass
+    try:
+        subfinderMain.subfinderScan(target,filename)
+        pass
+    except Exception as e:
+        print('subfinderScan error:', e)
+        pass
     try:
         queueDeduplication(filename)
         pass
@@ -244,7 +244,7 @@ async def urlCheck(target, f):
     print("now url live check: {}".format(target))
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.get(target, headers=config.GetHeaders(), verify=False) as resp:
+            async with session.get(target, headers=config.GetHeaders()) as resp:
                 result = await resp.text()
                 if  resp.status < 400:
                     config.target_queue.put(target)  # 存活的url
@@ -278,25 +278,21 @@ def queueDeduplication(filename):
         target =config.sub_queue.get()
         target=addHttpHeader(target)
         sub_set.add(target)
-
     length=len(sub_set)
     if os.path.exists(Sub_report_path):
-        f = open(Sub_report_path, 'r+')
-        lines = f.readlines()
-        if len(lines) > 1: # 文件有内容
-            for line in lines:
-                if line.strip not in ['\n\r', '\n', '']:
-                    config.target_queue.put(line.strip()) # 存活的url
-        else: # 文件没有内容
-            with open(Sub_report_path, 'a+') as f:
-                if len(sub_set) != 0:
-                    urlCheck_threads(list(sub_set), f)  # 启动去重多线程
-            return
+        with open(Sub_report_path, 'r+') as f:
+            lines = f.readlines()
+            if len(lines) > 1: # 文件有内容
+                for line in lines:
+                    if line.strip not in ['\n\r', '\n', '']:
+                        config.target_queue.put(line.strip()) # 存活的url
 
-    else:
-        with open(Sub_report_path, 'a+') as f:
-            if len(sub_set) != 0:
-                urlCheck_threads(list(sub_set), f) # 启动去重多线程
+                return # 有内容就返回
+
+
+    with open(Sub_report_path, 'a+') as f:
+        if len(sub_set) != 0:
+            urlCheck_threads(list(sub_set), f) # 启动去重多线程
 
     print("queueDeduplication End~")
     SendNotice("信息收集子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
