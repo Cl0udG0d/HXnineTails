@@ -3,6 +3,7 @@ import subprocess
 import json
 import config
 from fake_useragent import UserAgent
+
 ua = UserAgent()
 
 
@@ -40,6 +41,8 @@ def crawlergoGet(target):
         result = simplejson.loads(output.decode().split("--[Mission Complete]--")[1])
         # print(result)
         req_list = result["req_list"]
+        try:
+            with open()
     except Exception as e:
         print(e)
         req_list=[]
