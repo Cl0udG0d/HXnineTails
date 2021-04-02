@@ -205,23 +205,23 @@ def subScan(target ,filename):
         pass
     except Exception as e:
         print('OneForAllScan error :', e)
-    try:
-        subDomainsBruteMain.subDomainsBruteScan(target,filename)
-        pass
-    except Exception as e:
-        print('subDomainsBruteScan error :', e)
-    try:
-        Sublist3rMain.Sublist3rScan(target)
-        pass
-    except Exception as e:
-        print('Sublist3rScan error :', e)
-        pass
-    try:
-        subfinderMain.subfinderScan(target,filename)
-        pass
-    except Exception as e:
-        print('subfinderScan error:', e)
-        pass
+    # try:
+    #     subDomainsBruteMain.subDomainsBruteScan(target,filename)
+    #     pass
+    # except Exception as e:
+    #     print('subDomainsBruteScan error :', e)
+    # try:
+    #     Sublist3rMain.Sublist3rScan(target)
+    #     pass
+    # except Exception as e:
+    #     print('Sublist3rScan error :', e)
+    #     pass
+    # try:
+    #     subfinderMain.subfinderScan(target,filename)
+    #     pass
+    # except Exception as e:
+    #     print('subfinderScan error:', e)
+    #     pass
     try:
         queueDeduplication(filename)
         pass
@@ -231,9 +231,10 @@ def subScan(target ,filename):
 
 
 '''
-urlCheck(url) 函数
+urlCheck(url, f) 函数
 参数：
     url 需要检测存活性的URL
+    f   打开的文件流
 作用：
     url存活性检测
 输出：
@@ -243,8 +244,9 @@ async def urlCheck(target, f):
     print("now url live check: {}".format(target))
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.get(target, headers=config.GetHeaders(), timeout=2, verify=False) as resp:
-                if resp.status != 404:
+            async with session.get(target, headers=config.GetHeaders(), verify=False) as resp:
+                result = await resp.text()
+                if  resp.status < 400:
                     config.target_queue.put(target)  # 存活的url
                     print("now save :{}".format(target))
                     f.write("{}\n".format(target))
