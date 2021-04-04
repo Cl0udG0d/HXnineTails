@@ -32,6 +32,7 @@ arl_url_Path='http://192.168.160.129:5004'
     OneForAll 文件夹所在的位置 例如：C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\
     subDomainsBrute 文件夹所在位置 
 '''
+Chrome_Path='C:\\Users\HXnineTails\\chrome-win\\chrome.exe'
 Xray_Path='C:\\Users\\Cl0udG0d\\Desktop\\Xray\\xray.exe'
 crawlergo_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\crawlergo\\crawlergo.exe'
 OneForAll_Path='C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\'
