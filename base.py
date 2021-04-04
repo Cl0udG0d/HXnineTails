@@ -1,11 +1,9 @@
 import re
 import shutil
-import requests
 import os
 import hashlib
 import asyncio
 import aiohttp
-import time
 
 import config
 
@@ -17,8 +15,6 @@ from CScan import CScan
 from JSmessage.jsfinder import JSFinder
 from ServerJiang.jiangMain import SendNotice
 from ARL.ArlScan import Scan
-
-
 
 
 '''
@@ -39,8 +35,9 @@ def init():
     except Exception as e:
         print(e)
         exit(0)
-    print("初始化完成")
+    print(f"{config.red}初始化完成{config.end}")
     return
+
 
 '''
 cleanTempXrayReport()函数
@@ -50,6 +47,7 @@ def cleanTempXrayReport():
     shutil.rmtree("{}".format(config.Xray_temp_report_path))
     os.mkdir("{}".format(config.Xray_temp_report_path))
     return
+
 
 '''
 函数 checkXrayVersion()
@@ -62,6 +60,7 @@ def checkXrayVersion(content):
     if "snapshot" in content:
         return False
     return True
+
 
 '''
 函数 advancedMergeReport(resultList)
@@ -83,6 +82,7 @@ def advancedMergeReport(resultList):
             result = "<script class=\'web-vulns\'>webVulns.push({})</script>".format(result)
             context += result
     return context
+
 
 '''
 函数 communityMergeReport(resultList)
@@ -159,7 +159,7 @@ def transferJSFinder(url ,filename):
         urls =JSFinder.find_by_url(url)
         JSFinder.giveresult(urls ,url ,filename)
     except Exception as e:
-        print("JSFinder ERROR!")
+        print(f"{config.red}JSFinder ERROR!{config.end}")
         print(e)
         pass
 
@@ -170,7 +170,7 @@ def transferCScan(url ,filename):
     try:
         CScan.CScanConsole(url, filename)
     except Exception as e:
-        print("C段扫描出错!")
+        print(f"{config.red}C段扫描出错!{config.end}")
         print(e)
         pass
 
@@ -204,29 +204,29 @@ def subScan(target ,filename):
         oneforallMain.OneForAllScan(target)
         pass
     except Exception as e:
-        print('OneForAllScan error :', e)
+        print(f'{config.red}OneForAllScan error :{config.end}', e)
     try:
         subDomainsBruteMain.subDomainsBruteScan(target,filename)
         pass
     except Exception as e:
-        print('subDomainsBruteScan error :', e)
+        print(f'{config.red}subDomainsBruteScan error :{config.end}', e)
     try:
         Sublist3rMain.Sublist3rScan(target)
         pass
     except Exception as e:
-        print('Sublist3rScan error :', e)
+        print(f'{config.red}Sublist3rScan error :{config.end}', e)
         pass
     try:
         subfinderMain.subfinderScan(target,filename)
         pass
     except Exception as e:
-        print('subfinderScan error:', e)
+        print(f'{config.red}subfinderScan error:{config.end}', e)
         pass
     try:
         queueDeduplication(filename)
         pass
     except Exception as e:
-        print('queueDeduplication error:', e)
+        print(f'{config.red}queueDeduplication error:{config.end}', e)
         pass
 
 
@@ -241,19 +241,19 @@ urlCheck(url, f) 函数
     返回是否的布尔值
 '''
 async def urlCheck(target, f):
-    print("now url live check: {}".format(target))
+    print(f"{config.blue}now url live check: {target}{config.end}")
     async with aiohttp.ClientSession() as session:
         try:
             async with session.get(target, headers=config.GetHeaders()) as resp:
-                result = await resp.text()
                 if  resp.status < 400:
                     config.target_queue.put(target)  # 存活的url
-                    print("now save :{}".format(target))
-                    f.write("{}\n".format(target))
+                    print(f"{config.green}now save :{target}{config.end}")
+                    f.write(f"{target}\n")
 
         except Exception as e:
             return
     return
+
 
 def urlCheck_threads(__list, f):
     loop = asyncio.get_event_loop()
@@ -262,6 +262,8 @@ def urlCheck_threads(__list, f):
         for url in __list
     ]
     loop.run_until_complete(asyncio.wait(__tasks))
+
+
 '''
 queueDeduplication(filename) 队列去重函数
 参数：
@@ -283,18 +285,18 @@ def queueDeduplication(filename):
         with open(Sub_report_path, 'r+') as f:
             lines = f.readlines()
             if len(lines) > 1: # 文件有内容
-                for line in lines:
-                    if line.strip not in ['\n\r', '\n', '']:
-                        config.target_queue.put(line.strip()) # 存活的url
+                if len(lines) >= len(sub_set): # 文件中的长度和扫描中的一样长或者等于，则读取该文件的内容
+                    for line in lines:
+                        if line.strip not in ['\n\r', '\n', '']:
+                            config.target_queue.put(line.strip()) # 存活的url
 
                 return # 有内容就返回
-
 
     with open(Sub_report_path, 'a+') as f:
         if len(sub_set) != 0:
             urlCheck_threads(list(sub_set), f) # 启动去重多线程
 
-    print("queueDeduplication End~")
+    print(f"{config.yellow}queueDeduplication End~{config.end}")
     SendNotice("信息收集子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
     return
 
@@ -326,8 +328,8 @@ def checkBlackList(url):
 ARL扫描
 '''
 def ArlScan(name = '', target = ''):
-    print("This is ArlScan ~")
-    print(target)
+    print(f"{config.yellow}This is ArlScan ~{config.end}")
+    print(f"{config.green}{target}{config.end}")
     Scan(name, target).add_task()
 
 

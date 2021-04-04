@@ -9,6 +9,7 @@ OneForALLScan调度主函数
     功能：将需要获取域名的target使用oneforall进行子域名收集，并将结果存储在队列中
 '''
 def OneForAllScan(target):
+    print(f"{config.yellow}{target} OneForALL Scan Start~ {config.end}")
     results_path = f"{config.OneForAll_Path}results"
     oneforall_filename = "{}\\{}".format(results_path, base.get_filename(results_path, target))
     '''
@@ -17,20 +18,20 @@ def OneForAllScan(target):
     try:
         csvFile = open(oneforall_filename, "r")
         csv_read(csvFile)
-        print(oneforall_filename)
-        print("文件已存在，不进行oneforall扫描。")
+        print(f"{config.blue}{oneforall_filename}{config.end}")
+        print(f"{config.green}文件已存在，不进行oneforall扫描。{config.end}")
     except FileNotFoundError:
         oneforall_py = "{}\\oneforall.py".format(config.OneForAll_Path)
         scanCommand = "{} {} --target {} run".format(config.PYTHON, oneforall_py, target)
-        print(scanCommand)
+        print(f"{config.blue}{scanCommand}{config.end}")
         os.system(scanCommand)
         oneforall_filename = "{}\\{}".format(results_path, base.get_filename(results_path, target))
-        print(oneforall_filename)
+        print(f"{config.blue}{oneforall_filename}{config.end}")
         csvFile = open(oneforall_filename, "r")
         csv_read(csvFile)
 
-    print("{} OneForALL Scan end~ ".format(target))
-    print(f"oneforall 结束 ！当前的url个数为{config.sub_queue.qsize()}")
+    print(f"{config.yellow}{target} OneForALL Scan end~ {config.end}")
+    print(f"{config.green}oneforall 结束 ！当前的url个数为{config.sub_queue.qsize()}{config.end}")
 
     return 0
 

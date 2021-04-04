@@ -3,6 +3,7 @@ import requests
 import config
 import json
 import base
+import time
 
 
 class Scan(object):
@@ -11,20 +12,19 @@ class Scan(object):
         self._list = targets_list
         self.make_targets()
         self.headers = {
-    "token": config.API_KEY,
-    "Content-type": "application/json",
-    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36'
+            "token": config.API_KEY,
+            "Content-type": "application/json",
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36'
 }
-
-
         self.proxy = {
             'http':'http://127.0.0.1:8080',
             'https':'http://127.0.0.1:8080'
-                     }
+}
 
 
     def make_targets(self):
         self.targets = "\n".join(list(map(base.url_http_delete, self._list)))
+
 
     # 添加任务
     def add_task(self):
@@ -38,11 +38,12 @@ class Scan(object):
         try:
             r = requests.post(url=url, headers=self.headers, data=json.dumps(data))
             result = r.json()
-            print ("ARL_result : ", result)
+            print (f"{config.green}ARL_result : {str(result)}{config.end}")
+            time.sleep(5) # 发送大量数据，导致crawlergo出现了异常
         except:
             if self._list == '' and len(self._list) == 1:
-                print("ARL没有接受到任何参数")
-            print("ARL扫描启动失败！")
+                print(f"{config.end}ARL没有接受到任何参数{config.red}")
+            print(f"{config.end}ARL扫描启动失败,请检查ARL服务器网络！{config.red}")
 
 if __name__ == '__main__':
     a = Scan("baidu","baidu.com").add_task()
