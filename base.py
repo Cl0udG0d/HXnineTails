@@ -163,6 +163,7 @@ def transferJSFinder(url ,filename):
         print(e)
         pass
 
+
 '''
 transferCScan(url,filename) 函数
 '''
@@ -200,6 +201,13 @@ def subScan(target ,filename):
     :param filename:
     :return:
     '''
+
+    Sub_report_path = config.Sub_report_path + filename + ".txt"  # save_sub.txt
+    if os.path.exists(Sub_report_path):
+        print(f"{config.red}savesub/{filename}.txt文件存在, 跳过资产扫描{config.end}")
+        queueDeduplication(filename)
+        return #存在subtxt文件则直接跳过以下扫描。
+
     try:
         oneforallMain.OneForAllScan(target)
         pass
@@ -274,7 +282,7 @@ queueDeduplication(filename) 队列去重函数
     结果保存在target_queue队列里面，存储到saveSub文件夹下对应filename.txt中并且成为待扫描的目标
 '''
 def queueDeduplication(filename):
-    Sub_report_path =config.Sub_report_path +filename +".txt" #save_sub.txt
+    Sub_report_path = config.Sub_report_path + filename + ".txt"  # save_sub.txt
     sub_set =set()
     while not config.sub_queue.empty():
         target =config.sub_queue.get()
@@ -285,12 +293,14 @@ def queueDeduplication(filename):
         with open(Sub_report_path, 'r+') as f:
             lines = f.readlines()
             if len(lines) > 1: # 文件有内容
-                if len(lines) >= len(sub_set): # 文件中的长度和扫描中的一样长或者等于，则读取该文件的内容
-                    for line in lines:
-                        if line.strip not in ['\n\r', '\n', '']:
-                            config.target_queue.put(line.strip()) # 存活的url
+                for line in lines:
+                    if line.strip not in ['\n\r', '\n', '']:
+                        config.target_queue.put(line.strip()) # 存活的url
 
-                return # 有内容就返回
+                print(f"{config.yellow}queueDeduplication End~{config.end}")
+                print(f"{config.green}信息收集子域名搜集完毕，数量:{config.target_queue.qsize()}，保存文件名:{filename}{config.end}")
+                SendNotice(f"信息收集子域名搜集完毕，数量:{length}，保存文件名:{filename}") # server酱
+                return
 
     with open(Sub_report_path, 'a+') as f:
         if len(sub_set) != 0:
@@ -329,7 +339,6 @@ ARL扫描
 '''
 def ArlScan(name = '', target = ''):
     print(f"{config.yellow}This is ArlScan ~{config.end}")
-    print(f"{config.green}{target}{config.end}")
     Scan(name, target).add_task()
 
 
@@ -339,8 +348,10 @@ def ArlScan(name = '', target = ''):
 def from_queue_to_list(_queue):
     result = []
     while not _queue.empty():
-        _ = config.target_queue.get()
+        _ = config.target_queue.get() # 队列被掏空
         result.append(_.strip())
+    for item in result: # 再次将队列填满，便于crawlergo动态爬虫使用
+        config.target_queue.put(item)
 
     return result
 

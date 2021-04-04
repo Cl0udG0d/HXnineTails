@@ -84,7 +84,6 @@ oneFoxScan(target)函数
     扫描流程: 输入URL正确性检查+crawlergo+xray
 '''
 def oneFoxScan(target):
-    base.ArlScan(target, [target])  # 启动ARL扫描,第一个target是项目名
     if base.checkBlackList(target):
         target = base.addHttpHeader(target)
         filename = hashlib.md5(target.encode("utf-8")).hexdigest()
@@ -115,8 +114,10 @@ def foxScan(target):
     base.subScan(target, filename)
     # 将队列列表化并进行子域名搜集
     _ = base.from_queue_to_list(config.target_queue)
-    base.ArlScan(target, _)  # 启动ARL扫描,第一个参数target表示文件名
-    for current_target in _:
+    base.ArlScan(name=target, target=_)  # 启动ARL扫描,第一个参数target表示文件名
+    print(f"{config.yellow}InPuT T4rGet {target} Sc3n Start!{config.end}")
+    while not config.target_queue.empty():
+        current_target = config.target_queue.get()
         try:
             if base.checkBlackList(current_target):
                 # 对搜集到的目标挨个进行扫描
@@ -127,7 +128,7 @@ def foxScan(target):
                 threadPoolScan(req_pool, tempFilename, target)
         except:
             pass
-    print(f"{config.green}InPuT T4rGet {target} Sc3n EnD#{config.green}")
+    print(f"{config.yellow}InPuT T4rGet {target} Sc3n EnD#{config.end}")
     return
 
 

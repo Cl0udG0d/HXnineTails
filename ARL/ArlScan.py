@@ -23,8 +23,10 @@ class Scan(object):
 
 
     def make_targets(self):
-        self.targets = "\n".join(list(map(base.url_http_delete, self._list)))
-
+        _ = set(map(base.url_http_delete, self._list))
+        self.targets = "\n".join(list(_))
+        print(f"{config.green}ARL will add{config.end}")
+        print(f"{config.green}{list(_)}{config.end}")
 
     # 添加任务
     def add_task(self):
@@ -39,11 +41,11 @@ class Scan(object):
             r = requests.post(url=url, headers=self.headers, data=json.dumps(data))
             result = r.json()
             print (f"{config.green}ARL_result : {str(result)}{config.end}")
-            time.sleep(5) # 发送大量数据，导致crawlergo出现了异常
+            time.sleep(5) # 短暂延迟
         except:
             if self._list == '' and len(self._list) == 1:
-                print(f"{config.end}ARL没有接受到任何参数{config.red}")
-            print(f"{config.end}ARL扫描启动失败,请检查ARL服务器网络！{config.red}")
+                print(f"{config.red}ARL没有接受到任何参数{config.end}")
+            print(f"{config.red}ARL扫描启动失败,请检查ARL服务器网络！{config.end}")
 
 if __name__ == '__main__':
     a = Scan("baidu","baidu.com").add_task()
