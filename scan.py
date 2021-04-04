@@ -117,7 +117,7 @@ def foxScan(target):
     base.ArlScan(name=target, target=_)  # 启动ARL扫描,第一个参数target表示文件名
     print(f"{config.yellow}InPuT T4rGet {target} Sc3n Start!{config.end}")
     while not config.target_queue.empty():
-        current_target = config.target_queue.get()
+        current_target = base.addHttpHeader(config.target_queue.get())
         try:
             if base.checkBlackList(current_target):
                 # 对搜集到的目标挨个进行扫描

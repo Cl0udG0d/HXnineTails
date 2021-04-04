@@ -288,7 +288,6 @@ def queueDeduplication(filename):
     sub_set =set()
     while not config.sub_queue.empty():
         target =config.sub_queue.get()
-        target=addHttpHeader(target)
         sub_set.add(target)
     length=len(sub_set)
     if os.path.exists(Sub_report_path):
