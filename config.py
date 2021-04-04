@@ -32,17 +32,26 @@ arl_url_Path='http://192.168.160.129:5004'
     OneForAll 文件夹所在的位置 例如：C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\
     subDomainsBrute 文件夹所在位置 
 '''
-Chrome_Path='C:\\Users\HXnineTails\\chrome-win\\chrome.exe'
-Xray_Path='C:\\Users\\HXnineTails\\xray\\xray.exe'
-crawlergo_Path='C:\\Users\\HXnineTails\\crawlergo.exe'
-OneForAll_Path='C:\\Users\\Kitty\\Desktop\\HACK\\渗透测试\\信息收集\\OneForAll-master\\'
-subDomainsBrute_Path='C:\\Users\\HXnineTails\\subDomainsBrute-master\\'
-subfinder_Path='C:\\Users\\HXnineTails\\subfinder_2.4.5_windows_amd64\\'
+Xray_Path='C:\\Users\\Cl0udG0d\\Desktop\\Xray\\xray.exe'
+crawlergo_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\crawlergo\\crawlergo.exe'
+OneForAll_Path='C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\'
+subDomainsBrute_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subDomainsBrute-master\\'
+subfinder_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subfinder_2.4.5_windows_amd64\\'
 # Xray_Path='C:\\Users\\Cl0udG0d\\Desktop\\Xray\\xray.exe'
 # crawlergo_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\crawlergo\\crawlergo.exe'
 # OneForAll_Path='C:\\Users\\Cl0udG0d\\Desktop\\OneForAll-master\\'
 # subDomainsBrute_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subDomainsBrute-master\\'
 # subfinder_Path='C:\\Users\\Cl0udG0d\\Desktop\\sec_tools\\subfinder_2.4.5_windows_amd64\\'
+
+'''
+一些全局通用配置：
+    portlist C段探测时的默认端口 默认为:80,8080,8000,8081,8001
+    sub_queue 存储子域名的队列，用于保存所有工具获取到的子域名
+'''
+portlist=['80','8080','8000','8081','8001']
+blacklist=["spider","org"]
+ThreadNum=5
+PYTHON="py -3.9"
 
 
 '''
@@ -59,16 +68,6 @@ Sub_report_path="{}\\save\\saveSub\\".format(Root_Path)
 Temp_path="{}\\save\\temp\\".format(Root_Path)
 JS_report_path='{}\\save\\saveJS\\'.format(Root_Path)
 
-
-'''
-一些全局通用配置：
-    portlist C段探测时的默认端口 默认为:80,8080,8000,8081,8001
-    sub_queue 存储子域名的队列，用于保存所有工具获取到的子域名
-'''
-portlist=['80','8080','8000','8081','8001']
-blacklist=["spider","org"]
-ThreadNum=5
-PYTHON="py -3.9"
 
 
 '''
