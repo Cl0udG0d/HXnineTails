@@ -294,9 +294,8 @@ def queueDeduplication(filename):
             lines = f.readlines()
             if len(lines) > 1: # 文件有内容
                 for line in lines:
-                    if line.strip not in ['\n\r', '\n', '']:
+                    if line.strip() not in ['\n\r', '\n', '']:
                         config.target_queue.put(line.strip()) # 存活的url
-
                 print(f"{config.yellow}queueDeduplication End~{config.end}")
                 print(f"{config.green}信息收集子域名搜集完毕，数量:{config.target_queue.qsize()}，保存文件名:{filename}{config.end}")
                 SendNotice(f"信息收集子域名搜集完毕，数量:{length}，保存文件名:{filename}") # server酱
@@ -304,7 +303,7 @@ def queueDeduplication(filename):
 
     with open(Sub_report_path, 'a+') as f:
         if len(sub_set) != 0:
-            urlCheck_threads(list(sub_set), f) # 启动去重多线程
+            urlCheck_threads(list(sub_set), f) # 启动验活多线程
 
     print(f"{config.yellow}queueDeduplication End~{config.end}")
     SendNotice("信息收集子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))

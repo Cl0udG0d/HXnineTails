@@ -8,9 +8,11 @@ import time
 
 class Scan(object):
     def __init__(self, name = '', targets_list = ''):
-        self.name = name
+        self._ = ''
+        self.targets = ''
+        self.name = base.url_http_delete(name)
         self._list = targets_list
-        self.make_targets()
+        self.Prevent_duplicate_scanning()
         self.headers = {
             "token": config.API_KEY,
             "Content-type": "application/json",
@@ -22,11 +24,39 @@ class Scan(object):
 }
 
 
-    def make_targets(self):
-        _ = set(map(base.url_http_delete, self._list))
-        self.targets = "\n".join(list(_))
+    def make_targets(self, __list): # 获取发送给ARL服务器特定格式的targets
+        self.targets = "\n".join(list(__list))
         print(f"{config.green}ARL will add{config.end}")
-        print(f"{config.green}{list(_)}{config.end}")
+        print(f"{config.green}{list(__list)}{config.end}")
+
+
+    def Prevent_duplicate_scanning(self, delete_signal=False): # 防止多次对ARl服务器add同一个地址
+        self._ = set(map(base.url_http_delete, self._list))
+        __file_name = f'save\\saveARL\\{self.name}.txt'
+
+        if delete_signal is True: # 如果没有正确执行ARL。则就删除之前保存下的文件里的url
+            with open(__file_name, 'w+') as f2:
+                lines = f2.readlines()
+                __ = [line for line in lines if line not in self._]
+                for i in __:
+                    f2.write(i)
+            return
+
+        try:
+            with open(__file_name, 'r') as f: # 有文件，和此次即将add的目标进行对比，把重复的去除，没有的继续添加扫描
+                print(__file_name)
+                lines = f.readlines()
+                self._ = [item for item in self._ if item not in [line.strip() for line in lines]]
+                print(self._)
+        except:
+            pass
+
+        with open(__file_name, 'a+') as f1:
+            print(f"{config.green}ARL新增{len(self._)}个domain{config.end}")
+            for i in self._:
+                f1.write(i + '\n')
+            self.make_targets(self._)
+
 
     # 添加任务
     def add_task(self):
@@ -41,11 +71,13 @@ class Scan(object):
             r = requests.post(url=url, headers=self.headers, data=json.dumps(data))
             result = r.json()
             print (f"{config.green}ARL_result : {str(result)}{config.end}")
-            time.sleep(5) # 短暂延迟
+            if len(result['items']) == 0: # 同样也是没有成功add
+                self.Prevent_duplicate_scanning(delete_signal=True)
         except:
             if self._list == '' and len(self._list) == 1:
                 print(f"{config.red}ARL没有接受到任何参数{config.end}")
             print(f"{config.red}ARL扫描启动失败,请检查ARL服务器网络！{config.end}")
+            self.Prevent_duplicate_scanning(delete_signal=True)
 
 if __name__ == '__main__':
-    a = Scan("baidu","baidu.com").add_task()
+    a = Scan(name='test', targets_list=["baidu","baidu.com"]).add_task()
