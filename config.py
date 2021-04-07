@@ -69,7 +69,7 @@ Sub_report_path="{}\\save\\saveSub\\".format(Root_Path)
 Temp_path="{}\\save\\temp\\".format(Root_Path)
 JS_report_path='{}\\save\\saveJS\\'.format(Root_Path)
 ARL_save_path='{}\\save\\saveARL\\'.format(Root_Path)
-
+Crawlergo_save_path='{}\\save\\saveCrawlergo\\'.format(Root_Path)
 
 '''
 全局队列

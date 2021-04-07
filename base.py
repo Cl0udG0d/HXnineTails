@@ -24,7 +24,7 @@ init() 扫描初始化函数
 '''
 def init():
     try:
-        if not os.path.exists(config.Save_path) or not os.path.exists(config.ARL_save_path):
+        if not os.path.exists(config.Save_path) or not os.path.exists(config.ARL_save_path) or not os.path.exists(config.Crawlergo_save_path):
             os.makedirs(config.Save_path)
             os.makedirs(config.Xray_report_path)
             os.makedirs(config.Xray_temp_report_path)
@@ -33,6 +33,7 @@ def init():
             os.makedirs(config.Temp_path)
             os.makedirs(config.JS_report_path)
             os.makedirs(config.ARL_save_path)
+            os.makedirs(config.Crawlergo_save_path)
 
     except Exception as e:
         print(e)
@@ -378,6 +379,15 @@ def get_filename(abs_path, name):
                 return j
 
     return False
+
+'''
+保存文件
+'''
+def save(__list, filepath = 'abs\\xxx.txt'):
+    with open(filepath, 'w') as f:
+        for i in __list:
+            f.write(i.strip() + '\n')
+
 
 def main():
     a=set()

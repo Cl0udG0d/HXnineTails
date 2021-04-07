@@ -7,6 +7,7 @@ from crawlergo import crawlergoMain
 from Xray import pppXray
 import config
 import base
+from waf import WAF
 from ServerJiang.jiangMain import SendNotice
 
 
@@ -123,6 +124,8 @@ def foxScan(target):
                 # 对搜集到的目标挨个进行扫描
                 req_pool = crawlergoMain.crawlergoGet(current_target) # 返回crawlergoGet结果列表,是多个url路径
                 req_pool.add(current_target) # 添加自己本身到该列表里
+                req_pool = WAF(req_pool).run_detect()
+                base.save(req_pool, filepath = f"{config.Crawlergo_save_path}{target}.txt")
                 tempFilename=hashlib.md5(current_target.encode("utf-8")).hexdigest()
                 # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
                 threadPoolScan(req_pool, tempFilename, target)
