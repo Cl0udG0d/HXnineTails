@@ -165,7 +165,7 @@ python3 scan.py -t 3 -a http://testphp.vulnweb.com/
 
 [@春告鳥](https://github.com/Cl0udG0d)
 
-[@HNIJK](https://github.com/HNIJK)
+[@Throokie](https://github.com/Throokie)
 
 
 
@@ -174,7 +174,7 @@ python3 scan.py -t 3 -a http://testphp.vulnweb.com/
 :beer:非常欢迎你的加入！[提一个 Issue](https://github.com/Cl0udG0d/AutumnWater/issues/new) 或者提交一个 Pull Request。
 
 :beers:当然也欢迎给我发邮件  2585614464@qq.com Join us！
-
+🍻也可以给Throokie发邮件！326516678@qq.com
 
 
 ### 打赏列表
