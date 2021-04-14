@@ -165,7 +165,7 @@ View saved reports
 ### Maintainer
 
 [@春告鳥](https://github.com/Cl0udG0d)
-[@HNIJK](https://github.com/HNIJK)
+[@Throokie](https://github.com/Throokie)
 
 
 
@@ -175,7 +175,7 @@ View saved reports
 
 :beers:And of course feel free to send me an email at 2585614464@qq.com Join us!
 
-
+🍻 welcome call Throokie throught the email 326516678@qq.com
 
 ### Reward
 
