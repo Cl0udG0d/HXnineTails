@@ -130,9 +130,9 @@ if __name__ == '__main__':
 
 
     func = base()
-    subdomainbrute('cqut.edu.cn').run()
-    oneforall('cqut.edu.cn').run()
-    sublist3r_('cqut.edu.cn').run()
+    subdomainbrute('baidu.com').run()
+    oneforall('baidu.com').run()
+    sublist3r_('baidu.com').run()
 
 
 
