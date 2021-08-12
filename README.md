@@ -179,7 +179,8 @@ View saved reports
 
 ### Reward
 
-+ `Backer Language` 
++ `背人语`
++ `掌控安全-hab` 
 
 
 

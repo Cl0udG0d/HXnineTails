@@ -1,7 +1,5 @@
 import re
 import shutil
-import os
-import hashlib
 import asyncio
 import aiohttp
 
@@ -14,11 +12,8 @@ from OneForAll import oneforallMain
 from CScan import CScan
 from JSmessage.jsfinder import JSFinder
 from ServerJiang.jiangMain import SendNotice
-<<<<<<< HEAD
 import os
 import hashlib
-
-=======
 from ARL.ArlScan import Scan
 
 
@@ -45,7 +40,6 @@ def init():
         exit(0)
     print(f"{config.red}初始化完成{config.end}")
     return
->>>>>>> origin/test
 
 
 '''

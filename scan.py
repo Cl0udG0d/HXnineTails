@@ -126,13 +126,9 @@ def pppFoxScan(filename):
             req_pool.add(current_target)
             # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
             threadPoolScan(req_pool, currentfilename, current_target)
-<<<<<<< HEAD
         else:
             print("扫描网址在黑名单内,退出")
-    print("pppFoxScan End~")
-=======
     print(f"{config.yellow}pppFoxScan End~{config.end}")
->>>>>>> origin/test
     return
 
 
@@ -150,13 +146,9 @@ def oneFoxScan(target):
         # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
         req_pool.add(target)
         threadPoolScan(req_pool, filename, target)
-<<<<<<< HEAD
     else:
         print("扫描网址在黑名单内,退出")
-    print("InPuT T4rGet {} Sc3n EnD#".format(target))
-=======
     print(f"{config.yellow}InPuT T4rGet {target} Sc3n EnD#{config.end}")
->>>>>>> origin/test
     return
 
 
@@ -181,19 +173,6 @@ def foxScan(target):
     base.ArlScan(name=target, target=_)  # 启动ARL扫描,第一个参数target表示文件名
     print(f"{config.yellow}InPuT T4rGet {target} Sc3n Start!{config.end}")
     while not config.target_queue.empty():
-<<<<<<< HEAD
-        current_target = config.target_queue.get()
-        if base.checkBlackList(current_target):
-            # 对搜集到的目标挨个进行扫描
-            req_pool = crawlergoMain.crawlergoGet(current_target)
-            req_pool.add(current_target)
-            tempFilename=hashlib.md5(current_target.encode("utf-8")).hexdigest()
-            # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
-            threadPoolScan(req_pool, tempFilename, target)
-        else:
-            print("扫描网址在黑名单内,退出")
-    print("InPuT T4rGet {} Sc3n EnD#".format(target))
-=======
         current_target = base.addHttpHeader(config.target_queue.get())
         try:
             if base.checkBlackList(current_target):
@@ -208,7 +187,6 @@ def foxScan(target):
         except:
             pass
     print(f"{config.yellow}InPuT T4rGet {target} Sc3n EnD#{config.end}")
->>>>>>> origin/test
     return
 
 
@@ -248,13 +226,9 @@ def foxScanDetail(target):
                     i = 0
                     wait(all_task, return_when=ALL_COMPLETED)
                     all_task = []
-<<<<<<< HEAD
         else:
             print("扫描网址在黑名单内,退出")
-    print("InPuT T4rGet {} Sc3n EnD#".format(target))
-=======
     print(f"{config.yellow}InPuT T4rGet {target} Sc3n EnD#{config.end}")
->>>>>>> origin/test
     return
 
 
@@ -265,17 +239,13 @@ def foxScanDetail(target):
     2,-s --attsrc 对SRC资产，进行信息搜集+ARL+crawlergo+xray , 例如 百度SRC  输入 baidu.com
     3,-d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 baidu.com
 '''
-<<<<<<< HEAD
-
-
-def main():
-    try:
-        config.logo()
-        init.main(standalone_mode=False)
-    except Exception as e:
-        print(e)
-        pass
-=======
+# def main():
+#     try:
+#         config.logo()
+#         init.main(standalone_mode=False)
+#     except Exception as e:
+#         print(e)
+#         pass
 def main(argv):
     config.logo()
     base.init()
@@ -307,8 +277,6 @@ def main(argv):
         else:
             config.scanHelp()
             sys.exit()
-
->>>>>>> origin/test
     return
 
 

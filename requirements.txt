@@ -5,6 +5,7 @@ beautifulsoup4==4.9.3
 bs4==0.0.1
 certifi==2020.11.8
 chardet==3.0.4
+click==8.0.1
 colorama==0.4.4
 contextvars==2.4
 dnspython==2.0.0
