@@ -1,17 +1,51 @@
 import re
 import shutil
+import os
+import hashlib
+import asyncio
+import aiohttp
 
-import requests
+import config
+
 from subDomainsBrute import subDomainsBruteMain
 from Sublist3r import Sublist3rMain
 from Subfinder import subfinderMain
 from OneForAll import oneforallMain
 from CScan import CScan
 from JSmessage.jsfinder import JSFinder
-import config
 from ServerJiang.jiangMain import SendNotice
+<<<<<<< HEAD
 import os
 import hashlib
+
+=======
+from ARL.ArlScan import Scan
+
+
+'''
+init() 扫描初始化函数
+功能：
+    初始化保存文件目录
+'''
+def init():
+    try:
+        if not os.path.exists(config.Save_path) or not os.path.exists(config.ARL_save_path) or not os.path.exists(config.Crawlergo_save_path):
+            os.makedirs(config.Save_path)
+            os.makedirs(config.Xray_report_path)
+            os.makedirs(config.Xray_temp_report_path)
+            os.makedirs(config.CScan_report_path)
+            os.makedirs(config.Sub_report_path)
+            os.makedirs(config.Temp_path)
+            os.makedirs(config.JS_report_path)
+            os.makedirs(config.ARL_save_path)
+            os.makedirs(config.Crawlergo_save_path)
+
+    except Exception as e:
+        print(e)
+        exit(0)
+    print(f"{config.red}初始化完成{config.end}")
+    return
+>>>>>>> origin/test
 
 
 '''
@@ -22,6 +56,7 @@ def cleanTempXrayReport():
     shutil.rmtree("{}".format(config.Xray_temp_report_path))
     os.mkdir("{}".format(config.Xray_temp_report_path))
     return
+
 
 '''
 函数 checkXrayVersion()
@@ -34,6 +69,7 @@ def checkXrayVersion(content):
     if "snapshot" in content:
         return False
     return True
+
 
 '''
 函数 advancedMergeReport(resultList)
@@ -56,6 +92,7 @@ def advancedMergeReport(resultList):
             context += result
     return context
 
+
 '''
 函数 communityMergeReport(resultList)
 功能:
@@ -76,6 +113,7 @@ def communityMergeReport(resultList):
             result = "<script class=\'web-vulns\'>webVulns.push({})</script>".format(result)
             context += result
     return context
+
 
 '''
 mergeReport()函数
@@ -110,6 +148,7 @@ def mergeReport(filename):
 
     return
 
+
 '''
 transferJSFinder(url,filename)函数
 参数：
@@ -129,9 +168,10 @@ def transferJSFinder(url ,filename):
         urls =JSFinder.find_by_url(url)
         JSFinder.giveresult(urls ,url ,filename)
     except Exception as e:
-        print("JSFinder ERROR!")
+        print(f"{config.red}JSFinder ERROR!{config.end}")
         print(e)
         pass
+
 
 '''
 transferCScan(url,filename) 函数
@@ -140,7 +180,7 @@ def transferCScan(url ,filename):
     try:
         CScan.CScanConsole(url, filename)
     except Exception as e:
-        print("C段扫描出错!")
+        print(f"{config.red}C段扫描出错!{config.end}")
         print(e)
         pass
 
@@ -156,7 +196,6 @@ subScan(target) 函数
     结果保存在队列sub_queue里面，传递给队列去重函数
 子域名收集整合模块：
     OneForAll
-    ARL
     Knock
     subDomainsBrute
     Subfinder
@@ -171,80 +210,117 @@ def subScan(target ,filename):
     :param filename:
     :return:
     '''
+
+    Sub_report_path = config.Sub_report_path + filename + ".txt"  # save_sub.txt
+    if os.path.exists(Sub_report_path):
+        print(f"{config.red}savesub/{filename}.txt文件存在, 跳过资产扫描{config.end}")
+        queueDeduplication(filename)
+        return #存在subtxt文件则直接跳过以下扫描。
+
     try:
         oneforallMain.OneForAllScan(target)
-    except Exception as e:
-        print(e)
         pass
+    except Exception as e:
+        print(f'{config.red}OneForAllScan error :{config.end}', e)
     try:
         subDomainsBruteMain.subDomainsBruteScan(target,filename)
-    except Exception as e:
-        print(e)
         pass
+    except Exception as e:
+        print(f'{config.red}subDomainsBruteScan error :{config.end}', e)
     try:
         Sublist3rMain.Sublist3rScan(target)
+        pass
     except Exception as e:
-        print(e)
+        print(f'{config.red}Sublist3rScan error :{config.end}', e)
         pass
     try:
         subfinderMain.subfinderScan(target,filename)
+        pass
     except Exception as e:
-        print(e)
+        print(f'{config.red}subfinderScan error:{config.end}', e)
         pass
     try:
         queueDeduplication(filename)
+        pass
     except Exception as e:
-        print(e)
+        print(f'{config.red}queueDeduplication error:{config.end}', e)
         pass
 
+
 '''
-urlCheck(url) 函数
+urlCheck(url, f) 函数
 参数：
     url 需要检测存活性的URL
+    f   打开的文件流
 作用：
     url存活性检测
 输出：
     返回是否的布尔值
 '''
-def urlCheck(target):
-    try:
-        print("now url live check: {}".format(target))
-        rep = requests.get(target, headers=config.GetHeaders(), timeout=2, verify=False)
-        if rep.status_code != 404:
-            return True
-    except Exception as e:
-        # print(e)
-        return False
-    return False
+async def urlCheck(target, f):
+    print(f"{config.blue}now url live check: {target}{config.end}")
+    async with aiohttp.ClientSession() as session:
+        try:
+            async with session.get(target, headers=config.GetHeaders()) as resp:
+                if  resp.status < 400:
+                    config.target_queue.put(target)  # 存活的url
+                    print(f"{config.green}now save :{target}{config.end}")
+                    f.write(f"{target}\n")
+
+        except Exception as e:
+            return
+    return
+
+
+def urlCheck_threads(__list, f):
+    loop = asyncio.get_event_loop()
+    __tasks = [
+        loop.create_task(urlCheck(url, f))
+        for url in __list
+    ]
+    loop.run_until_complete(asyncio.wait(__tasks))
+
 
 '''
 queueDeduplication(filename) 队列去重函数
 参数：
     filename 扫描目标 target 的对应md5之后的十六进制
 作用：
-    对子域名队列sub_queue里面的元素进行去重处理
+    对子域名队列sub_queue里面的元素进行去重、验活处理
 输出：
     结果保存在target_queue队列里面，存储到saveSub文件夹下对应filename.txt中并且成为待扫描的目标
 '''
 def queueDeduplication(filename):
-    Sub_report_path =config.Sub_report_path +filename +".txt"
+    Sub_report_path = config.Sub_report_path + filename + ".txt"  # save_sub.txt
     sub_set =set()
     while not config.sub_queue.empty():
         target =config.sub_queue.get()
-        target=addHttpHeader(target)
         sub_set.add(target)
     length=len(sub_set)
+    if os.path.exists(Sub_report_path):
+        with open(Sub_report_path, 'r+') as f:
+            lines = f.readlines()
+            if len(lines) > 1: # 文件有内容
+                for line in lines:
+                    if line.strip() not in ['\n\r', '\n', '']:
+                        config.target_queue.put(line.strip()) # 存活的url
+                print(f"{config.yellow}queueDeduplication End~{config.end}")
+                print(f"{config.green}信息收集子域名搜集完毕，数量:{config.target_queue.qsize()}，保存文件名:{filename}{config.end}")
+                SendNotice(f"信息收集子域名搜集完毕，数量:{length}，保存文件名:{filename}") # server酱
+                return
+
     with open(Sub_report_path, 'a+') as f:
-        while len(sub_set) != 0:
-            target = sub_set.pop()
-            if urlCheck(target):
-                config.target_queue.put(target)
-                print("now save :{}".format(target))
-                f.write("{}\n".format(target))
-    print("queueDeduplication End~")
-    SendNotice("子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
+        if len(sub_set) != 0:
+            urlCheck_threads(list(sub_set), f) # 启动验活多线程
+
+    print(f"{config.yellow}queueDeduplication End~{config.end}")
+    SendNotice("信息收集子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
     return
 
+
+'''
+对没有添加http的url添加http
+'''
 def addHttpHeader(target):
     pattern = re.compile(r'^http')
     if not pattern.match(target.strip()):
@@ -252,6 +328,7 @@ def addHttpHeader(target):
     else:
         target = target.strip()
     return target
+
 
 '''
 checkBlackList(url)
@@ -263,6 +340,59 @@ def checkBlackList(url):
             return False
     return True
 
+
+'''
+ARL扫描
+'''
+def ArlScan(name = '', target = ''):
+    print(f"{config.yellow}This is ArlScan ~{config.end}")
+    Scan(name, target).add_task()
+
+
+'''
+将队列变成列表
+'''
+def from_queue_to_list(_queue):
+    result = []
+    while not _queue.empty():
+        _ = config.target_queue.get() # 队列被掏空
+        result.append(_.strip())
+    for item in result: # 再次将队列填满，便于crawlergo动态爬虫使用
+        config.target_queue.put(item)
+
+    return result
+
+
+'''
+将http去除
+oneforall的保存文件不带http。如果不进行过滤则无法打开文件
+'''
+def url_http_delete(url):
+    if 'https://' in url:
+        url = url[8:]
+    if 'http://' in url:
+        url = url[7:]
+
+    return url
+
+'''
+终极搜索文件方法，解决扫描的时候oneforall找文件的问题
+'''
+def get_filename(abs_path, name):
+    for i in os.walk(abs_path):
+        for j in i[2]:
+            if j[0:-4] in name:
+                return j
+
+    return False
+
+'''
+保存文件
+'''
+def save(__list, filepath = 'abs\\xxx.txt'):
+    with open(filepath, 'w') as f:
+        for i in __list:
+            f.write(i.strip() + '\n')
 
 
 def main():

@@ -1,32 +1,32 @@
+import sys
 import hashlib
+import getopt
+from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
+
 from crawlergo import crawlergoMain
 from Xray import pppXray
 import config
-import sys
-import getopt
 import base
+from waf import WAF
 from ServerJiang.jiangMain import SendNotice
 import click
 import os
 
+
 '''
-扫描控制主函数
+漏洞扫描控制主函数
 参数：
     url
     格式如：https://www.baidu.com
 
 扫描联动工具：
-    JS方面：
+    JS发现：
         JSfinder
-    漏洞扫描：
-        360 0Kee-Team 的 crawlergo动态爬虫 -> Xray高级版
+    xray扫描：
+        crawlergo动态爬虫 -> Xray高级版
     C段：
         自写C段扫描函数
 '''
-
-from concurrent.futures import ThreadPoolExecutor, wait, ALL_COMPLETED
-
-
 def threadPoolDetailScan(temp_url, current_filename):
     pppXray.xrayScan(temp_url, current_filename)
     base.transferJSFinder(temp_url, current_filename)
@@ -106,7 +106,7 @@ def init(attone,attsrc,attdetail,thread,readppp,clean,plugins):
     return
 
 def pppFoxScan(filename):
-    print("Start pppFoxScan,filename is {}".format(filename))
+    print(f"{config.yellow}Start pppFoxScan,filename is {filename}{config.end}")
     try:
         with open(filename, 'r') as f:
             lines = f.readlines()
@@ -126,9 +126,13 @@ def pppFoxScan(filename):
             req_pool.add(current_target)
             # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
             threadPoolScan(req_pool, currentfilename, current_target)
+<<<<<<< HEAD
         else:
             print("扫描网址在黑名单内,退出")
     print("pppFoxScan End~")
+=======
+    print(f"{config.yellow}pppFoxScan End~{config.end}")
+>>>>>>> origin/test
     return
 
 
@@ -137,20 +141,22 @@ oneFoxScan(target)函数
     针对某一目标网址进行扫描而非对某一资产下的网址进行扫描，输入案例： www.baidu.com
     扫描流程: 输入URL正确性检查+crawlergo+xray
 '''
-
-
 def oneFoxScan(target):
     if base.checkBlackList(target):
         target = base.addHttpHeader(target)
         filename = hashlib.md5(target.encode("utf-8")).hexdigest()
-        print("Start foxScan {}\nfilename : {}\n".format(target, filename))
+        print(f"{config.yellow}Start foxScan {target}\nfilename : {filename}\n{config.end}")
         req_pool = crawlergoMain.crawlergoGet(target)
         # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
         req_pool.add(target)
         threadPoolScan(req_pool, filename, target)
+<<<<<<< HEAD
     else:
         print("扫描网址在黑名单内,退出")
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
+=======
+    print(f"{config.yellow}InPuT T4rGet {target} Sc3n EnD#{config.end}")
+>>>>>>> origin/test
     return
 
 
@@ -160,20 +166,22 @@ foxScan(target) 函数
 参数：
     target 待扫描的URL 示例：baidu.com 
 作用：
-
     对输入的目标进行子域名收集 -> 存储去重  -> crawlergo动态爬虫 -> Xray高级版漏洞扫描
-
+                                 ↓
+                         ARL资产管理+漏洞扫描
 输出：
     对应阶段性结果都会保存在save 文件夹下对应的目录里面
 '''
-
-
 def foxScan(target):
     filename = hashlib.md5(target.encode("utf-8")).hexdigest()
-    print("Start attsrc foxScan {}\nfilename : {}\n".format(target, filename))
+    print(f"{config.yellow}{config.green}Start attsrc foxScan {target}\nfilename : {filename}\n{config.end}")
     base.subScan(target, filename)
-    # 进行子域名搜集
+    # 将队列列表化并进行子域名搜集
+    _ = base.from_queue_to_list(config.target_queue)
+    base.ArlScan(name=target, target=_)  # 启动ARL扫描,第一个参数target表示文件名
+    print(f"{config.yellow}InPuT T4rGet {target} Sc3n Start!{config.end}")
     while not config.target_queue.empty():
+<<<<<<< HEAD
         current_target = config.target_queue.get()
         if base.checkBlackList(current_target):
             # 对搜集到的目标挨个进行扫描
@@ -185,6 +193,22 @@ def foxScan(target):
         else:
             print("扫描网址在黑名单内,退出")
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
+=======
+        current_target = base.addHttpHeader(config.target_queue.get())
+        try:
+            if base.checkBlackList(current_target):
+                # 对搜集到的目标挨个进行扫描
+                req_pool = crawlergoMain.crawlergoGet(current_target) # 返回crawlergoGet结果列表,是多个url路径
+                req_pool.add(current_target) # 添加自己本身到该列表里
+                req_pool = WAF(req_pool).run_detect()
+                base.save(req_pool, filepath = f"{config.Crawlergo_save_path}{target}.txt")
+                tempFilename=hashlib.md5(current_target.encode("utf-8")).hexdigest()
+                # 对目标网址使用 crawlergoGet 页面URL动态爬取，保存在 req_pool 集合里
+                threadPoolScan(req_pool, tempFilename, target)
+        except:
+            pass
+    print(f"{config.yellow}InPuT T4rGet {target} Sc3n EnD#{config.end}")
+>>>>>>> origin/test
     return
 
 
@@ -199,12 +223,10 @@ foxScanDetail(target)
 输出：
     对应阶段性结果都会保存在save 文件夹下对应的目录里面
 '''
-
-
 def foxScanDetail(target):
     thread = ThreadPoolExecutor(config.ThreadNum)
     filename = hashlib.md5(target.encode("utf-8")).hexdigest()
-    print("Start attsrc foxScan {}\nfilename : {}\n".format(target, filename))
+    print(f"{config.yellow}Start attsrc foxScan {target}\nfilename : {filename}\n{config.end}")
     base.subScan(target, filename)
     # 进行子域名搜集
     while not config.target_queue.empty():
@@ -226,9 +248,13 @@ def foxScanDetail(target):
                     i = 0
                     wait(all_task, return_when=ALL_COMPLETED)
                     all_task = []
+<<<<<<< HEAD
         else:
             print("扫描网址在黑名单内,退出")
     print("InPuT T4rGet {} Sc3n EnD#".format(target))
+=======
+    print(f"{config.yellow}InPuT T4rGet {target} Sc3n EnD#{config.end}")
+>>>>>>> origin/test
     return
 
 
@@ -236,9 +262,10 @@ def foxScanDetail(target):
 单元测试代码
 支持三个攻击参数：
     1,-a --attone 对单个URL，只进行crawlergo动态爬虫+xray扫描 例如 百度官网 输入 https://www.baidu.com
-    2,-s --attsrc 对SRC资产，进行信息搜集+crawlergo+xray , 例如 百度SRC  输入 baidu.com
+    2,-s --attsrc 对SRC资产，进行信息搜集+ARL+crawlergo+xray , 例如 百度SRC  输入 baidu.com
     3,-d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 baidu.com
 '''
+<<<<<<< HEAD
 
 
 def main():
@@ -248,6 +275,40 @@ def main():
     except Exception as e:
         print(e)
         pass
+=======
+def main(argv):
+    config.logo()
+    base.init()
+    try:
+        opts, args = getopt.getopt(argv, "ha:s:d:r:t:c",
+                                   ["help", "attone=", "attsrc=", "attdetail=", "readppp=", "thread=", "clean"])
+    except getopt.GetoptError:
+        config.scanHelp()
+        sys.exit(2)
+    for opt, arg in opts:
+        target = arg.strip('/') # 因为url后缀带有\会造成oneforall保存错误
+        filename = arg
+        if opt in ("-h", "--help"):
+            config.scanHelp()
+            sys.exit()
+        elif opt in ("-t", "--thread"):
+            config.ThreadNum = int(arg)
+        elif opt in ("-a", "--attone"):
+            oneFoxScan(target)
+        elif opt in ("-s", "--attsrc"):
+            foxScan(target)
+        elif opt in ("-d", "--attdetail"):
+            foxScanDetail(target)
+        elif opt in ("-r", "--readppp"):
+            pppFoxScan(filename)
+        elif opt in ("-c", "--clean"):
+            config.delModel()
+            sys.exit()
+        else:
+            config.scanHelp()
+            sys.exit()
+
+>>>>>>> origin/test
     return
 
 

@@ -8,10 +8,15 @@ __pycache__/
 *.so
 /venv
 /save
+<<<<<<< HEAD
 /tmp
 bad_dns_servers.txt
 errors.log
 config.yaml
+=======
+config.py
+/tmp
+>>>>>>> origin/test
 debug.log
 # Distribution / packaging
 .Python

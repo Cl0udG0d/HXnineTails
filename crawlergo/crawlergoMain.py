@@ -1,8 +1,8 @@
 import simplejson
 import subprocess
-import json
 import config
 from fake_useragent import UserAgent
+
 ua = UserAgent()
 
 
@@ -30,9 +30,9 @@ def removeDuplicates(req_list):
     使用crawlergo进行目标页面URL的爬取
 '''
 def crawlergoGet(target):
-    print("Now crawlergoGet : {}".format(target))
+    print(f"{config.yellow}Now crawlergoGet : {target}{config.end}")
     try:
-        cmd = [config.crawlergo_Path, "-c", config.Chrome_Path, "--custom-headers", json.dumps(config.GetHeaders()), "-t", "10", "-f",
+        cmd = [config.crawlergo_Path, "-c", config.Chrome_Path, "-t", "10", "-f",
                "smart", "-o", "json", target]
         rsp = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         output, error = rsp.communicate()
@@ -40,12 +40,13 @@ def crawlergoGet(target):
         result = simplejson.loads(output.decode().split("--[Mission Complete]--")[1])
         # print(result)
         req_list = result["req_list"]
+
     except Exception as e:
         print(e)
         req_list=[]
         pass
-    print("target {} crawlergo end~".format(target))
-    print("crawlergo get url number {}".format(len(req_list)))
+    print(f"{config.yellow}target {target} crawlergo end~{config.end}")
+    print(f"{config.green}crawlergo get url number {len(req_list)}{config.end}")
     return removeDuplicates(req_list)
 
 def main():

@@ -1,4 +1,5 @@
 -i https://mirrors.aliyun.com/pypi/simple/
+aiohttp==3.7.4
 aiocontextvars==0.2.2
 beautifulsoup4==4.9.3
 bs4==0.0.1
