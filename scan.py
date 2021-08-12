@@ -76,19 +76,7 @@ def init(attone,attsrc,attdetail,thread,readppp,clean,plugins):
     花溪九尾 懒狗必备\n
     https://github.com/Cl0udG0d/HXnineTails
     """
-    try:
-        if not os.path.exists(config.Save_path):
-            os.makedirs(config.Save_path)
-            os.makedirs(config.Xray_report_path)
-            os.makedirs(config.Xray_temp_report_path)
-            os.makedirs(config.CScan_report_path)
-            os.makedirs(config.Sub_report_path)
-            os.makedirs(config.Temp_path)
-            os.makedirs(config.JS_report_path)
-    except Exception as e:
-        print(e)
-        exit(0)
-    print("目录初始化完成")
+    base.init()
     config.ThreadNum = int(thread)
     if plugins:
         config.plugins = plugins
@@ -239,45 +227,45 @@ def foxScanDetail(target):
     2,-s --attsrc 对SRC资产，进行信息搜集+ARL+crawlergo+xray , 例如 百度SRC  输入 baidu.com
     3,-d --attdetail 对SRC资产,进行信息搜集+crawlergo+xray+C段信息搜集+js敏感信息搜集 , 例如 百度SRC 输入 baidu.com
 '''
-# def main():
-#     try:
-#         config.logo()
-#         init.main(standalone_mode=False)
-#     except Exception as e:
-#         print(e)
-#         pass
-def main(argv):
-    config.logo()
-    base.init()
+def main():
     try:
-        opts, args = getopt.getopt(argv, "ha:s:d:r:t:c",
-                                   ["help", "attone=", "attsrc=", "attdetail=", "readppp=", "thread=", "clean"])
-    except getopt.GetoptError:
-        config.scanHelp()
-        sys.exit(2)
-    for opt, arg in opts:
-        target = arg.strip('/') # 因为url后缀带有\会造成oneforall保存错误
-        filename = arg
-        if opt in ("-h", "--help"):
-            config.scanHelp()
-            sys.exit()
-        elif opt in ("-t", "--thread"):
-            config.ThreadNum = int(arg)
-        elif opt in ("-a", "--attone"):
-            oneFoxScan(target)
-        elif opt in ("-s", "--attsrc"):
-            foxScan(target)
-        elif opt in ("-d", "--attdetail"):
-            foxScanDetail(target)
-        elif opt in ("-r", "--readppp"):
-            pppFoxScan(filename)
-        elif opt in ("-c", "--clean"):
-            config.delModel()
-            sys.exit()
-        else:
-            config.scanHelp()
-            sys.exit()
-    return
+        config.logo()
+        init.main(standalone_mode=False)
+    except Exception as e:
+        print(e)
+        pass
+# def main(argv):
+#     config.logo()
+#     base.init()
+#     try:
+#         opts, args = getopt.getopt(argv, "ha:s:d:r:t:c",
+#                                    ["help", "attone=", "attsrc=", "attdetail=", "readppp=", "thread=", "clean"])
+#     except getopt.GetoptError:
+#         config.scanHelp()
+#         sys.exit(2)
+#     for opt, arg in opts:
+#         target = arg.strip('/') # 因为url后缀带有\会造成oneforall保存错误
+#         filename = arg
+#         if opt in ("-h", "--help"):
+#             config.scanHelp()
+#             sys.exit()
+#         elif opt in ("-t", "--thread"):
+#             config.ThreadNum = int(arg)
+#         elif opt in ("-a", "--attone"):
+#             oneFoxScan(target)
+#         elif opt in ("-s", "--attsrc"):
+#             foxScan(target)
+#         elif opt in ("-d", "--attdetail"):
+#             foxScanDetail(target)
+#         elif opt in ("-r", "--readppp"):
+#             pppFoxScan(filename)
+#         elif opt in ("-c", "--clean"):
+#             config.delModel()
+#             sys.exit()
+#         else:
+#             config.scanHelp()
+#             sys.exit()
+#     return
 
 
 if __name__ == '__main__':

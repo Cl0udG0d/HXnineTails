@@ -113,7 +113,7 @@ def logo():
  +-+-+-+-+-+-+-+-+-+-+-+
  |{red}H|{yellow}X|n|{green}i|n|e|T|a|{yellow}i|l|{red}s|
  {green}+-+-+-+-+-+-+-+-+-+-+-+{white}
-                        v1.03{end}
+                        v1.1{end}
     ''')
 
 
@@ -121,7 +121,7 @@ def logo():
 递归删除临时保存目录下的保存信息
 '''
 def delModel():
-    saveFolderList=['saveCplus','saveJS','saveSub','saveXray']
+    saveFolderList=['saveCplus','saveJS','saveSub','saveXray','saveARL','temp','saveTempXray','saveCrawlergo']
     for tempFolder in saveFolderList:
         shutil.rmtree("{}\\save\\{}".format(Root_Path,tempFolder))
         os.mkdir("{}\\save\\{}".format(Root_Path,tempFolder))
