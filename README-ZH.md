@@ -99,17 +99,17 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 
 打开这个文件进行设置
 
-![image-20210817235844858](images\image-20210817235844858.png)
+![image-20210817235844858](images/image-20210817235844858.png)
 
 另外如果你是本地访问的话，下面BlACK_IPS记得注释掉本地地址
 
-![image-20210818003406757](images\image-20210818003406757.png)
+![image-20210818003406757](images/image-20210818003406757.png)
 
 测试：
 
 
 
-![image-20210818003639711](images\image-20210818003639711.png)
+![image-20210818003639711](images/image-20210818003639711.png)
 
 ### 使用说明
 
