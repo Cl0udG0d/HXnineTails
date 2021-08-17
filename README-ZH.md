@@ -93,7 +93,7 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 
 第二步：修改黑名单（如果有需要的话）
 
-![image-20210818003323362](images\image-20210818003323362.png)
+![image-20210818003323362](images/image-20210818003323362.png)
 
 第三步：设置api访问token
 
