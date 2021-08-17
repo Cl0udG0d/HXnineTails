@@ -1,44 +1,45 @@
+import aiohttp
+import asyncio
+import hashlib
+import os
 import re
 import shutil
-import asyncio
-import aiohttp
 
-import config
-
-from subDomainsBrute import subDomainsBruteMain
-from Sublist3r import Sublist3rMain
-from Subfinder import subfinderMain
-from OneForAll import oneforallMain
+import Hx_config
+from ARL.ArlScan import Scan
 from CScan import CScan
 from JSmessage.jsfinder import JSFinder
+from OneForAll import oneforallMain
 from ServerJiang.jiangMain import SendNotice
-import os
-import hashlib
-from ARL.ArlScan import Scan
-
+from Subfinder import subfinderMain
+from Sublist3r import Sublist3rMain
+from subDomainsBrute import subDomainsBruteMain
 
 '''
 init() 扫描初始化函数
 功能：
     初始化保存文件目录
 '''
+
+
 def init():
     try:
-        if not os.path.exists(config.Save_path) or not os.path.exists(config.ARL_save_path) or not os.path.exists(config.Crawlergo_save_path):
-            os.makedirs(config.Save_path)
-            os.makedirs(config.Xray_report_path)
-            os.makedirs(config.Xray_temp_report_path)
-            os.makedirs(config.CScan_report_path)
-            os.makedirs(config.Sub_report_path)
-            os.makedirs(config.Temp_path)
-            os.makedirs(config.JS_report_path)
-            os.makedirs(config.ARL_save_path)
-            os.makedirs(config.Crawlergo_save_path)
+        if not os.path.exists(Hx_config.Save_path) or not os.path.exists(Hx_config.ARL_save_path) or not os.path.exists(
+                Hx_config.Crawlergo_save_path):
+            os.makedirs(Hx_config.Save_path)
+            os.makedirs(Hx_config.Xray_report_path)
+            os.makedirs(Hx_config.Xray_temp_report_path)
+            os.makedirs(Hx_config.CScan_report_path)
+            os.makedirs(Hx_config.Sub_report_path)
+            os.makedirs(Hx_config.Temp_path)
+            os.makedirs(Hx_config.JS_report_path)
+            os.makedirs(Hx_config.ARL_save_path)
+            os.makedirs(Hx_config.Crawlergo_save_path)
 
     except Exception as e:
         print(e)
         exit(0)
-    print(f"{config.red}初始化完成{config.end}")
+    print(f"{Hx_config.red}初始化完成{Hx_config.end}")
     return
 
 
@@ -46,9 +47,11 @@ def init():
 cleanTempXrayReport()函数
     功能：删除xray临时报告目录下的全部文件
 '''
+
+
 def cleanTempXrayReport():
-    shutil.rmtree("{}".format(config.Xray_temp_report_path))
-    os.mkdir("{}".format(config.Xray_temp_report_path))
+    shutil.rmtree("{}".format(Hx_config.Xray_temp_report_path))
+    os.mkdir("{}".format(Hx_config.Xray_temp_report_path))
     return
 
 
@@ -59,6 +62,8 @@ def cleanTempXrayReport():
     专业版返回 true
     社区版返回 false
 '''
+
+
 def checkXrayVersion(content):
     if "snapshot" in content:
         return False
@@ -70,10 +75,12 @@ def checkXrayVersion(content):
 功能:
     xray 专业版报告合并函数
 '''
+
+
 def advancedMergeReport(resultList):
     context = ""
     requestMd5Set = set()
-    with open("{}\\advancedModelFile.html".format(config.Root_Path), 'r', encoding='utf-8') as f:
+    with open("{}\\advancedModelFile.html".format(Hx_config.Root_Path), 'r', encoding='utf-8') as f:
         context += f.read()
     for result in resultList:
         tempResultDict = eval(result)
@@ -92,10 +99,12 @@ def advancedMergeReport(resultList):
 功能:
     xray 社区版报告合并函数
 '''
+
+
 def communityMergeReport(resultList):
     context = ""
-    requestMd5Set=set()
-    with open("{}\\communityModelFile.html".format(config.Root_Path), 'r', encoding='utf-8') as f:
+    requestMd5Set = set()
+    with open("{}\\communityModelFile.html".format(Hx_config.Root_Path), 'r', encoding='utf-8') as f:
         context += f.read()
     for result in resultList:
         tempResultDict = eval(result)
@@ -115,28 +124,30 @@ mergeReport()函数
     传入参数：目标保存文件名 filename
     其中需要使用集合这种数据结构去除重复漏洞,其判断依据为：xray Request md5值
 '''
+
+
 def mergeReport(filename):
-    reportList=os.listdir(config.Xray_temp_report_path)
+    reportList = os.listdir(Hx_config.Xray_temp_report_path)
     print(reportList)
-    if len(reportList)==0:
+    if len(reportList) == 0:
         return
 
-    resultList=[]
+    resultList = []
 
     pattern = re.compile(r'<script class=\'web-vulns\'>webVulns.push\((.*?)\)</script>')
 
     for report in reportList:
-        tempReport="{}\\{}".format(config.Xray_temp_report_path,report)
-        with open(tempReport,'r',encoding='utf-8') as f:
-            temp=f.read()
-            result=pattern.findall(temp)
-            resultList+=result
-    tempResult=eval(resultList[0])
+        tempReport = "{}\\{}".format(Hx_config.Xray_temp_report_path, report)
+        with open(tempReport, 'r', encoding='utf-8') as f:
+            temp = f.read()
+            result = pattern.findall(temp)
+            resultList += result
+    tempResult = eval(resultList[0])
     if 'snapshot' in tempResult["detail"]:
         context = communityMergeReport(resultList)
     else:
-        context=advancedMergeReport(resultList)
-    with open("{}\\{}.html".format(config.Xray_report_path,filename),'w',encoding='utf-8') as f:
+        context = advancedMergeReport(resultList)
+    with open("{}\\{}.html".format(Hx_config.Xray_report_path, filename), 'w', encoding='utf-8') as f:
         f.write(context)
         cleanTempXrayReport()
 
@@ -157,12 +168,14 @@ transferJSFinder(url,filename)函数
         output_url_filename="url_"+outputfilename
         output_subdomain_filename="subdomain"+outputfilename
 '''
-def transferJSFinder(url ,filename):
+
+
+def transferJSFinder(url, filename):
     try:
-        urls =JSFinder.find_by_url(url)
-        JSFinder.giveresult(urls ,url ,filename)
+        urls = JSFinder.find_by_url(url)
+        JSFinder.giveresult(urls, url, filename)
     except Exception as e:
-        print(f"{config.red}JSFinder ERROR!{config.end}")
+        print(f"{Hx_config.red}JSFinder ERROR!{Hx_config.end}")
         print(e)
         pass
 
@@ -170,11 +183,13 @@ def transferJSFinder(url ,filename):
 '''
 transferCScan(url,filename) 函数
 '''
-def transferCScan(url ,filename):
+
+
+def transferCScan(url, filename):
     try:
         CScan.CScanConsole(url, filename)
     except Exception as e:
-        print(f"{config.red}C段扫描出错!{config.end}")
+        print(f"{Hx_config.red}C段扫描出错!{Hx_config.end}")
         print(e)
         pass
 
@@ -196,7 +211,9 @@ subScan(target) 函数
     Sublist3r
     ...(可根据自己需要自行添加
 '''
-def subScan(target ,filename):
+
+
+def subScan(target, filename):
     '''
     调用四个子域名搜集模块，并将结果保存在 sub_queue 里面
     使用 queueDeduplication 进行子域名 -> 网址的转换 ，同时检测存活
@@ -205,39 +222,39 @@ def subScan(target ,filename):
     :return:
     '''
 
-    Sub_report_path = config.Sub_report_path + filename + ".txt"  # save_sub.txt
+    Sub_report_path = Hx_config.Sub_report_path + filename + ".txt"  # save_sub.txt
     if os.path.exists(Sub_report_path):
-        print(f"{config.red}savesub/{filename}.txt文件存在, 跳过资产扫描{config.end}")
+        print(f"{Hx_config.red}savesub/{filename}.txt文件存在, 跳过资产扫描{Hx_config.end}")
         queueDeduplication(filename)
-        return #存在subtxt文件则直接跳过以下扫描。
+        return  # 存在subtxt文件则直接跳过以下扫描。
 
     try:
         oneforallMain.OneForAllScan(target)
         pass
     except Exception as e:
-        print(f'{config.red}OneForAllScan error :{config.end}', e)
+        print(f'{Hx_config.red}OneForAllScan error :{Hx_config.end}', e)
     try:
-        subDomainsBruteMain.subDomainsBruteScan(target,filename)
+        subDomainsBruteMain.subDomainsBruteScan(target, filename)
         pass
     except Exception as e:
-        print(f'{config.red}subDomainsBruteScan error :{config.end}', e)
+        print(f'{Hx_config.red}subDomainsBruteScan error :{Hx_config.end}', e)
     try:
         Sublist3rMain.Sublist3rScan(target)
         pass
     except Exception as e:
-        print(f'{config.red}Sublist3rScan error :{config.end}', e)
+        print(f'{Hx_config.red}Sublist3rScan error :{Hx_config.end}', e)
         pass
     try:
-        subfinderMain.subfinderScan(target,filename)
+        subfinderMain.subfinderScan(target, filename)
         pass
     except Exception as e:
-        print(f'{config.red}subfinderScan error:{config.end}', e)
+        print(f'{Hx_config.red}subfinderScan error:{Hx_config.end}', e)
         pass
     try:
         queueDeduplication(filename)
         pass
     except Exception as e:
-        print(f'{config.red}queueDeduplication error:{config.end}', e)
+        print(f'{Hx_config.red}queueDeduplication error:{Hx_config.end}', e)
         pass
 
 
@@ -251,14 +268,16 @@ urlCheck(url, f) 函数
 输出：
     返回是否的布尔值
 '''
+
+
 async def urlCheck(target, f):
-    print(f"{config.blue}now url live check: {target}{config.end}")
+    print(f"{Hx_config.blue}now url live check: {target}{Hx_config.end}")
     async with aiohttp.ClientSession() as session:
         try:
-            async with session.get(target, headers=config.GetHeaders()) as resp:
-                if  resp.status < 400:
-                    config.target_queue.put(target)  # 存活的url
-                    print(f"{config.green}now save :{target}{config.end}")
+            async with session.get(target, headers=Hx_config.GetHeaders()) as resp:
+                if resp.status < 400:
+                    Hx_config.target_queue.put(target)  # 存活的url
+                    print(f"{Hx_config.green}now save :{target}{Hx_config.end}")
                     f.write(f"{target}\n")
 
         except Exception as e:
@@ -284,37 +303,42 @@ queueDeduplication(filename) 队列去重函数
 输出：
     结果保存在target_queue队列里面，存储到saveSub文件夹下对应filename.txt中并且成为待扫描的目标
 '''
+
+
 def queueDeduplication(filename):
-    Sub_report_path = config.Sub_report_path + filename + ".txt"  # save_sub.txt
-    sub_set =set()
-    while not config.sub_queue.empty():
-        target =config.sub_queue.get()
+    Sub_report_path = Hx_config.Sub_report_path + filename + ".txt"  # save_sub.txt
+    sub_set = set()
+    while not Hx_config.sub_queue.empty():
+        target = Hx_config.sub_queue.get()
         sub_set.add(target)
-    length=len(sub_set)
+    length = len(sub_set)
     if os.path.exists(Sub_report_path):
         with open(Sub_report_path, 'r+') as f:
             lines = f.readlines()
-            if len(lines) > 1: # 文件有内容
+            if len(lines) > 1:  # 文件有内容
                 for line in lines:
                     if line.strip() not in ['\n\r', '\n', '']:
-                        config.target_queue.put(line.strip()) # 存活的url
-                print(f"{config.yellow}queueDeduplication End~{config.end}")
-                print(f"{config.green}信息收集子域名搜集完毕，数量:{config.target_queue.qsize()}，保存文件名:{filename}{config.end}")
-                SendNotice(f"信息收集子域名搜集完毕，数量:{length}，保存文件名:{filename}") # server酱
+                        Hx_config.target_queue.put(line.strip())  # 存活的url
+                print(f"{Hx_config.yellow}queueDeduplication End~{Hx_config.end}")
+                print(
+                    f"{Hx_config.green}信息收集子域名搜集完毕，数量:{Hx_config.target_queue.qsize()}，保存文件名:{filename}{Hx_config.end}")
+                SendNotice(f"信息收集子域名搜集完毕，数量:{length}，保存文件名:{filename}")  # server酱
                 return
 
     with open(Sub_report_path, 'a+') as f:
         if len(sub_set) != 0:
-            urlCheck_threads(list(sub_set), f) # 启动验活多线程
+            urlCheck_threads(list(sub_set), f)  # 启动验活多线程
 
-    print(f"{config.yellow}queueDeduplication End~{config.end}")
-    SendNotice("信息收集子域名搜集完毕，数量:{}，保存文件名:{}".format(length,filename))
+    print(f"{Hx_config.yellow}queueDeduplication End~{Hx_config.end}")
+    SendNotice("信息收集子域名搜集完毕，数量:{}，保存文件名:{}".format(length, filename))
     return
 
 
 '''
 对没有添加http的url添加http
 '''
+
+
 def addHttpHeader(target):
     pattern = re.compile(r'^http')
     if not pattern.match(target.strip()):
@@ -328,8 +352,10 @@ def addHttpHeader(target):
 checkBlackList(url)
 检测目标URL是否在黑名单列表中
 '''
+
+
 def checkBlackList(url):
-    for i in config.blacklist:
+    for i in Hx_config.blacklist:
         if i in url:
             return False
     return True
@@ -338,21 +364,25 @@ def checkBlackList(url):
 '''
 ARL扫描
 '''
-def ArlScan(name = '', target = ''):
-    print(f"{config.yellow}This is ArlScan ~{config.end}")
+
+
+def ArlScan(name='', target=''):
+    print(f"{Hx_config.yellow}This is ArlScan ~{Hx_config.end}")
     Scan(name, target).add_task()
 
 
 '''
 将队列变成列表
 '''
+
+
 def from_queue_to_list(_queue):
     result = []
     while not _queue.empty():
-        _ = config.target_queue.get() # 队列被掏空
+        _ = Hx_config.target_queue.get()  # 队列被掏空
         result.append(_.strip())
-    for item in result: # 再次将队列填满，便于crawlergo动态爬虫使用
-        config.target_queue.put(item)
+    for item in result:  # 再次将队列填满，便于crawlergo动态爬虫使用
+        Hx_config.target_queue.put(item)
 
     return result
 
@@ -361,6 +391,8 @@ def from_queue_to_list(_queue):
 将http去除
 oneforall的保存文件不带http。如果不进行过滤则无法打开文件
 '''
+
+
 def url_http_delete(url):
     if 'https://' in url:
         url = url[8:]
@@ -369,9 +401,12 @@ def url_http_delete(url):
 
     return url
 
+
 '''
 终极搜索文件方法，解决扫描的时候oneforall找文件的问题
 '''
+
+
 def get_filename(abs_path, name):
     for i in os.walk(abs_path):
         for j in i[2]:
@@ -380,21 +415,27 @@ def get_filename(abs_path, name):
 
     return False
 
+
 '''
 保存文件
 '''
-def save(__list, filepath = 'abs\\xxx.txt'):
-    with open(filepath, 'w') as f:
+
+
+def save(__list, filepath='abs\\xxx.txt', host=''):
+    with open(filepath, 'a+') as f:
         for i in __list:
+            if i == host or i == host + '/':
+                continue
             f.write(i.strip() + '\n')
 
 
 def main():
-    a=set()
+    a = set()
     a.add(1)
     a.add(2)
     print(list(a))
     return
+
 
 if __name__ == '__main__':
     main()

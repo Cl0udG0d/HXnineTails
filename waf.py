@@ -1,26 +1,28 @@
-import requests
-import config
 import re
-from urllib.parse import urlparse
+import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from urllib.parse import urlparse
 
+import Hx_config
 
 '''
 输入：待检测的url列表
 功能：检测该url是否有waf
 输出：没有waf的列表
 '''
+
+
 class WAF(object):
     def __init__(self, __list):
         self.__list = __list
         self.__result = []
         self.__waf_info()
 
-    def __once_detect(self,url):
-        headers = config.GetHeaders()
+    def __once_detect(self, url):
+        headers = Hx_config.GetHeaders()
         headers["Referer"] = url
         try:
-            resp = requests.get(url, headers=headers)
+            resp = requests.get(url, headers=headers, timeout=3)
             if resp.status_code < 400:
                 if self.__identify(resp.headers, resp.text):
                     parse = urlparse(resp.url)
@@ -28,25 +30,23 @@ class WAF(object):
                     self.__result.append(new_url)
                     self.__result.append(url)
         except:
-            print(f"{config.red}WAF~ {url} 网络连接失败{config.end}")
+            print(f"{Hx_config.red}WAF~ {url} 网络连接失败{Hx_config.end}")
 
         return
 
-
     def run_detect(self):
-        print(f"{config.green}WAF检测中~{config.end}")
+        print(f"{Hx_config.green}WAF检测中~{Hx_config.end}")
         with ThreadPoolExecutor() as pool:
             pool.map(self.__once_detect, self.__list)
             as_completed(True)
 
-        print(f"{config.blue}检测完毕，没有WAF的url：")
+        print(f"{Hx_config.blue}检测完毕，没有WAF的url：")
         for item in list(set(self.__result)):
             print(item)
 
-        print(config.end)
+        print(Hx_config.end)
 
         return list(set(self.__result))
-
 
     def __waf_info(self):
         self.__mark_list = []
@@ -100,7 +100,7 @@ class WAF(object):
             name, location, key, value = mark.strip().split("|", 3)
             self.__mark_list.append([name, location, key, value])
 
-    def __identify(self,header, html):
+    def __identify(self, header, html):
         for line in self.__mark_list:
             name, location, key, reg = line
             if location == "headers":
@@ -111,6 +111,7 @@ class WAF(object):
                     return False
 
         return True
+
 
 if __name__ == '__main__':
     list1 = WAF(['http://59.63.200.79:8014/dom_xss/', 'https://qq.com'])

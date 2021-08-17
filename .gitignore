@@ -12,7 +12,7 @@ __pycache__/
 bad_dns_servers.txt
 errors.log
 config.yaml
-config.py
+Hx_config.py
 debug.log
 # Distribution / packaging
 .Python

@@ -1,4 +1,4 @@
-import config
+import Hx_config
 from Sublist3r import sublist3r
 
 '''
@@ -12,14 +12,14 @@ Sublist3rScan(target) 函数
     无
 '''
 def Sublist3rScan(target):
-    print(f"{config.yellow}{target} Sublist3rScan Scan Start ~{config.end}")
+    print(f"{Hx_config.yellow}{target} Sublist3rScan Scan Start ~{Hx_config.end}")
     subdomains = sublist3r.main(target, 40, savefile=None, ports=None, silent=False, verbose=False,
                                 enable_bruteforce=False, engines=None)
-    print(f"{config.yellow}{target} Sublist3rScan Scan End ~{config.end}")
+    print(f"{Hx_config.yellow}{target} Sublist3rScan Scan End ~{Hx_config.end}")
     for temp_sub in subdomains:
-        config.sub_queue.put(temp_sub)
-    print(f"{config.yellow}{target} Sublist3r Save queue End ~{config.end}")
-    print(f"{config.green}Sublist3r 结束 ！当前的url个数为{config.sub_queue.qsize()}{config.end}")
+        Hx_config.sub_queue.put(temp_sub)
+    print(f"{Hx_config.yellow}{target} Sublist3r Save queue End ~{Hx_config.end}")
+    print(f"{Hx_config.green}Sublist3r 结束 ！当前的url个数为{Hx_config.sub_queue.qsize()}{Hx_config.end}")
     return
 
 def main():

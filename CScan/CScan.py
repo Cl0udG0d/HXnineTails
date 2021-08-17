@@ -2,7 +2,7 @@ from multiprocessing.pool import ThreadPool
 import re
 import requests
 import socket
-import config
+import Hx_config
 
 
 '''
@@ -12,7 +12,7 @@ CScan C段扫描代码
 '''
 def CScan(ip):
     try:
-        rep = requests.get("http://" + ip, headers=config.GetHeaders(), timeout=2, verify=False)
+        rep = requests.get("http://" + ip, headers=Hx_config.GetHeaders(), timeout=2, verify=False)
         if rep.status_code != 404:
             title = re.findall(r'<title>(.*?)</title>', rep.text)
             if title:
@@ -44,7 +44,7 @@ def CScanConsole(host, Cfilename = '', path = ''):
     for tmpCip in range(1, 256):
         ip[-1] = str(tmpCip)
         host = ".".join(ip)
-        for port in config.portlist:
+        for port in Hx_config.portlist:
             host=host+":"+str(port)
             hostList.append(host)
     pool = ThreadPool(pools)

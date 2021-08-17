@@ -1,6 +1,6 @@
 import os
 import hashlib
-import config
+import Hx_config
 
 
 def logo():
@@ -27,7 +27,7 @@ def logo():
 
 def xrayScan(targeturl,outputfilename="test"):
     try:
-        scanCommand="{} webscan {} --url \"{}\" --html-output {}\{}.html".format(config.Xray_Path,'--plugins {}'.format(config.plugins) if config.plugins else '',targeturl,config.Xray_temp_report_path,outputfilename)
+        scanCommand="{} webscan {} --url \"{}\" --html-output {}\{}.html".format(Hx_config.Xray_Path, '--plugins {}'.format(Hx_config.plugins) if Hx_config.plugins else '', targeturl, Hx_config.Xray_temp_report_path, outputfilename)
         print(scanCommand)
         os.system(scanCommand)
     except Exception as e:

@@ -87,7 +87,29 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 
 在`HXnineTails`文件夹下打开命令行输入扫描参数
 
+### ARL配置
 
+第一步：确定部署完成并且可以正确访问ARL后台
+
+第二步：修改黑名单（如果有需要的话）
+
+![image-20210818003323362](C:\Users\Th\Documents\工具库\HXnineTails\README-ZH.assets\image-20210818003323362.png)
+
+第三步：设置api访问token
+
+打开这个文件进行设置
+
+![image-20210817235844858](C:\Users\Th\Documents\工具库\HXnineTails\README-ZH.assets\image-20210817235844858.png)
+
+另外如果你是本地访问的话，下面BlACK_IPS记得注释掉本地地址
+
+![image-20210818003406757](C:\Users\Th\Documents\工具库\HXnineTails\README-ZH.assets\image-20210818003406757.png)
+
+测试：
+
+
+
+![image-20210818003639711](C:\Users\Th\Documents\工具库\HXnineTails\README-ZH.assets\image-20210818003639711.png)
 
 ### 使用说明
 

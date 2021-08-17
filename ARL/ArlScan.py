@@ -1,6 +1,6 @@
 # *coding:UTF-8 *
 import requests
-import config
+import Hx_config
 import json
 import base
 import time
@@ -14,7 +14,7 @@ class Scan(object):
         self._list = targets_list
         self.Prevent_duplicate_scanning()
         self.headers = {
-            "token": config.API_KEY,
+            "token": Hx_config.API_KEY,
             "Content-type": "application/json",
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36'
 }
@@ -26,8 +26,8 @@ class Scan(object):
 
     def make_targets(self, __list): # 获取发送给ARL服务器特定格式的targets
         self.targets = "\n".join(list(__list))
-        print(f"{config.green}ARL will add{config.end}")
-        print(f"{config.green}{list(__list)}{config.end}")
+        print(f"{Hx_config.green}ARL will add{Hx_config.end}")
+        print(f"{Hx_config.green}{list(__list)}{Hx_config.end}")
 
 
     def Prevent_duplicate_scanning(self, delete_signal=False): # 防止多次对ARl服务器add同一个地址
@@ -52,7 +52,7 @@ class Scan(object):
             pass
 
         with open(__file_name, 'a+') as f1:
-            print(f"{config.green}ARL新增{len(self._)}个domain{config.end}")
+            print(f"{Hx_config.green}ARL新增{len(self._)}个domain{Hx_config.end}")
             for i in self._:
                 f1.write(i + '\n')
             self.make_targets(self._)
@@ -60,7 +60,7 @@ class Scan(object):
 
     # 添加任务
     def add_task(self):
-        url = config.arl_url_Path + '/api/task/'
+        url = Hx_config.arl_url_Path + '/api/task/'
         data = {"name": f"{self.name}", "target": f"{self.targets}", "domain_brute_type": "big", "port_scan_type": "top100",
                 "domain_brute": True, "alt_dns": True, "riskiq_search": True, "arl_search": True,
                 "port_scan": True,
@@ -68,15 +68,15 @@ class Scan(object):
                 "site_identify": True, "search_engines": True, "site_spider": True, "site_capture": True,
                 "file_leak": True}
         try:
-            r = requests.post(url=url, headers=self.headers, data=json.dumps(data))
+            r = requests.post(url=url, headers=self.headers, data=json.dumps(data), timeout=5, verify=False)
             result = r.json()
-            print (f"{config.green}ARL_result : {str(result)}{config.end}")
+            print (f"{Hx_config.green}ARL_result : {str(result)}{Hx_config.end}")
             if len(result['items']) == 0: # 同样也是没有成功add
                 self.Prevent_duplicate_scanning(delete_signal=True)
         except:
             if self._list == '' and len(self._list) == 1:
-                print(f"{config.red}ARL没有接受到任何参数{config.end}")
-            print(f"{config.red}ARL扫描启动失败,请检查ARL服务器网络！{config.end}")
+                print(f"{Hx_config.red}ARL没有接受到任何参数{Hx_config.end}")
+            print(f"{Hx_config.red}ARL扫描启动失败,请检查ARL服务器网络！{Hx_config.end}")
             self.Prevent_duplicate_scanning(delete_signal=True)
 
 if __name__ == '__main__':

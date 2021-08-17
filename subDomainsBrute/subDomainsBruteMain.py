@@ -1,9 +1,7 @@
 import os
 
+import Hx_config
 import base
-import config
-
-
 
 '''
 subDomainsBruteScan(target) 函数
@@ -14,29 +12,34 @@ subDomainsBruteScan(target) 函数
 输出：
     无
 '''
-def subDomainsBruteScan(target,filename):
-    print(f"{config.yellow}{target} subDomainsBruteScan Scan Start ~{config.end}")
-    subDomainsBrute_py='{}subDomainsBrute.py'.format(config.subDomainsBrute_Path)
-    saveFilePath='{}{}.txt'.format(config.Temp_path,base.url_http_delete(filename))
-    scanCommand="{} {} -t 10 --output {} {}".format(config.PYTHON,subDomainsBrute_py,saveFilePath,base.url_http_delete(target))
-    print(f"{config.blue}{scanCommand}{config.end}")
+
+
+def subDomainsBruteScan(target, filename):
+    print(f"{Hx_config.yellow}{target} subDomainsBruteScan Scan Start ~{Hx_config.end}")
+    subDomainsBrute_py = '{}subDomainsBrute.py'.format(Hx_config.subDomainsBrute_Path)
+    saveFilePath = '{}{}.txt'.format(Hx_config.Temp_path, base.url_http_delete(filename))
+    scanCommand = "{} {} -t 10 --output {} {}".format(Hx_config.PYTHON, subDomainsBrute_py, saveFilePath,
+                                                      base.url_http_delete(target))
+    print(f"{Hx_config.blue}{scanCommand}{Hx_config.end}")
     os.system(scanCommand)
     if os.path.exists(saveFilePath):
         f = open(saveFilePath)
         lines = f.readlines()
         for line in lines:
-            temp_url=line.split()[0].rstrip('\n')
+            temp_url = line.split()[0].rstrip('\n')
             # print(temp_url)
-            config.sub_queue.put(temp_url)
+            Hx_config.sub_queue.put(temp_url)
         f.close()
-    print(f"{config.yellow}{target} subDomainsBruteScan Scan End ~{config.end}")
-    print(f"{config.green}subdomainsbrute 结束 ！当前的url个数为{config.sub_queue.qsize()}{config.end}")
+    print(f"{Hx_config.yellow}{target} subDomainsBruteScan Scan End ~{Hx_config.end}")
+    print(f"{Hx_config.green}subdomainsbrute 结束 ！当前的url个数为{Hx_config.sub_queue.qsize()}{Hx_config.end}")
     return
+
 
 def main():
     # filename=hash('baidu.com')
-    subDomainsBruteScan('wkj.work',"aa")
+    subDomainsBruteScan('wkj.work', "aa")
     return
+
 
 if __name__ == '__main__':
     main()

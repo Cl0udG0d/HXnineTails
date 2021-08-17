@@ -1,33 +1,39 @@
 import hashlib
-import base
 import os
+
+import Hx_config
+import base
 from scan import pppFoxScan
-import config
+
+
 def subGet(target):
     filename = hashlib.md5(target.encode("utf-8")).hexdigest()
     print("Start attsrc foxScan {}\nfilename : {}\n".format(target, filename))
     base.subScan(target, filename)
     return
-PATH='C:\\Users\\Administrator\\Desktop\\heheSEC\\target\\'
+
+
+PATH = 'C:\\Users\\Administrator\\Desktop\\heheSEC\\target\\'
+
 
 def main():
     try:
-        if not os.path.exists(config.Save_path):
-            os.makedirs(config.Save_path)
-            os.makedirs(config.Xray_report_path)
-            os.makedirs(config.Xray_temp_report_path)
-            os.makedirs(config.CScan_report_path)
-            os.makedirs(config.Sub_report_path)
-            os.makedirs(config.Temp_path)
-            os.makedirs(config.JS_report_path)
+        if not os.path.exists(Hx_config.Save_path):
+            os.makedirs(Hx_config.Save_path)
+            os.makedirs(Hx_config.Xray_report_path)
+            os.makedirs(Hx_config.Xray_temp_report_path)
+            os.makedirs(Hx_config.CScan_report_path)
+            os.makedirs(Hx_config.Sub_report_path)
+            os.makedirs(Hx_config.Temp_path)
+            os.makedirs(Hx_config.JS_report_path)
     except Exception as e:
         print(e)
         exit(0)
     print("目录初始化完成")
-    reportList=os.listdir(PATH)
+    reportList = os.listdir(PATH)
     print(reportList)
     for report in reportList:
-        current_file=PATH+report
+        current_file = PATH + report
         pppFoxScan(current_file)
 
 

@@ -7,7 +7,7 @@ import requests, argparse, sys, re
 from requests.packages import urllib3
 from urllib.parse import urlparse
 from bs4 import BeautifulSoup
-import config
+import Hx_config
 urllib3.disable_warnings()
 import os
 
@@ -179,8 +179,8 @@ def giveresult(urls, domian,outputfilename):
         content_subdomain += subdomain + "\n"
         print(subdomain)
     # print(current_dir)
-    output_url_filename=config.JS_report_path+"url_"+outputfilename+'.txt'
-    output_subdomain_filename=config.JS_report_path+"subdomain_"+outputfilename+'.txt'
+    output_url_filename= Hx_config.JS_report_path + "url_" + outputfilename + '.txt'
+    output_subdomain_filename= Hx_config.JS_report_path + "subdomain_" + outputfilename + '.txt'
     with open(output_url_filename, "a", encoding='utf-8') as fobject:
         fobject.write(content_url)
     print("\nOutput " + str(len(urls)) + " urls")
