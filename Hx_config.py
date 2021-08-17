@@ -18,7 +18,7 @@ SERVERKEY = ''
 '''
 ARL的api配置和网络路径
 '''
-API_KEY = 'token_is_123'  # 在 ARL/docker/config-docker.yaml里修改
+API_KEY = 'write_down_your_token'  # 在 ARL/docker/config-docker.yaml里修改
 arl_url_Path = 'https://127.0.0.1:5004'
 
 '''

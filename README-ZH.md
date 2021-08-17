@@ -105,6 +105,10 @@ subfinder_Path='C:\\Users\\Administrator\\Desktop\\test_tools\\subfinder\\'
 
 ![image-20210818003406757](images/image-20210818003406757.png)
 
+第四步：配置文件添加token
+
+![image-20210818010542320](images/image-20210818010542320.png)
+
 测试：
 
 
