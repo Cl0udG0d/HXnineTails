@@ -1,8 +1,9 @@
 import os
 import queue
 import shutil
+import json
+import random
 
-from fake_useragent import UserAgent
 
 '''
 配置文件:
@@ -90,13 +91,17 @@ GetHeaders()函数
 
 def GetHeaders():
     try:
-        ua = UserAgent(path='Useragent.json')
-        headers = {'User-Agent': ua.random}
+        with open('Useragent.json', 'r') as f:
+            data = json.load(f)
+            data_browsers =data['browsers']
+            data_randomize = list(data['randomize'].values())
+            browser = random.choice(data_randomize)
+            headers = {'User-Agent': random.choice(data_browsers[browser])}
+
+            return headers
     except Exception as e:
-        print(e)
-        headers = {
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36'}
-    return headers
+        exit("[*]Hx_config.py   :   GetHeaders error!")
+
 
 
 '''

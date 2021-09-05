@@ -10,7 +10,6 @@ colorama==0.4.4
 contextvars==2.4
 dnspython==2.0.0
 exrex==0.10.5
-fake-useragent==0.1.11
 fire==0.3.1
 future==0.18.2
 idna==2.10
