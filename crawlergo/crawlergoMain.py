@@ -3,11 +3,9 @@ import os
 import subprocess
 
 import simplejson
-from fake_useragent import UserAgent
-
 import Hx_config
 
-ua = UserAgent()
+ua = Hx_config.GetHeaders()
 
 # def GetHeaders():
 #     headers = {'User-Agent': ua.random}
