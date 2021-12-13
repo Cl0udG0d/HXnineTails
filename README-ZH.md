@@ -201,7 +201,7 @@ python3 scan.py -t 3 -a http://testphp.vulnweb.com/
 
 :beers:当然也欢迎给我发邮件  2585614464@qq.com Join us！
 
-🍻也可以给Throokie发邮件！326516678@qq.com
+🍻也可以给Throokie发邮件！a.88bbd@gmail.com
 
 
 ### 打赏列表
