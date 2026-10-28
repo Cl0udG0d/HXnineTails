@@ -175,7 +175,7 @@ View saved reports
 
 :beers:And of course feel free to send me an email at 2585614464@qq.com Join us!
 
-🍻 welcome call Throokie throught the email 326516678@qq.com
+🍻 welcome call Throokie throught the email qq@throokie.eu.org
 
 ### Reward
 
